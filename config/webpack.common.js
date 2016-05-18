@@ -5,9 +5,10 @@ var helpers = require('./helpers');
 
 module.exports = {
     entry: {
-        'polyfills': './src/polyfills.ts',
-        'vendor': './src/vendor.ts',
-        'app': './src/main.ts'
+        'polyfills': './browser/polyfills.ts',
+        'vendor': './browser/vendor.ts',
+        'app': './browser/main.ts',
+        'api': './api/main.ts'
     },
 
     resolve: {
@@ -25,17 +26,21 @@ module.exports = {
                 loader: 'html'
             },
             {
+                test: /\.json/,
+                loader: 'raw'
+            },
+            {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
                 loader: 'file?name=assets/[name].[hash].[ext]'
             },
             {
                 test: /\.css$/,
-                exclude: helpers.root('src', 'app'),
+                exclude: helpers.root('browser', 'app'),
                 loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
             },
             {
                 test: /\.css$/,
-                include: helpers.root('src', 'app'),
+                include: helpers.root('browser', 'app'),
                 loader: 'raw'
             }
         ]
@@ -43,11 +48,18 @@ module.exports = {
 
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-            name: ['app', 'vendor', 'polyfills']
+            name: ['api', 'app', 'vendor', 'polyfills']
         }),
 
         new HtmlWebpackPlugin({
-            template: 'src/index.html'
+            template: 'browser/index.html'
         })
-    ]
+    ],
+
+    //list used core node modules so webpack doesn't complain
+    node: {
+      fs: "empty",
+      net: "empty",
+      dns: "empty"
+    }
 };
