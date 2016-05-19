@@ -6,7 +6,7 @@
   "scripts": {
     "start": "gulp nodemon",
     "test": "gulp test && karma start",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
+    "build": "gulp compile && webpack --config browser/config/webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install"
   },
   "repository": {

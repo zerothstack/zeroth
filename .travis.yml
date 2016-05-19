@@ -2,10 +2,6 @@ sudo: false
 language: node_js
 node_js:
 - 5.4.1
-addons:
-  apt:
-    sources:
-    - libnotify-bin
 cache:
   directories:
   - node_modules
@@ -22,10 +18,14 @@ script:
 - npm run build
 before_deploy:
 - pr-bumper bump
+env:
+  global:
+  - secure: uHc7KxGRghqXwQpFjLCouiB9GoVcGd2BCeh4LexL0aByGKOJWhEMFZQUaHN8bjH/pzpxD8ZL2yrMQixmAceFUks/WOgNYB/zASM1+iqAQ7L1jbh1vYfqVxQ3vy7DKZ2SEC8hMaLL+cNkxdX8SH4lEmyk5Rj7LFqTU6eRyP5moUhxIJYxz1xMy31BZoYlFZ/DIaHDg+T5199xodLATeIOt7MS3LAIxlLOJq86NuzAQwmfieu+s8lsMRfsMYMhpQfm1bge4ZaVoYVGXd7/9WSDJd5oKNOub624dngwlxl1eoqflCfnQhRN5Pf3I/JV2V1fXDJDrPc9yV/1OgzfZmm1pXp1mMHZprdsfbhsKXMiSq8ZOPyUSnPbu5rmfOk7er56HeTrOL796Vgvvou89q7gHVp7yzaj/0bR3tF4TPx7zaQpQ6t2S/YDmgnUOsqPqB10KXVqjDfpxGxK0uYseX8svaQTdELqQrtaY+q/s6pfJE9u2j7DH0kWVAfwxDMDGcqXn4jyNa063Xzb4rbgwJ3hXuRp3rfQiRtOkWipSCRMUtutAYhW2A/XHOshctGTvLVhr0DlB3JuA6D7gv2X1HCxg3oselF9tktppbb4U7wj0dsMGkzBFjIkTlbBN8Ja9muWsshxKQy3vRBpTeQTjrVdYbNZoADZEofNSDTEP7LA0OE=
 deploy:
   provider: npm
   email: zak@ubiquits.com
-  skip_cleanup: true
+  api_key:
+    secure: mzxoUA4DbuxPQA3YRt760WBukYgRpcrpYk2nBT10fVLhJe6bQYxlWtdqs1EV9YhhpEeGgCmv8icvh39pdrb7xwnb9pMhMKEF+50aKKPEgY5A1hlh9KyxOiem3ksHapChqz7DAxblRQdioNudLlwFV3PxQWF0gJkjPTOwvYs+w/9xxr77IJ/FJWoTDAS/HzQMpLOGn6KUpBCMQF5XIFQdWigFCb8Ol8+Ev/lpPgvg6ehWLxt8hctEQtqX1qlX1UoYH/Jnaevs/sGY5B+o3CZUJFCE/EpYQm2dkYn0ASMb83/5inrcCPdgXmvtiVHrrBG5A72heym+E45/l0HEesvFeErLj8vsbS84anquhBGU7fFRcMEw325nRp7fX8loIIsxL1yaOYYU19Kacak3vE0kNkdR6XehifAOVtJ8X4V5ZnFcynnGW3GRC3mcAIIpTun7fpIdzSMDIQb/s9+obkIyPWzig7UzxevuPs5/PR0w+S9viUuUThMVq7Wflalt95eX4PM6nuMOZXbDcWm4bKXafBmzKy7F22Tx1pCjIFA7tfqZiju2eX3RCfRKQ3roePAFX6aVdaUC0R1QAg8G4UxGpVAWCqcZd0fc11WEeeKZVoKiUZ77axOCIKq+rH8MMnJfumSeWIFBkiopLn+X7RCWkY17gU0+RURatWIM5y+dWOM=
   on:
-    branch: master
-    tags: false
+    tags: true
+    repo: ubiquits/core
