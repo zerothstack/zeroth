@@ -6,7 +6,7 @@ let tsc = require('gulp-typescript');
 let sourcemaps = require('gulp-sourcemaps');
 let tslint = require('gulp-tslint');
 let nodemon = require('gulp-nodemon');
-var mocha = require('gulp-mocha');
+var jasmine = require('gulp-jasmine');
 var istanbul = require('gulp-istanbul');
 var path = require('path');
 
@@ -44,17 +44,6 @@ gulp.task('tslint', () => {
 /**
  * Format all custom TypeScript files.
  */
-
-// gulp.task('format', () => {
-// var tsfmt = require('gulp-tsfmt');
-//   gulp.src(sourceFiles.concat(['!./typings/**']))
-//     .pipe(tsfmt({
-//       IndentSize: 5,
-//       TabSize: 2
-//     }))
-//     .pipe(gulp.dest(file => path.dirname(file.path)));
-// });
-
 gulp.task('format', (cb) => {
   var tsfmt = require('typescript-formatter/lib/index');
   var files = [];
@@ -112,14 +101,21 @@ gulp.task('build', ['compile'], () => {
 });
 
 gulp.task('test', ['build'], () => {
-  return gulp.src(['build/**/*.spec.js'], {read: false})
-    .pipe(mocha({reporter: 'list'}))
-    .once('error', () => {
-      process.exit(1);
-    })
-    .once('end', () => {
-      process.exit();
-    });
+  Error.stackTraceLimit = Infinity;
+
+  require('es6-shim');
+  require('reflect-metadata');
+  require('zone.js/dist/zone-node');
+
+  const SpecReporter = require('jasmine-spec-reporter');
+
+  return gulp.src(['build/**/*.spec.js'])
+    .pipe(jasmine({
+        reporter: new SpecReporter({
+          displayFailuresSummary: false
+        })
+      })
+    );
 });
 
 gulp.task('nodemon', ['build'], () => {
