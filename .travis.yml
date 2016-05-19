@@ -27,5 +27,5 @@ deploy:
   api_key:
     secure: mzxoUA4DbuxPQA3YRt760WBukYgRpcrpYk2nBT10fVLhJe6bQYxlWtdqs1EV9YhhpEeGgCmv8icvh39pdrb7xwnb9pMhMKEF+50aKKPEgY5A1hlh9KyxOiem3ksHapChqz7DAxblRQdioNudLlwFV3PxQWF0gJkjPTOwvYs+w/9xxr77IJ/FJWoTDAS/HzQMpLOGn6KUpBCMQF5XIFQdWigFCb8Ol8+Ev/lpPgvg6ehWLxt8hctEQtqX1qlX1UoYH/Jnaevs/sGY5B+o3CZUJFCE/EpYQm2dkYn0ASMb83/5inrcCPdgXmvtiVHrrBG5A72heym+E45/l0HEesvFeErLj8vsbS84anquhBGU7fFRcMEw325nRp7fX8loIIsxL1yaOYYU19Kacak3vE0kNkdR6XehifAOVtJ8X4V5ZnFcynnGW3GRC3mcAIIpTun7fpIdzSMDIQb/s9+obkIyPWzig7UzxevuPs5/PR0w+S9viUuUThMVq7Wflalt95eX4PM6nuMOZXbDcWm4bKXafBmzKy7F22Tx1pCjIFA7tfqZiju2eX3RCfRKQ3roePAFX6aVdaUC0R1QAg8G4UxGpVAWCqcZd0fc11WEeeKZVoKiUZ77axOCIKq+rH8MMnJfumSeWIFBkiopLn+X7RCWkY17gU0+RURatWIM5y+dWOM=
   on:
-    tags: true
-    repo: ubiquits/core
+    branch: master
+    tags: false
