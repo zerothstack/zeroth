@@ -7,7 +7,7 @@ import '../public/css/styles.css';
 })
 export class AppComponent {
 
-  public handleClick(){
+  public handleClick() {
     console.log('click!');
   }
 
