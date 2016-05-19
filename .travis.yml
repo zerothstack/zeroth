@@ -2,10 +2,6 @@ sudo: false
 language: node_js
 node_js:
 - 5.4.1
-addons:
-  apt:
-    sources:
-    - libnotify-bin
 cache:
   directories:
   - node_modules
