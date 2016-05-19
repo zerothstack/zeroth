@@ -1,22 +1,32 @@
 const API = require('./build/api/api/main.js');
 const server = API.server;
 
-// const WebpackDevServer = require("webpack-dev-server");
-//
-// const webpack = require("webpack");
-// const config = require('./browser/config/webpack.dev.js');
-// const compiler = webpack(config);
-//
-// const webpackDevServer = new WebpackDevServer(compiler, {
-//   // webpack-dev-server options
-//   contentBase: "/path/to/directory",
-//   historyApiFallback: true,
-//
-//   // webpack-dev-middleware options
-//   stats: 'minimal'
-// });
-//
-// webpackDevServer.listen(8080, "localhost", function() {});
+const WebpackPlugin = require('hapi-webpack-plugin');
+const Webpack = require('webpack');
+
+
+const config = require('./browser/config/webpack.dev.js');
+const compiler = new Webpack(config);
+
+const assets = {
+  // webpack-dev-middleware options
+  // See https://github.com/webpack/webpack-dev-middleware
+  historyApiFallback: true,
+  stats: 'minimal'
+};
+
+const hot = {
+  // webpack-hot-middleware options
+  // See https://github.com/glenjamin/webpack-hot-middleware
+};
+
+/**
+ * Register plugin and start server
+ */
+server.getHapi().register({
+  register: WebpackPlugin,
+  options: {compiler, assets, hot}
+});
 
 server.start((err) => {
 

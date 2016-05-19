@@ -3,6 +3,7 @@ import {Cat} from "../common/models/index";
 import {Request} from "hapi";
 import {IReply} from "hapi";
 import {Server} from "./server";
+import * as _ from "lodash";
 
 @Injectable()
 export class TestController {
@@ -20,7 +21,7 @@ export class TestController {
 
         const greeting = new Cat().greet();
 
-        return reply(greeting);
+        return reply(_.capitalize(greeting));
       }
     });
 

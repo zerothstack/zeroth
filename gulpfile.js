@@ -11,7 +11,13 @@ var istanbul = require('gulp-istanbul');
 
 // /*  Variables */
 let tsProject = tsc.createProject('./tsconfig.api.json');
-let sourceFiles = ['./api/**/*.ts', './common/**/*.ts'];
+let sourceFiles = [
+  './api/**/*.ts',
+  './common/**/*.ts',
+  './typings/**/*.d.ts',
+  '!./typings/index.d.ts',
+  '!./typings/**/es6-shim/*.d.ts',
+];
 let testFiles = ['./api/**/*.spec.ts'];
 let outDir = require('./tsconfig.api.json').compilerOptions.outDir;
 let entryPoint = './localhost.js';
