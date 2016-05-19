@@ -1,29 +1,34 @@
-/// <reference path="../typings/index.d.ts" />
-import * as Hapi from 'hapi';
-import {Request} from "hapi";
-import {IReply} from "hapi";
+// import * as Hapi from 'hapi';
+// import {Request} from "hapi";
+// import {IReply} from "hapi";
+//
+// import {Cat} from "../common/models/index";
+//
+// export const server = new Hapi.Server();
+// server.connection({host: 'localhost', port: 3000});
+//
+// server.route({
+//   method: 'GET',
+//   path: '/',
+//   handler: (request:Request, reply:IReply) => {
+//
+//     const greeting = new Cat().greet();
+//
+//     return reply(greeting);
+//   }
+// });
+//
+import 'es6-shim';
+import 'reflect-metadata';
+import {ReflectiveInjector, provide} from '@angular/core';
 
-import {Cat} from "../common/models/index";
+import {Server, HapiServer} from "./server";
+import {TestController} from "./test";
+let injector = ReflectiveInjector.resolveAndCreate([
+  TestController,
+  provide(Server, {useClass: HapiServer}),
+]);
 
+export const server:HapiServer = injector.get(Server);
 
-const server = new Hapi.Server();
-server.connection({host:'localhost', port: 3000});
-
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: (request:Request, reply:IReply) => {
-
-    const greeting = new Cat().greet();
-      
-    return reply(greeting);
-  }
-});
-
-server.start((err:any) => {
-
-  if (err) {
-    throw err;
-  }
-  console.log('Server running at:', server.info.uri);
-});
+injector.get(TestController);

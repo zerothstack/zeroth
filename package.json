@@ -4,7 +4,7 @@
   "description": "ubiquits core",
   "main": "index.js",
   "scripts": {
-    "start": "node localhost.js",
+    "start": "gulp nodemon",
     "test": "karma start",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install"

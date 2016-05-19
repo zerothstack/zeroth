@@ -14,7 +14,7 @@ let tsProject = tsc.createProject('./tsconfig.api.json');
 let sourceFiles = ['./api/**/*.ts', './common/**/*.ts'];
 let testFiles = ['./api/**/*.spec.ts'];
 let outDir = require('./tsconfig.api.json').compilerOptions.outDir;
-let entryPoint = './build/api/api/main.js';
+let entryPoint = './localhost.js';
 
 /**
  * Remove build directory.
