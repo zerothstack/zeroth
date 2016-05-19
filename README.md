@@ -1,6 +1,4 @@
 [![Build Status](https://travis-ci.org/ubiquits/core.svg?branch=master)](https://travis-ci.org/ubiquits/core)
-[![Code Climate](https://codeclimate.com/github/ubiquits/core/badges/gpa.svg)](https://codeclimate.com/github/ubiquits/core)
-[![Test Coverage](https://codeclimate.com/github/ubiquits/core/badges/coverage.svg)](https://codeclimate.com/github/ubiquits/core/coverage)
 
 ![ubiquits](https://rawgithub.com/ubiquits/assets/master/fulllogo.svg)
 
