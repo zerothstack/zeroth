@@ -1,8 +1,7 @@
 export class Cat {
 
-  public greet():string {
-
-    return "meow";
+  public greet(): string {
+    return 'meow';
   }
 
 }

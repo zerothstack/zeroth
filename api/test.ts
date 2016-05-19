@@ -1,23 +1,22 @@
-import {Injectable} from '@angular/core';
-import {Cat} from "../common/models/index";
-import {Request} from "hapi";
-import {IReply} from "hapi";
-import {Server} from "./server";
-import * as _ from "lodash";
+import { Injectable } from '@angular/core';
+import { Cat } from '../common/models/index';
+import { Request, IReply, Response } from 'hapi';
+import { Server } from './server';
+import * as _ from 'lodash';
 
 @Injectable()
 export class TestController {
 
-  constructor(private Server:Server) {
+  constructor(private server: Server) {
     this.registerRoute();
   }
 
-  private registerRoute():void {
+  private registerRoute(): void {
 
-    this.Server.register({
+    this.server.register({
       method: 'GET',
       path: '/cat',
-      handler: (request:Request, reply:IReply) => {
+      handler: (request: Request, reply: IReply): Response => {
 
         const greeting = new Cat().greet();
 

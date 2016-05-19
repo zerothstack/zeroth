@@ -1,6 +1,6 @@
-import {server} from "./main";
+import { server } from './main';
 
-server.start((err:any) => {
+server.start((err: any) => {
 
   if (err) {
     throw err;

@@ -8,6 +8,7 @@ let tslint = require('gulp-tslint');
 let nodemon = require('gulp-nodemon');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
+var path = require('path');
 
 // /*  Variables */
 let tsProject = tsc.createProject('./tsconfig.api.json');
@@ -35,9 +36,51 @@ gulp.task('clean', function () {
  * Lint all custom TypeScript files.
  */
 gulp.task('tslint', () => {
-  return gulp.src(sourceFiles)
+  return gulp.src(sourceFiles.concat(['!./typings/**']))
     .pipe(tslint())
     .pipe(tslint.report('verbose'))
+});
+
+/**
+ * Format all custom TypeScript files.
+ */
+
+// gulp.task('format', () => {
+// var tsfmt = require('gulp-tsfmt');
+//   gulp.src(sourceFiles.concat(['!./typings/**']))
+//     .pipe(tsfmt({
+//       IndentSize: 5,
+//       TabSize: 2
+//     }))
+//     .pipe(gulp.dest(file => path.dirname(file.path)));
+// });
+
+gulp.task('format', (cb) => {
+  var tsfmt = require('typescript-formatter/lib/index');
+  var files = [];
+  gulp.src(sourceFiles.concat(['!./typings/**']))
+    .on('data', (file) => {
+      files.push(file.path);
+    })
+    .on('end', () => {
+      tsfmt.processFiles(files, {
+        replace: true,
+        verbose: false,
+        baseDir: process.cwd(),
+        editorconfig: true,
+        tslint: true,
+        tsfmt: true
+      })
+        .then((resultList) => {
+          Object.keys(resultList).forEach((key) => {
+            var result = resultList[key];
+            if (result.message) {
+              console.log(result.message);
+            }
+          });
+          cb();
+        }, cb);
+    })
 });
 
 /**
