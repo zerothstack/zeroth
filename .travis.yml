@@ -1,0 +1,31 @@
+sudo: false
+language: node_js
+node_js:
+- 5.4.1
+addons:
+  apt:
+    sources:
+    - libnotify-bin
+cache:
+  directories:
+  - node_modules
+branches:
+  except:
+  - "/^v[0-9\\.]+/"
+before_install:
+- npm install -g pr-bumper
+- pr-bumper check
+install:
+- travis_retry npm install
+script:
+- npm test
+- npm run build
+before_deploy:
+- pr-bumper bump
+deploy:
+  provider: npm
+  email: zak@ubiquits.com
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: false
