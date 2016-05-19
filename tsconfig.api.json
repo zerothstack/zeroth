@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "build/api",
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

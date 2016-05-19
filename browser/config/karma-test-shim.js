@@ -8,7 +8,7 @@ require('zone.js/dist/long-stack-trace-zone');
 require('zone.js/dist/jasmine-patch');
 require('zone.js/dist/async-test');
 
-var appContext = require.context('../browser', true, /\.spec\.ts/);
+var appContext = require.context('../../browser', true, /\.spec\.ts/);
 
 appContext.keys().forEach(appContext);
 
