@@ -6,8 +6,10 @@ let tsc = require('gulp-typescript');
 let sourcemaps = require('gulp-sourcemaps');
 let tslint = require('gulp-tslint');
 let nodemon = require('gulp-nodemon');
-var jasmine = require('gulp-jasmine');
-var istanbul = require('gulp-istanbul');
+let jasmine = require('gulp-jasmine');
+let istanbul = require('gulp-istanbul');
+let runSequence = require('run-sequence');
+
 var path = require('path');
 
 // /*  Variables */
@@ -27,7 +29,7 @@ let entryPoint = './localhost.js';
  * Remove build directory.
  */
 gulp.task('clean', function () {
-  return gulp.src('build', {read: false})
+  return gulp.src(['build', 'coverage'], {read: false})
     .pipe(rimraf())
 });
 
@@ -80,7 +82,7 @@ gulp.task('compile', ['clean'], () => {
     .pipe(sourcemaps.init())
     .pipe(tsc(tsProject));
   return tsResult.js
-    .pipe(sourcemaps.write('.'))
+    .pipe(sourcemaps.write('.', {sourceRoot: __dirname}))
     .pipe(gulp.dest(outDir))
 });
 
@@ -100,7 +102,19 @@ gulp.task('build', ['compile'], () => {
   console.log('Building the project ...')
 });
 
-gulp.task('test', ['build'], () => {
+gulp.task('pre-test', function () {
+  return gulp.src(['build/api/**/*.js'])
+    // Covering files
+    .pipe(istanbul())
+    // Force `require` to return covered files
+    .pipe(istanbul.hookRequire());
+});
+
+gulp.task('test', [], (callback) => {
+  runSequence('build', 'pre-test', 'jasmine', 'remap-istanbul', callback);
+});
+
+gulp.task('jasmine', [], () => {
   Error.stackTraceLimit = Infinity;
 
   require('es6-shim');
@@ -109,13 +123,40 @@ gulp.task('test', ['build'], () => {
 
   const SpecReporter = require('jasmine-spec-reporter');
 
-  return gulp.src(['build/**/*.spec.js'])
+  return gulp.src(['build/api/**/*.js', '!build/api/api/bootstrap.js'])
     .pipe(jasmine({
         reporter: new SpecReporter({
           displayFailuresSummary: false
         })
       })
-    );
+    )
+    // Creating the reports after tests ran
+    .pipe(istanbul.writeReports({
+      dir: './coverage/api/js',
+      reporters: [ 'json' ],
+    }))
+    // Enforce a coverage of at least 90%
+    // .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
+});
+
+
+
+gulp.task('remap-istanbul', [], () => {
+
+  let remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+
+  return gulp.src('./coverage/api/js/coverage-final.json')
+    .pipe(remapIstanbul({
+      options: {
+        basePath: 'foo',
+      },
+      reports: {
+        'json': './coverage/api/ts/coverage.json',
+        'html': './coverage/api/ts/html-report',
+        // 'text-summary': 'text-summary',
+        'lcovonly': './coverage/api/ts/lcov.info'
+      }
+    }));
 });
 
 gulp.task('nodemon', ['build'], () => {
