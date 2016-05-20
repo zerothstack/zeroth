@@ -28,8 +28,13 @@ let entryPoint = './localhost.js';
 /**
  * Remove build directory.
  */
-gulp.task('clean', function () {
-  return gulp.src(['build', 'coverage'], {read: false})
+gulp.task('clean-build', function () {
+  return gulp.src(['build'], {read: false})
+    .pipe(rimraf())
+});
+
+gulp.task('clean-coverage', function () {
+  return gulp.src(['coverage'], {read: false})
     .pipe(rimraf())
 });
 
@@ -77,7 +82,7 @@ gulp.task('format', (cb) => {
 /**
  * Compile TypeScript sources and create sourcemaps in build directory.
  */
-gulp.task('compile', ['clean'], () => {
+gulp.task('compile', ['clean-build'], () => {
   let tsResult = gulp.src(sourceFiles.concat(testFiles))
     .pipe(sourcemaps.init())
     .pipe(tsc(tsProject));
@@ -102,7 +107,7 @@ gulp.task('build', ['compile'], () => {
   console.log('Building the project ...')
 });
 
-gulp.task('pre-test', function () {
+gulp.task('pre-test', ['clean-coverage'], () => {
   return gulp.src(['build/api/**/*.js'])
     // Covering files
     .pipe(istanbul())
