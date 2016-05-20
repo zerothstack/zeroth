@@ -24,6 +24,13 @@ module.exports = {
         test: /\.css$/,
         loader: 'null'
       }
+    ],
+    postLoaders: [
+      { //delays coverage til after tests are run, fixing transpiled source coverage error
+        test: /\.(js|ts)$/,
+        exclude: /(node_modules)\//,
+        loader: 'sourcemap-istanbul-instrumenter?force-sourcemap'
+      }
     ]
   },
 

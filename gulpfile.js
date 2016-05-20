@@ -6,8 +6,10 @@ let tsc = require('gulp-typescript');
 let sourcemaps = require('gulp-sourcemaps');
 let tslint = require('gulp-tslint');
 let nodemon = require('gulp-nodemon');
-var jasmine = require('gulp-jasmine');
-var istanbul = require('gulp-istanbul');
+let jasmine = require('gulp-jasmine');
+let istanbul = require('gulp-istanbul');
+let runSequence = require('run-sequence');
+
 var path = require('path');
 
 // /*  Variables */
@@ -26,8 +28,13 @@ let entryPoint = './localhost.js';
 /**
  * Remove build directory.
  */
-gulp.task('clean', function () {
-  return gulp.src('build', {read: false})
+gulp.task('clean-build', function () {
+  return gulp.src(['build'], {read: false})
+    .pipe(rimraf())
+});
+
+gulp.task('clean-coverage', function () {
+  return gulp.src(['coverage'], {read: false})
     .pipe(rimraf())
 });
 
@@ -75,12 +82,12 @@ gulp.task('format', (cb) => {
 /**
  * Compile TypeScript sources and create sourcemaps in build directory.
  */
-gulp.task('compile', ['clean'], () => {
+gulp.task('compile', ['clean-build'], () => {
   let tsResult = gulp.src(sourceFiles.concat(testFiles))
     .pipe(sourcemaps.init())
     .pipe(tsc(tsProject));
   return tsResult.js
-    .pipe(sourcemaps.write('.'))
+    .pipe(sourcemaps.write('.', {sourceRoot: __dirname}))
     .pipe(gulp.dest(outDir))
 });
 
@@ -100,7 +107,19 @@ gulp.task('build', ['compile'], () => {
   console.log('Building the project ...')
 });
 
-gulp.task('test', ['build'], () => {
+gulp.task('pre-test', ['clean-coverage'], () => {
+  return gulp.src(['build/api/**/*.js'])
+    // Covering files
+    .pipe(istanbul())
+    // Force `require` to return covered files
+    .pipe(istanbul.hookRequire());
+});
+
+gulp.task('test', [], (callback) => {
+  runSequence('build', 'pre-test', 'jasmine', callback);
+});
+
+gulp.task('jasmine', [], () => {
   Error.stackTraceLimit = Infinity;
 
   require('es6-shim');
@@ -109,13 +128,42 @@ gulp.task('test', ['build'], () => {
 
   const SpecReporter = require('jasmine-spec-reporter');
 
-  return gulp.src(['build/**/*.spec.js'])
+  return gulp.src(['build/api/**/*.js', '!build/api/api/bootstrap.js'])
     .pipe(jasmine({
         reporter: new SpecReporter({
           displayFailuresSummary: false
         })
       })
-    );
+    )
+    // Creating the reports after tests ran
+    .pipe(istanbul.writeReports({
+      dir: './coverage/api/js',
+      reporters: [ 'json' ]
+    }));
+});
+
+gulp.task('remap-istanbul', [], () => {
+
+  let remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+  let fs = require('fs');
+  let merge = require('gulp-merge-json');
+  let files = [
+    './coverage/browser/js/coverage-final.json',
+    './coverage/api/js/coverage-final.json'
+  ];
+
+  return gulp.src(files)
+    .pipe(merge('summary.json'))
+    .pipe(remapIstanbul({
+      reports: {
+        'json': './coverage/summary/coverage.json',
+        'html': './coverage/summary/html-report',
+        'text': './coverage/summary/text-summary',
+        'lcovonly': './coverage/summary/lcov.info'
+      }
+    })).on('end', () => {
+      console.log(fs.readFileSync('./coverage/summary/text-summary').toString());
+    });
 });
 
 gulp.task('nodemon', ['build'], () => {
