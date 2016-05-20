@@ -111,7 +111,7 @@ gulp.task('pre-test', function () {
 });
 
 gulp.task('test', [], (callback) => {
-  runSequence('build', 'pre-test', 'jasmine', 'remap-istanbul', callback);
+  runSequence('build', 'pre-test', 'jasmine', callback);
 });
 
 gulp.task('jasmine', [], () => {
@@ -133,28 +133,27 @@ gulp.task('jasmine', [], () => {
     // Creating the reports after tests ran
     .pipe(istanbul.writeReports({
       dir: './coverage/api/js',
-      reporters: [ 'json' ],
-    }))
-    // Enforce a coverage of at least 90%
-    // .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }));
+      reporters: [ 'json' ]
+    }));
 });
-
-
 
 gulp.task('remap-istanbul', [], () => {
 
   let remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+  let merge = require('gulp-merge-json');
+  let files = [
+    './coverage/browser/js/coverage-final.json',
+    './coverage/api/js/coverage-final.json'
+  ];
 
-  return gulp.src('./coverage/api/js/coverage-final.json')
+  return gulp.src(files)
+    .pipe(merge('summary.json'))
     .pipe(remapIstanbul({
-      options: {
-        basePath: 'foo',
-      },
       reports: {
-        'json': './coverage/api/ts/coverage.json',
-        'html': './coverage/api/ts/html-report',
+        'json': './coverage/summary/ts/coverage.json',
+        'html': './coverage/summary/ts/html-report',
         // 'text-summary': 'text-summary',
-        'lcovonly': './coverage/api/ts/lcov.info'
+        'lcovonly': './coverage/summary/ts/lcov.info'
       }
     }));
 });

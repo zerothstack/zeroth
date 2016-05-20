@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp nodemon",
-    "test": "gulp test && karma start",
+    "test": "gulp test && karma start && gulp remap-istanbul",
     "build": "gulp compile && webpack --config browser/config/webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install"
   },
@@ -46,6 +46,7 @@
     "gulp": "^3.9.1",
     "gulp-istanbul": "^0.10.4",
     "gulp-jasmine": "^2.3.0",
+    "gulp-merge-json": "^0.4.0",
     "gulp-nodemon": "^2.0.7",
     "gulp-rimraf": "^0.2.0",
     "gulp-sourcemaps": "^1.6.0",
@@ -58,6 +59,7 @@
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^2.4.0",
     "karma": "^0.13.22",
+    "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
@@ -69,6 +71,7 @@
     "remap-istanbul": "^0.6.4",
     "rimraf": "^2.5.2",
     "run-sequence": "^1.2.0",
+    "sourcemap-istanbul-instrumenter-loader": "^0.2.0",
     "style-loader": "^0.13.1",
     "ts-loader": "^0.8.2",
     "tslint": "^3.10.2",
