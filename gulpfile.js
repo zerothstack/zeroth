@@ -140,6 +140,7 @@ gulp.task('jasmine', [], () => {
 gulp.task('remap-istanbul', [], () => {
 
   let remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+  let fs = require('fs');
   let merge = require('gulp-merge-json');
   let files = [
     './coverage/browser/js/coverage-final.json',
@@ -150,12 +151,14 @@ gulp.task('remap-istanbul', [], () => {
     .pipe(merge('summary.json'))
     .pipe(remapIstanbul({
       reports: {
-        'json': './coverage/summary/ts/coverage.json',
-        'html': './coverage/summary/ts/html-report',
-        // 'text-summary': 'text-summary',
-        'lcovonly': './coverage/summary/ts/lcov.info'
+        'json': './coverage/summary/coverage.json',
+        'html': './coverage/summary/html-report',
+        'text': './coverage/summary/text-summary',
+        'lcovonly': './coverage/summary/lcov.info'
       }
-    }));
+    })).on('end', () => {
+      console.log(fs.readFileSync('./coverage/summary/text-summary').toString());
+    });
 });
 
 gulp.task('nodemon', ['build'], () => {

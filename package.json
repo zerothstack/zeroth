@@ -6,6 +6,7 @@
   "scripts": {
     "start": "gulp nodemon",
     "test": "gulp test && karma start && gulp remap-istanbul",
+    "coveralls": "cat coverage/summary/lcov.info | coveralls",
     "build": "gulp compile && webpack --config browser/config/webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install"
   },
@@ -40,6 +41,7 @@
   "devDependencies": {
     "babel-register": "^6.9.0",
     "codelyzer": "0.0.19",
+    "coveralls": "^2.11.9",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
