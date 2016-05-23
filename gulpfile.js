@@ -129,7 +129,7 @@ gulp.task('jasmine', [], () => {
 
   const SpecReporter = require('jasmine-spec-reporter');
 
-  return gulp.src(['build/api/**/*.js', '!build/api/api/bootstrap.js'])
+  return gulp.src(['build/api/**/*.js', '!build/api/_demo/api/bootstrap.js'])
     .pipe(jasmine({
         reporter: new SpecReporter({
           displayFailuresSummary: false
