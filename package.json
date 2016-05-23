@@ -48,6 +48,7 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "gulp": "^3.9.1",
+    "gulp-conventional-changelog": "^1.1.0",
     "gulp-istanbul": "^0.10.4",
     "gulp-jasmine": "^2.3.0",
     "gulp-merge-json": "^0.4.0",
