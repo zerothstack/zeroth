@@ -9,7 +9,7 @@ branches:
   except:
   - "/^v[0-9\\.]+/"
 before_install:
-- npm install -g pr-bumper@0.3.5
+- npm install -g pr-bumper
 - pr-bumper check
 install:
 - travis_retry npm install
