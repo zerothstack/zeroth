@@ -1,13 +1,12 @@
 import 'es6-shim';
 import 'reflect-metadata';
 import { ReflectiveInjector, provide } from '@angular/core';
-import { Server, HapiServer } from './server';
-import { TestController } from './test';
-let injector = ReflectiveInjector.resolveAndCreate([
-  TestController,
+import { Server } from './servers/abstract.server';
+import { HapiServer } from './servers/hapi.server';
+import { AbstractController } from './controllers/abstract.controller';
+
+export const coreInjector = ReflectiveInjector.resolveAndCreate([
+  AbstractController,
   provide(Server, {useClass: HapiServer}),
 ]);
 
-export const server: HapiServer = injector.get(Server);
-
-injector.get(TestController);

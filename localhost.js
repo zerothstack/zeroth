@@ -1,4 +1,4 @@
-const API = require('./build/api/api/main.js');
+const API = require('./build/api/_demo/api/main.js');
 const server = API.server;
 
 const WebpackPlugin = require('hapi-webpack-plugin');
@@ -23,15 +23,11 @@ const hot = {
 /**
  * Register plugin and start server
  */
-server.getHapi().register({
+server.getEngine().register({
   register: WebpackPlugin,
   options: {compiler, assets, hot}
 });
 
-server.start((err) => {
-
-  if (err) {
-    throw err;
-  }
-  console.log('Server running at:', server.getHapi().info.uri);
+server.start().then(() => {
+  console.log('Server running at:', server.getEngine().info.uri);
 });
