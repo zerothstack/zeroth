@@ -1,5 +1,6 @@
 const API = require('./build/api/_demo/api/main.js');
 const server = API.server;
+const logger = API.logger;
 
 const WebpackPlugin = require('hapi-webpack-plugin');
 const Webpack = require('webpack');
@@ -29,5 +30,5 @@ server.getEngine().register({
 });
 
 server.start().then(() => {
-  console.log('Server running at:', server.getEngine().info.uri);
+  logger.info('Server running at:', server.getEngine().info.uri);
 });

@@ -3,13 +3,14 @@ import { Server } from '../../../api/servers/abstract.server';
 import { AbstractController } from '../../../api/controllers/abstract.controller';
 import { RouteBase } from '../../../api/controllers/routeBase.decorator';
 import { Action } from '../../../api/controllers/action.decorator';
+import { LoggerService } from '../../../api/services/logger.service';
 
 @Injectable()
 @RouteBase('simple')
 export class SimpleController extends AbstractController {
 
-  constructor(server: Server) {
-    super(server);
+  constructor(server: Server, logger: LoggerService) {
+    super(server, logger);
   }
 
   @Action('GET', '/test/{id}')

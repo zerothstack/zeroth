@@ -1,9 +1,9 @@
 import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { Request as HapiRequest, IReply, Response } from 'hapi';
-import * as _ from 'lodash';
 import { Cat } from '../../common/models/index';
 import { Action } from './action.decorator';
+import { LoggerService } from '../services/logger.service';
 
 export interface Request extends HapiRequest {
 
@@ -28,17 +28,17 @@ export interface MethodDictionary {
 @Injectable()
 export abstract class AbstractController {
 
-  protected __actionMethods: Map<string, MethodDefinition>;
+  protected actionMethods: Map<string, MethodDefinition>;
 
   protected routeBase: string;
 
-  constructor(protected server: Server) {
+  constructor(protected server: Server, protected logger: LoggerService) {
     this.registerRoutes();
   }
 
   public registerActionMethod(methodSignature: string, method: ActionType, route: string) {
-    if (!this.__actionMethods) {
-      this.__actionMethods = new Map<string, MethodDefinition>();
+    if (!this.actionMethods) {
+      this.actionMethods = new Map<string, MethodDefinition>();
     }
 
     const methodDefinition: MethodDefinition = {
@@ -46,7 +46,7 @@ export abstract class AbstractController {
       route
     };
 
-    this.__actionMethods.set(methodSignature, methodDefinition);
+    this.actionMethods.set(methodSignature, methodDefinition);
   }
 
   @Action('GET', '/{id}')
@@ -57,9 +57,9 @@ export abstract class AbstractController {
     return {id: routeParams[0], greeting};
   }
 
-  public registerRoutes(): void {
+  public registerRoutes(): this {
 
-    this.__actionMethods.forEach((methodDefinition: MethodDefinition, methodSignature: string) => {
+    this.actionMethods.forEach((methodDefinition: MethodDefinition, methodSignature: string) => {
 
       this.server.register({
         method: methodDefinition.method,
@@ -72,8 +72,17 @@ export abstract class AbstractController {
         }
       });
 
+
+      this.logger.debug('registered %s %s%s to %s@%s',
+        methodDefinition.method,
+        this.routeBase,
+        methodDefinition.route,
+        this.constructor.name,
+        methodSignature);
+
     });
 
+    return this;
   }
 
 }
