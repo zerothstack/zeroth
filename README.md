@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/ubiquits/core.svg?branch=master)](https://travis-ci.org/ubiquits/core)
 [![Coverage Status](https://coveralls.io/repos/github/ubiquits/core/badge.svg?branch=master)](https://coveralls.io/github/ubiquits/core?branch=master)
-[![npm (scoped)](https://img.shields.io/npm/v/@ubiquits/core.svg?maxAge=2592000)]()
+[![npm (scoped)](https://img.shields.io/npm/v/@ubiquits/core.svg?maxAge=2592000)](https://www.npmjs.com/package/@ubiquits/core)
 
 ![ubiquits](https://rawgithub.com/ubiquits/assets/master/fulllogo.svg)
 
