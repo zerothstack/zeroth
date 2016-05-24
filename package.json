@@ -2,12 +2,13 @@
   "name": "@ubiquits/core",
   "version": "0.0.2",
   "description": "ubiquits core",
-  "main": "index.js",
+  "main": "build/index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "start": "gulp nodemon",
-    "test": "gulp test && karma start && gulp remap-istanbul",
+    "test": "gulp test",
     "coveralls": "cat coverage/summary/lcov.info | coveralls",
-    "build": "gulp compile && webpack --config browser/config/webpack.prod.js --progress --profile --bail",
+    "build": "gulp compile",
     "postinstall": "typings install"
   },
   "repository": {
@@ -32,8 +33,8 @@
     "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
     "@angular/router-deprecated": "^2.0.0-rc.1",
     "chalk": "^1.1.3",
+    "core-js": "^2.4.0",
     "dotenv": "^2.0.0",
-    "es6-shim": "^0.35.1",
     "hapi": "^13.4.0",
     "lodash": "^4.12.0",
     "reflect-metadata": "^0.1.3",
@@ -49,6 +50,7 @@
     "file-loader": "^0.8.5",
     "gulp": "^3.9.1",
     "gulp-conventional-changelog": "^1.1.0",
+    "gulp-help": "^1.6.1",
     "gulp-istanbul": "^0.10.4",
     "gulp-jasmine": "^2.3.0",
     "gulp-merge-json": "^0.4.0",
@@ -63,13 +65,14 @@
     "html-webpack-plugin": "^2.17.0",
     "jasmine-core": "^2.4.1",
     "jasmine-spec-reporter": "^2.4.0",
-    "karma": "^0.13.22",
+    "karma": "0.13.9",
     "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.26",
     "karma-webpack": "^1.7.0",
+    "merge2": "^1.0.2",
     "null-loader": "^0.1.1",
     "phantomjs-prebuilt": "^2.1.7",
     "raw-loader": "^0.5.1",
@@ -85,6 +88,7 @@
     "typings": "^1.0.4",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
-    "webpack-merge": "^0.12.0"
+    "webpack-merge": "^0.12.0",
+    "webpack-stream": "^3.2.0"
   }
 }

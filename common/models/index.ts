@@ -1,7 +1,2 @@
-export class Cat {
-
-  public greet(): string {
-    return 'meow';
-  }
-
-}
+export * from './abstract.model';
+export * from './base.collection';

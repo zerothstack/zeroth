@@ -1,9 +1,9 @@
 import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { Request as HapiRequest, IReply, Response } from 'hapi';
-import { Cat } from '../../common/models/index';
 import { Action } from './action.decorator';
 import { LoggerService } from '../services/logger.service';
+import { AbstractModel } from '../../common/models/abstract.model';
 
 export interface Request extends HapiRequest {
 
@@ -36,6 +36,8 @@ export abstract class AbstractController {
     this.registerRoutes();
   }
 
+  protected abstract getOneById(request: Request, routeParams: RouteParam[]): AbstractModel;
+
   public registerActionMethod(methodSignature: string, method: ActionType, route: string) {
     if (!this.actionMethods) {
       this.actionMethods = new Map<string, MethodDefinition>();
@@ -52,9 +54,7 @@ export abstract class AbstractController {
   @Action('GET', '/{id}')
   public getOne(request: Request, ...routeParams: RouteParam[]) {
 
-    const greeting = new Cat().greet();
-
-    return {id: routeParams[0], greeting};
+    return this.getOneById(request, routeParams);
   }
 
   public registerRoutes(): this {
