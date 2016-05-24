@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import '../public/css/styles.css';
+import { Cat } from '../../_demo/common/models/cat.model';
 @Component({
   selector: 'my-app',
   template: require('./app.component.html'),
@@ -8,7 +9,7 @@ import '../public/css/styles.css';
 export class AppComponent {
 
   public handleClick() {
-    console.log('click!', new Set().add('foo'));
+    console.log('click!', new Cat());
   }
 
 }

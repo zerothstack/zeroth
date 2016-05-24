@@ -16,6 +16,6 @@
     "browser",
     "build",
     "_demo/browser",
-    "index.ts"
+    "index.d.ts"
   ]
 }

@@ -15,6 +15,6 @@
     "build",
     "api",
     "_demo/api",
-    "./index.ts"
+    "index.d.ts"
   ]
 }

@@ -22,7 +22,7 @@ class UbiquitsProject {
           definitions: [
             './typings/**/*.d.ts',
             '!./typings/index.d.ts',
-            '!./typings/**/es6-shim/*.d.ts',
+            '!./typings/**/core-js/*.d.ts',
           ]
         },
       },
@@ -93,7 +93,7 @@ class UbiquitsProject {
     return () => {
       Error.stackTraceLimit = Infinity;
 
-      require('es6-shim');
+      require('core-js');
       require('reflect-metadata');
       require('zone.js/dist/zone-node');
 
@@ -151,9 +151,9 @@ class UbiquitsProject {
         script: config.entryPoint,
         'ext': 'js json ts',
         watch: [
-          'api',
-          '_demo',
-          'common'
+          this.resolvePath('api'),
+          this.resolvePath('_demo'),
+          this.resolvePath('common')
         ],
         nodeArgs: [
           // ad-hoc debugging (doesn't allow debugging of bootstrap, but app will run with debugger off)
@@ -172,7 +172,7 @@ class UbiquitsProject {
 
   resolvePath(pathString, relative) {
     const normalized = path.normalize(this.basePath + '/' + pathString);
-    if (!relative){
+    if (!relative) {
       return normalized;
     }
     return path.relative(this.basePath, normalized);
@@ -180,15 +180,23 @@ class UbiquitsProject {
 
   webpack(config) {
 
-    return (done) => {
+    return () => {
 
-      const webpack = require('webpack-stream');
+      const gulpWebpack = require('webpack-stream');
       const gutil = require('gulp-util');
       const webpackConfig = require(config.webpackPath);
 
+      webpackConfig.progress = true;
+
       return gulp.src('.')
-        .pipe(webpack(webpackConfig, null, (err, stats) => {
-          //@todo handle stats
+        .pipe(gulpWebpack(webpackConfig, null, (err, stats) => {
+          if(err) {
+            throw new gutil.PluginError("webpack", err);
+          }
+          gutil.log("[webpack]", stats.toString({
+            chunkModules: false,
+            colors: gutil.colors.supportsColor,
+          }));
         }))
         .pipe(gulp.dest(config.destination));
     }
@@ -256,7 +264,9 @@ class UbiquitsProject {
     this.registerTask('compile:browser', 'compile browser', this.webpack({
       webpackPath: this.resolvePath('./browser/config/webpack.prod.js'),
       destination: this.paths.destination.browser
-    }), ['compile:api']);
+    }));
+
+    this.registerTask('compile', 'compile all files', null, ['compile:browser', 'compile:api']);
 
   }
 

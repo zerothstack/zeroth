@@ -1,5 +1,6 @@
 import { AbstractModel } from './abstract.model';
-export class BaseCollection<T extends AbstractModel> extends Set {
+
+export class BaseCollection<T extends AbstractModel> extends Array {
 
   public findById(id: Symbol): AbstractModel {
 

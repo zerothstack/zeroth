@@ -1,4 +1,4 @@
-import 'es6-shim';
+import 'core-js';
 import 'reflect-metadata';
 import { ReflectiveInjector, provide } from '@angular/core';
 import { Server } from './servers/abstract.server';

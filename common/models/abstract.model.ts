@@ -4,17 +4,14 @@ export interface EntityNest extends Map<string, AbstractModel|BaseCollection<Abs
 
 }
 
-export abstract class AbstractModel extends Map {
+export abstract class AbstractModel {
 
   protected nestedEntities: EntityNest;
 
-  protected identifier: Symbol;
+  protected identifier: symbol;
 
-  public getIdentifier() {
-    return this.get(this.identifier);
+  public getIdentifier(): string|number|symbol {
+    return this[this.identifier];
   }
-
-
-
 
 }

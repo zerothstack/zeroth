@@ -1,6 +1,6 @@
 Error.stackTraceLimit = Infinity;
 
-require('es6-shim');
+require('core-js');
 require('reflect-metadata');
 
 require('zone.js/dist/zone');
