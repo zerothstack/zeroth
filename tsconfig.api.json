@@ -12,6 +12,8 @@
     "suppressImplicitAnyIndexErrors": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "browser",
+    "_demo/browser"
   ]
 }

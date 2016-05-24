@@ -15,13 +15,14 @@ var path = require('path');
 // /*  Variables */
 let tsProject = tsc.createProject('./tsconfig.api.json');
 let sourceFiles = [
+  './_demo/api/**/*.ts',
   './api/**/*.ts',
   './common/**/*.ts',
   './typings/**/*.d.ts',
   '!./typings/index.d.ts',
   '!./typings/**/es6-shim/*.d.ts',
 ];
-let testFiles = ['./api/**/*.spec.ts'];
+let testFiles = ['./api/**/*.spec.ts', './_demo/api/**/*.spec.ts'];
 let outDir = require('./tsconfig.api.json').compilerOptions.outDir;
 let entryPoint = './localhost.js';
 
@@ -128,7 +129,7 @@ gulp.task('jasmine', [], () => {
 
   const SpecReporter = require('jasmine-spec-reporter');
 
-  return gulp.src(['build/api/**/*.js', '!build/api/api/bootstrap.js'])
+  return gulp.src(['build/api/**/*.js', '!build/api/_demo/api/bootstrap.js'])
     .pipe(jasmine({
         reporter: new SpecReporter({
           displayFailuresSummary: false
@@ -172,6 +173,7 @@ gulp.task('nodemon', ['build'], () => {
     'ext': 'js json ts',
     watch: [
       'api',
+      '_demo',
       'common'
     ],
     nodeArgs: [
