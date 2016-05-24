@@ -8,6 +8,7 @@ module.exports = {
     'polyfills': './browser/polyfills.ts',
     'vendor': './browser/vendor.ts',
     'app': './browser/main.ts',
+    'common': './common/index.ts',
   },
 
   resolve: {

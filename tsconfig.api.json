@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "build/api",
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -9,11 +8,14 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true
   },
   "exclude": [
     "node_modules",
     "browser",
-    "_demo/browser"
+    "build",
+    "_demo/browser",
+    "index.ts"
   ]
 }

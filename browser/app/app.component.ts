@@ -8,7 +8,7 @@ import '../public/css/styles.css';
 export class AppComponent {
 
   public handleClick() {
-    console.log('click!');
+    console.log('click!', new Set().add('foo'));
   }
 
 }

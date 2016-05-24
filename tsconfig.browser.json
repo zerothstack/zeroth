@@ -12,7 +12,9 @@
   },
   "exclude": [
     "node_modules",
+    "build",
     "api",
-    "_demo/api"
+    "_demo/api",
+    "./index.ts"
   ]
 }
