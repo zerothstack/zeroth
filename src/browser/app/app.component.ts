@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import '../public/css/styles.css';
-import { Cat } from '../../_demo/common/models/cat.model';
+import { Cat } from '../../../_demo/common/models/cat.model';
 @Component({
   selector: 'my-app',
   template: require('./app.component.html'),

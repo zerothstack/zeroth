@@ -13,8 +13,8 @@
   "exclude": [
     "node_modules",
     "build",
-    "api",
-    "_demo/api",
+    "server",
+    "_demo/server",
     "index.d.ts"
   ]
 }
