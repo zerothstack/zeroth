@@ -29,7 +29,7 @@ class UbiquitsProject {
       destination: {
         build: './build',
         coverage: './coverage',
-        api: 'build/api',
+        api: 'build/node',
         browser: 'build/browser',
       }
     }, paths);

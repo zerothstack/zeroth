@@ -1,2 +1,2 @@
-export * from './build/api/api';
-export * from './build/api/common';
+export * from './build/node/api/index';
+export * from './build/node/common/index';

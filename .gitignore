@@ -29,3 +29,4 @@ testem.log
 
 #config
 .env
+!.npmignore

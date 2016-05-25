@@ -1,4 +1,4 @@
 export * from './main';
-export * from './controllers';
-export * from './servers';
-export * from './services';
+export * from './controllers/index';
+export * from './servers/index';
+export * from './services/index';
