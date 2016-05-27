@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -13,9 +13,15 @@
   },
   "exclude": [
     "node_modules",
-    "browser",
-    "build",
-    "_demo/browser",
-    "index.d.ts"
+    "lib",
+    "dist",
+    "index.ts",
+    "index.d.ts",
+    "server.ts",
+    "server.d.ts",
+    "browser.ts",
+    "browser.d.ts",
+    "common.ts",
+    "common.d.ts"
   ]
 }

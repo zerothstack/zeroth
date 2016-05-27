@@ -1,6 +1,5 @@
 {
   "globalDependencies": {
-    "core-js": "registry:dt/core-js#0.0.0+20160524134847",
     "dotenv": "registry:dt/dotenv#2.0.0+20160327131627",
     "hapi": "registry:dt/hapi#13.0.0+20160423150146",
     "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
