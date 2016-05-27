@@ -7,7 +7,7 @@
   "scripts": {
     "start": "u watch",
     "test": "u test",
-    "coveralls": "cat coverage/summary/lcov.info | node_modules/@ubiquits/toolchain/node_modules/.bin/coveralls",
+    "coveralls": "u coveralls",
     "build": "u build",
     "postinstall": "typings install"
   },
@@ -42,6 +42,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "0.0.6"
+    "@ubiquits/toolchain": "0.0.7"
   }
 }
