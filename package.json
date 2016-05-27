@@ -42,6 +42,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "*"
+    "@ubiquits/toolchain": "0.0.5"
   }
 }
