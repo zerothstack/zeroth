@@ -9,10 +9,7 @@ export interface Request extends HapiRequest {
 
 }
 
-export interface RouteParam {
-  key: string;
-  value: string;
-}
+export interface RouteParamMap extends Map<string,string> {}
 
 export type ActionType = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -31,14 +28,14 @@ export abstract class AbstractController {
   protected actionMethods: Map<string, MethodDefinition>;
 
   protected routeBase: string;
-  protected logger: Logger
+  protected logger: Logger;
 
   constructor(protected server: Server, logger: Logger) {
     this.logger = logger.source('controller');
     this.registerRoutes();
   }
 
-  protected abstract getOneById(request: Request, routeParams: RouteParam[]): AbstractModel;
+  protected abstract getOneById(request: Request, routeParams: RouteParamMap): AbstractModel;
 
   public registerActionMethod(methodSignature: string, method: ActionType, route: string) {
     if (!this.actionMethods) {
@@ -54,10 +51,11 @@ export abstract class AbstractController {
   }
 
   @Action('GET', '/{id}')
-  public getOne(request: Request, ...routeParams: RouteParam[]) {
+  public getOne(request: Request, routeParams: RouteParamMap) {
 
     return this.getOneById(request, routeParams);
   }
+
 
   public registerRoutes(): this {
 
@@ -68,7 +66,16 @@ export abstract class AbstractController {
         path: `/${this.routeBase}${methodDefinition.route}`,
         handler: (request: Request, reply: IReply): Response => {
 
-          let response = this[methodSignature](request, ...request.paramsArray);
+          //polyfill for `const paramMap = new Map(Object.entries(request.params)`
+          const paramMap:RouteParamMap = ((object:Object) => {
+            let map = new Map();
+            for (let key in object){
+              map.set(key, object[key]);
+            }
+            return map;
+          })(request.params);
+
+          let response = this[methodSignature](request, paramMap);
 
           return reply(response);
         }
