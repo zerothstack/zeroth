@@ -2,7 +2,7 @@ import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { Request as HapiRequest, IReply, Response } from 'hapi';
 import { Action } from './action.decorator';
-import { LoggerService } from '../services/logger.service';
+import { Logger } from '../services/logger.service';
 import { AbstractModel } from '../../common/models/abstract.model';
 
 export interface Request extends HapiRequest {
@@ -31,8 +31,10 @@ export abstract class AbstractController {
   protected actionMethods: Map<string, MethodDefinition>;
 
   protected routeBase: string;
+  protected logger: Logger
 
-  constructor(protected server: Server, protected logger: LoggerService) {
+  constructor(protected server: Server, logger: Logger) {
+    this.logger = logger.source('controller');
     this.registerRoutes();
   }
 
@@ -72,14 +74,7 @@ export abstract class AbstractController {
         }
       });
 
-
-      this.logger.debug('registered %s %s%s to %s@%s',
-        methodDefinition.method,
-        this.routeBase,
-        methodDefinition.route,
-        this.constructor.name,
-        methodSignature);
-
+      this.logger.debug(`registered ${methodDefinition.method} ${this.routeBase}${methodDefinition.route} to ${this.constructor.name}@${methodSignature}`);
     });
 
     return this;

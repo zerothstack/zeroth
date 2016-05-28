@@ -12,54 +12,63 @@ export type LogLevel = 'emergency'
   | 'info'
   | 'debug';
 
+export interface LoggerConstructor<T extends Logger> {
+  new (): T;
+}
 
-export abstract class LoggerService {
+export abstract class Logger {
 
-  public emergency(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('emergency', message, ...args);
+  protected sourceName: string;
+
+  constructor(protected impl: LoggerConstructor<any>) {
+
   }
 
-  public alert(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('alert', message, ...args);
+  public emergency(...args: any[]): Promise<this> | this {
+    return this.log('emergency', ...args);
   }
 
-  public critical(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('critical', message, ...args);
+  public alert(...args: any[]): Promise<this> | this {
+    return this.log('alert', ...args);
   }
 
-  public error(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('error', message, ...args);
+  public critical(...args: any[]): Promise<this> | this {
+    return this.log('critical', ...args);
   }
 
-  public warning(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('warning', message, ...args);
+  public error(...args: any[]): Promise<this> | this {
+    return this.log('error', ...args);
   }
 
-  public notice(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('notice', message, ...args);
+  public warning(...args: any[]): Promise<this> | this {
+    return this.log('warning', ...args);
   }
 
-  public info(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('info', message, ...args);
+  public notice(...args: any[]): Promise<this> | this {
+    return this.log('notice', ...args);
   }
 
-  public debug(message: string, ...args: any[]): Promise<this> | this {
-    return this.log('debug', message, ...args);
+  public info(...args: any[]): Promise<this> | this {
+    return this.log('info', ...args);
   }
 
-  public log(logLevel: LogLevel, message: string, ...args: any[]): Promise<this> | this {
-    message = this.format(logLevel, message, args);
-
-    return this.persistLog(logLevel, message);
+  public debug(...args: any[]): Promise<this> | this {
+    return this.log('debug', ...args);
   }
 
-  public format(logLevel: LogLevel, message: string, args: any[]) {
-    if (args.length) {
-      message = util.format(message, ...args);
-    }
-    return message;
+  public log(logLevel: LogLevel, ...args: any[]): Promise<this> | this {
+    return this.persistLog(logLevel, args);
   }
 
-  public abstract persistLog(logLevel: LogLevel, message: string): Promise<this> | this;
+  protected setSource(sourceName: string): this {
+    this.sourceName = sourceName;
+    return this;
+  }
+
+  public source(source: string): Logger {
+    return new this.impl().setSource(source);
+  }
+
+  public abstract persistLog(logLevel: LogLevel, messages: any[]): Promise<this> | this;
 
 }

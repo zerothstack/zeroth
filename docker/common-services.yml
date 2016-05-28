@@ -1,0 +1,17 @@
+# This common-services.yml definition holds all the image definitions and environment linking for the images.
+# It is intended to use the docker-compose extends functionality to use these definitions to build a docker-compose file
+version: "2"
+
+services:
+
+  database:
+    image: postgres:9.5.3
+
+  cache:
+    image: redis:3.0.7
+
+  elasticsearch:
+    image: elasticsearch:1.7.5
+
+  mailcatcher:
+    image: schickling/mailcatcher:latest
