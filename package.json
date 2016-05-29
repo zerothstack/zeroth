@@ -9,7 +9,8 @@
     "test": "u test",
     "coveralls": "u coveralls",
     "build": "u build",
-    "postinstall": "typings install"
+    "postinstall": "typings install",
+    "postpublish": "greenkeeper-postpublish"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "0.0.7"
+    "@ubiquits/toolchain": "0.0.7",
+    "greenkeeper-postpublish": "^1.0.0"
   }
 }
