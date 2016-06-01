@@ -1,8 +1,5 @@
 ---
-layout: home.html
------------------
+layout: home.hbs
+----------------
 
-## Test post listing!
-
-- [Test post](/posts/test-post/)
-- [@todo items for docs](/posts/documentation-todo/)
+## Welcome...

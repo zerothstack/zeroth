@@ -1,6 +1,7 @@
 import { Logger } from './logger.service';
 import { Injectable } from '@angular/core';
 import * as Sequelize from 'sequelize';
+import { QueryOptions } from 'sequelize';
 
 @Injectable()
 export class Database {
@@ -43,6 +44,7 @@ export class Database {
       });
 
     });
+
   }
 
   public createSchema(schemaName: string): Promise<any> {
@@ -52,6 +54,10 @@ export class Database {
         this.logger.info(result);
       })
 
+  }
+
+  public query(sql:string, options:QueryOptions): Promise<any> {
+    return this.driver.query(sql, options);
   }
 
 }

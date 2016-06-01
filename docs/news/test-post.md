@@ -1,7 +1,8 @@
 ---
 title: Test Post
 date: 2016-05-29
-layout: post.html
+collection: news
+layout: post.hbs
 -----------------
 
 ### Example controller
