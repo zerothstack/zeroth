@@ -10,7 +10,7 @@
     "coveralls": "u coveralls",
     "build": "u build",
     "postinstall": "typings install",
-    "postpublish": "greenkeeper-postpublish"
+    "postpublish": "greenkeeper-postpublish && ./node_modules/@ubiquits/toolchain/scripts/deploy-docs.sh"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,11 @@
   "keywords": [
     "ubiquits"
   ],
-  "author": "Zak Henry",
+  "author": {
+    "name" : "Zak Henry",
+    "email" : "zak@ubiquits.com",
+    "url" : "http://twitter.com/zak"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ubiquits/core/issues"
@@ -48,7 +52,7 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "0.0.8",
+    "@ubiquits/toolchain": "0.0.9",
     "greenkeeper-postpublish": "^1.0.0"
   }
 }

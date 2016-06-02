@@ -18,8 +18,7 @@ branches:
   except:
   - "/^v[0-9\\.]+/"
 before_install:
-# Chromium version is too ancient for WebCrypto use Chrome.
-# http://blog.500tech.com/setting-up-travis-ci-to-run-tests-on-latest-google-chrome-version/
+- openssl aes-256-cbc -K $encrypted_9f9521be16f9_key -iv $encrypted_9f9521be16f9_iv -in .travis/deployment_key.pem.enc -out .travis/deployment_key.pem -d
 - npm install -g pr-bumper
 - pr-bumper check
 - cp .env.example .env
