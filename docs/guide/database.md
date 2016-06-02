@@ -2,6 +2,7 @@
 title: Database
 date: 2016-06-01
 collection: guide
+collectionSort: 1
 layout: guide.hbs
 -----------------
 

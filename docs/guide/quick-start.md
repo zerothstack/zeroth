@@ -2,6 +2,7 @@
 title: Quick Start
 date: 2016-06-02
 collection: guide
+collectionSort: 0
 layout: guide.hbs
 -----------------
 
