@@ -1,5 +1,3 @@
 ---
 layout: home.hbs
-----------------
-
-## Welcome...
+---

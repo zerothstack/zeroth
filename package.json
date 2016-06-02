@@ -19,7 +19,11 @@
   "keywords": [
     "ubiquits"
   ],
-  "author": "Zak Henry",
+  "author": {
+    "name" : "Zak Henry",
+    "email" : "zak@ubiquits.com",
+    "url" : "http://twitter.com/zak"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ubiquits/core/issues"
