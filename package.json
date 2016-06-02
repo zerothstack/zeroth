@@ -1,6 +1,6 @@
 {
   "name": "@ubiquits/core",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "ubiquits core",
   "main": "build/index.js",
   "typings": "index.d.ts",
@@ -10,7 +10,7 @@
     "coveralls": "u coveralls",
     "build": "u build",
     "postinstall": "typings install",
-    "postpublish": "greenkeeper-postpublish && ./node_modules/@ubiquits/toolchain/scripts/deploy-docs.sh"
+    "postpublish": "./node_modules/@ubiquits/toolchain/scripts/deploy-docs.sh"
   },
   "repository": {
     "type": "git",
@@ -52,7 +52,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "0.0.9",
-    "greenkeeper-postpublish": "^1.0.0"
+    "@ubiquits/toolchain": "0.0.9"
   }
 }
