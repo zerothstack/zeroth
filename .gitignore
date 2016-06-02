@@ -31,3 +31,6 @@ testem.log
 #config
 .env
 !.npmignore
+
+#deployment keys
+.travis/*.pem
