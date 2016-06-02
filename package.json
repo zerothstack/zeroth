@@ -1,6 +1,6 @@
 {
   "name": "@ubiquits/core",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "ubiquits core",
   "main": "build/index.js",
   "typings": "index.d.ts",
@@ -20,9 +20,9 @@
     "ubiquits"
   ],
   "author": {
-    "name" : "Zak Henry",
-    "email" : "zak@ubiquits.com",
-    "url" : "http://twitter.com/zak"
+    "name": "Zak Henry",
+    "email": "zak@ubiquits.com",
+    "url": "http://twitter.com/zak"
   },
   "license": "MIT",
   "bugs": {
