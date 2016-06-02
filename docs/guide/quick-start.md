@@ -8,7 +8,8 @@ layout: guide.hbs
 
 ## Installation
 ```bash
-git clone https://github.com/ubiquits/ubiquits.git \
+git clone https://github.com/ubiquits/ubiquits.git myapp \
+&& cd myapp \
 && rm -rf .git \
 && git init \
 && npm i \
