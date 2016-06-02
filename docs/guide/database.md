@@ -15,21 +15,18 @@ layout: guide.hbs
 
 ```typescript
 import { Injectable } from '@angular/core';
-import {
-  Database,
-} from '@ubiquits/core/server';
+import { Database } from '@ubiquits/core/server';
 
 @Injectable()
 export class ExampleUtil {
 
+    constructor(database: Database, logger: Logger) {
 
-  constructor(database: Database, logger:Logger) {
+        database.query('SELECT * FROM users').then((result) => {
+            logger.debug(result);
+        });
 
-    database.query('SELECT * FROM users').then((result) => {
-      logger.debug(result);
-    }):
-
-  }
+    }
 
 }
 ```
