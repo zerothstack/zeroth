@@ -8,7 +8,7 @@
     "start": "u watch",
     "test": "u test",
     "coveralls": "u coveralls",
-    "build": "u build && u doc:build",
+    "build": "u build",
     "postinstall": "typings install",
     "postpublish": "u doc:deploy"
   },
