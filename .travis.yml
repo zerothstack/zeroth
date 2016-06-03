@@ -32,11 +32,13 @@ before_install:
 install:
 - travis_retry npm install
 script:
-#- npm test
+- npm test
 - npm run build
-- npm run postpublish
 after_success:
 - npm run coveralls
+- eval "$(ssh-agent -s)" #start the ssh agent
+- chmod 600 .travis/deployment_key.pem
+- ssh-add .travis/deployment_key.pem
 before_deploy:
 - pr-bumper bump
 env:

@@ -8,7 +8,7 @@
     "start": "u watch",
     "test": "u test",
     "coveralls": "u coveralls",
-    "build": "u build",
+    "build": "u build && u doc:build",
     "postinstall": "typings install",
     "postpublish": "u doc:deploy"
   },
@@ -52,6 +52,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "^0.0.11"
+    "@ubiquits/toolchain": "^0.0.12"
   }
 }
