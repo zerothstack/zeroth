@@ -1,4 +1,20 @@
-docs
-typings
-coverage
-src
+
+#ignore all
+/*
+# add lib output
+!/lib/**
+# remove lib maps
+/lib/**/*.map
+
+!/docker/**
+
+# root js files
+!/*.js
+
+# root docs
+#!/README.md
+#!/CHANGELOG.md
+
+# root config
+!/.env.example
+!/typings.json
