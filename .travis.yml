@@ -18,8 +18,7 @@ branches:
   except:
   - "/^v[0-9\\.]+/"
 before_install:
-# Chromium version is too ancient for WebCrypto use Chrome.
-# http://blog.500tech.com/setting-up-travis-ci-to-run-tests-on-latest-google-chrome-version/
+- openssl aes-256-cbc -K $encrypted_9f9521be16f9_key -iv $encrypted_9f9521be16f9_iv -in .travis/deployment_key.pem.enc -out .travis/deployment_key.pem -d
 - npm install -g pr-bumper
 - pr-bumper check
 - cp .env.example .env
@@ -37,8 +36,12 @@ script:
 - npm run build
 after_success:
 - npm run coveralls
+- eval "$(ssh-agent -s)" #start the ssh agent
+- chmod 600 .travis/deployment_key.pem
+- ssh-add .travis/deployment_key.pem
 before_deploy:
 - pr-bumper bump
+- u doc:build
 env:
   global:
   - secure: n/IuwtJpQAd5LG1ik75mJOjMuK4uOAYeaQERNG+eYj2v5gJ7QMIn3z/osV3rP3C3TOfPvRRwN8f2L8mOjhUndHMFizpxeFdXkE0zKmqYza8OEywx6USbNq3qJTafx/01cW8Ttqm79dmxkO+59xan/7MiAY8OYRRz8SHBc9vVYHuGmzrrDoEHpK8HLs8N2UNX2LZUoZFoqJ2fDUiP/mktXj1GJ/+X00f12mtez8rmnvrnV8fNThRbQoR0T6SY7Cq/Tj+UArpLhRhqvD61/BIz7e4PTFgCmZrB6xBWU9Dzv9/2CBR1CWrKwWHB2nn2NexKCIjQ9Kdnx43tx7t96nmXV7MVzovDwJ0lkod4v2vdjr3x02M1hoaaOEnCO3tyFRcA93R6yUlWyoXUqGtSzmJMKNXPvzKkNMhqRNaBD4q02+ss/9Ocfzq2ZeUCgZ+wUghSb2BxvvLDWii3nKlrtAhraGQHtusb6Np96PaXvlRpuXRvK6h9FaSvf15sdhL7yZ19CbQnuryEgVmntxpMVxFR9WWwpKOq/Ih+kRC1jns9Hv54xSuziteewpHmcKs2LHCggXblCWsQlnGhKuvKB9jfZVVYGXC6eGkzfIVaebiIVwuYvBhcCqwE8ZF2MI890hCncFIXIvZiNd/tClyVFSCzOaDruecX34BW9UFvczORglc=
@@ -46,6 +49,7 @@ env:
 deploy:
   provider: npm
   email: zak@ubiquits.com
+  skip_cleanup: true
   api_key:
     secure: c38j5fUA5OZCR1JMUypn24Gs4xggwiK0JrjWkWZRSsVC46jVPeS0OOWsz5ujnY7iYsjeO3aL73Coa/lujZZJNgHb56tMUUk8KpEzbmtSobRIEWiUl6M9x01GB4p65Ir+5+o8bIoo/r5yNRbr5NfPD67rPO3YgrG5KfWUN0uxE2giBdZaozouIb3MfDicF/TJFCW/GafV1vMI7YTliyw7b7f17YzKrdpqUm+M2zpRHDe0x1E/mKUDyFDcIOeCH/P5wEV8cf4ZnmKD93110wE1Ur9vPDS6kFCqTylgeaOCMP7fvWWoOe7RnQ16gecQa0dHrrdBxrSZnyJ7fByBgFXxLDbqaJ776OV9OSFagTgyyrtrw9ioCS9W6oos6Wr2KFJYC2Ib9VEDdFtMub5Jjn6+f1rw4rexnfWOlav6/ITVUptpM27BrfnXiASHIK5rzwLcmmx1l333PJgcM7mPDEyDVeb9IbeZV4f9qMVuJhdJQ7aJuPuo9H+ePi0B4zBBFr3ULeif7mYBuuqgeB/2j0If3JGzCgUWM9V7KrbOaC9TVA+0Q/VvT9aPArSKxz/30ZGG/wYuT3XkvrECRugp91Vg1XRqjPZraL8pf91RIb+2AnqZs5UKwBE8/mwSwNMrby6FQPZ5+CAEt33ujFeSOaVoaMKwnvlWAs2olwOpsafSCug=
   on:

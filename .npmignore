@@ -1,0 +1,21 @@
+
+#ignore all
+/*
+# add lib output
+!/lib/**
+# remove lib maps
+/lib/**/*.map
+
+!/docker/**
+
+# root js files
+!/*.js
+!/*.d.ts
+
+# root docs
+#!/README.md
+#!/CHANGELOG.md
+
+# root config
+!/.env.example
+!/typings.json

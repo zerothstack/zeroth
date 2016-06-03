@@ -1,0 +1,64 @@
+{{> head }}
+{{> header }}
+<main>
+
+    <div id="index-banner" class="parallax-container">
+        <div class="section no-pad-bot">
+            <div class="container">
+                <br><br>
+                <h1 class="header center grey-text text-lighten-2">
+                    <img src="/assets/image/logotype.svg" alt="{{title}}">
+                </h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">{{ description }}</h5>
+                </div>
+                <div class="row center">
+                    <a href="/guide/quick-start/" class="btn-large waves-effect waves-light grey lighten-1">Get Started</a>
+                </div>
+                <br><br>
+
+            </div>
+        </div>
+        <div class="parallax"><img src="/assets/image/title-card.jpg" alt="Unsplashed background img 1"></div>
+    </div>
+
+
+    <div class="container">
+        <div class="section">
+
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center grey-text"><i class="material-icons">code</i></h2>
+                        <h5 class="center">Single design pattern</h5>
+
+                        <p class="light">By using the <a href="https://angular.io/docs/ts/latest/guide/dependency-injection.html">Angular 2 dependency injector</a> across both frontend and backend, platform-independent components can be shared by multiple platforms</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center grey-text"><i class="material-icons">assignment</i></h2>
+                        <h5 class="center">Self Documenting</h5>
+
+                        <p class="light">By leveraging <a href="http://typedoc.io">Typedoc</a>, <a href="https://github.com/danielgtaylor/aglio">Aglio</a> and <a href="http://metalsmith.io">Metalsmith</a>, generating documentation for consumers of your component is a breeze.</p>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="icon-block">
+                        <h2 class="center grey-text"><i class="material-icons">widgets</i></h2>
+                        <h5 class="center">Full stack components</h5>
+
+                        <p class="light">Having components defined by their problem domain, not their position in the stack allows for plugin developers to create full stack plugins, with simple installation</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+{{> footer }}

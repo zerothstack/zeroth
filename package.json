@@ -1,6 +1,6 @@
 {
   "name": "@ubiquits/core",
-  "version": "0.2.1",
+  "version": "0.3.11",
   "description": "ubiquits core",
   "main": "build/index.js",
   "typings": "index.d.ts",
@@ -9,7 +9,8 @@
     "test": "u test",
     "coveralls": "u coveralls",
     "build": "u build",
-    "postinstall": "typings install"
+    "postinstall": "typings install",
+    "postpublish": "u doc:deploy"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,11 @@
   "keywords": [
     "ubiquits"
   ],
-  "author": "Zak Henry",
+  "author": {
+    "name": "Zak Henry",
+    "email": "zak@ubiquits.com",
+    "url": "http://twitter.com/zak"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ubiquits/core/issues"
@@ -47,6 +52,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "0.0.7"
+    "@ubiquits/toolchain": "^0.0.12"
   }
 }

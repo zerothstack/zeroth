@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 500 230" enable-background="new 0 0 500 230" xml:space="preserve">
+<g id="logotype" fill="#ffffff">
+	<path d="M170,90V20h-10v120h50V90H170z M200,130h-30v-30h30V130z"/>
+	<path d="M280,140v70h10V90h-50v50H280z M250,100h30v30h-30V100z"/>
+	<rect x="220" y="90" width="10" height="50"/>
+	<rect x="360" y="90" width="10" height="50"/>
+	<polygon points="340,90 340,130 310,130 310,90 300,90 300,140 350,140 350,90 	"/>
+	<polygon points="420,70 370,70 370,80 390,80 390,140 400,140 400,80 420,80 	"/>
+	<polygon points="480,80 480,70 430,70 430,100 470,100 470,130 430,130 430,140 480,140 480,90 440,90 440,80 	"/>
+	<g>
+		<polygon points="122.6,94 115.3,104 45.1,104 37.6,94 		"/>
+		<polygon points="115.3,29.2 122.4,19.5 148.6,100.1 80,150 11.4,100.1 37.6,19.5 44.6,29.2 22.8,96.5 80.1,138 137.2,96.9 		"/>
+	</g>
+</g>
+<g id="byline" display="none">
+
+		<text transform="matrix(1.0191 0 0 1 308 180)" display="inline" fill="#7F7F7F" font-family="'Lato-Regular'" font-size="31.9386px">an isomorphic typescript framework</text>
+</g>
+</svg>
