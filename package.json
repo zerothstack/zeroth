@@ -10,7 +10,7 @@
     "coveralls": "u coveralls",
     "build": "u build",
     "postinstall": "typings install",
-    "postpublish": "./node_modules/@ubiquits/toolchain/scripts/deploy-docs.sh"
+    "postpublish": "u doc:deploy"
   },
   "repository": {
     "type": "git",
@@ -52,6 +52,6 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "^0.0.10"
+    "@ubiquits/toolchain": "^0.0.11"
   }
 }

@@ -32,8 +32,9 @@ before_install:
 install:
 - travis_retry npm install
 script:
-- npm test
+#- npm test
 - npm run build
+- npm run postpublish
 after_success:
 - npm run coveralls
 before_deploy:
