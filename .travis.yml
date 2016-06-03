@@ -36,6 +36,9 @@ script:
 - npm run build
 after_success:
 - npm run coveralls
+- eval "$(ssh-agent -s)" #start the ssh agent
+- chmod 600 .travis/deployment_key.pem
+- ssh-add .travis/deployment_key.pem
 before_deploy:
 - pr-bumper bump
 env:
