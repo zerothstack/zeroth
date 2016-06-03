@@ -10,6 +10,7 @@
 
 # root js files
 !/*.js
+!/*.d.ts
 
 # root docs
 #!/README.md

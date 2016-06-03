@@ -1,8 +1,8 @@
-import { AbstractModel } from './abstract.model';
+import { AbstractModel, identifier } from './abstract.model';
 
 export class BaseCollection<T extends AbstractModel> extends Array {
 
-  public findById(id: Symbol): AbstractModel {
+  public findById(id: identifier): AbstractModel {
 
     for (let model of this) {
       if (model.getIdentifier() === id) {

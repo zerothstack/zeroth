@@ -21,30 +21,29 @@ export class Database {
       logging: (message:string, ...logs:any[]) => this.logger.debug(message, ...logs),
     });
 
-    const schemaName = process.env.DB_USERNAME;
-
-    this.createSchema(schemaName).then(() => {
-
-      var User = this.driver.define('user', {
-        username: Sequelize.STRING,
-        birthday: Sequelize.DATE
-      }, {
-        schema: schemaName
-      });
-
-      this.driver.sync().then(() => {
-        return User.create({
-          username: 'janedoe',
-          birthday: new Date(1980, 6, 20)
-        });
-      }).then((jane: any) => {
-        this.logger.info(jane.get({
-          plain: true
-        }));
-      });
-
-    });
-
+    // const schemaName = process.env.DB_USERNAME;
+    //
+    // this.createSchema(schemaName).then(() => {
+    //
+    //   var User = this.driver.define('user', {
+    //     username: Sequelize.STRING,
+    //     birthday: Sequelize.DATE
+    //   }, {
+    //     schema: schemaName
+    //   });
+    //
+    //   this.driver.sync().then(() => {
+    //     return User.create({
+    //       username: 'janedoe',
+    //       birthday: new Date(1980, 6, 20)
+    //     });
+    //   }).then((jane: any) => {
+    //     this.logger.info(jane.get({
+    //       plain: true
+    //     }));
+    //   });
+    //
+    // });
   }
 
   public createSchema(schemaName: string): Promise<any> {
