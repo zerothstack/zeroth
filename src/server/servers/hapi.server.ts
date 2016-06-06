@@ -1,12 +1,20 @@
+import { Injectable } from '@angular/core';
 import { Server as Hapi, IRouteConfiguration } from 'hapi';
 import { Server } from './abstract.server';
+import { Logger } from '../services/logger.service';
+import { RemoteCli } from '../services/remoteCli.service';
 
+@Injectable()
 export class HapiServer extends Server {
 
-  protected initialize() {
-    this.server = new Hapi();
+  constructor(logger: Logger, remoteCli: RemoteCli) {
+    super(logger, remoteCli);
+  }
 
-    this.server.connection({
+  protected initialize() {
+    this.engine = new Hapi();
+
+    this.engine.connection({
       host: 'localhost',
       port: 3000
     });
@@ -14,11 +22,11 @@ export class HapiServer extends Server {
   }
 
   public register(config: IRouteConfiguration): void {
-    return this.server.route(config);
+    return this.engine.route(config);
   }
 
   public start(): Promise<this> {
-    return this.server.start().then(() => this);
+    return this.engine.start().then(() => this);
   }
 
 }

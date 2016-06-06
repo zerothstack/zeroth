@@ -49,6 +49,7 @@
     "sequelize": "^3.23.3",
     "timestamp": "0.0.1",
     "umzug": "^1.11.0",
+    "vantage": "^1.7.0",
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
