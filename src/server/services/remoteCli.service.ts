@@ -20,8 +20,7 @@ export class RemoteCli {
 
     this.vantage = new Vantage();
 
-
-    this.vantage.delimiter('ubiquits~$');
+    this.vantage.delimiter('ubiquits-runtime~$');
 
     let displayBanner = `Welcome to Ubiquits runtime cli. Type 'help' for commands`;
     if ((<any>process.stdout).columns > 68) {
