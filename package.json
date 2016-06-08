@@ -14,21 +14,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ubiquits/core.git"
+    "url": "git+https://github.com/ubiquits/ubiquits.git"
   },
   "keywords": [
     "ubiquits"
   ],
-  "author": {
-    "name": "Zak Henry",
-    "email": "zak@ubiquits.com",
-    "url": "http://twitter.com/zak"
-  },
+  "author": "Zak Henry <zak@ubiquits.com> (http://twitter.com/zak)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ubiquits/core/issues"
+    "url": "https://github.com/ubiquits/ubiquits/issues"
   },
-  "homepage": "https://github.com/ubiquits/core#readme",
+  "homepage": "https://github.com/ubiquits/ubiquits#readme",
   "dependencies": {
     "@angular/common": "^2.0.0-rc.1",
     "@angular/compiler": "^2.0.0-rc.1",
@@ -53,6 +49,9 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "^0.0.12"
+    "@ubiquits/toolchain": "^0.1.0"
+  },
+  "directories": {
+    "doc": "docs"
   }
 }
