@@ -46,16 +46,16 @@ export class Database {
     // });
   }
 
-  public createSchema(schemaName: string): Promise<any> {
+  public createSchema(schemaName: string): Promise<void> {
 
     return this.driver.createSchema(schemaName, null)
       .then((result: any) => {
-        this.logger.info(result);
-      })
+        this.logger.info(`Created Schema [${schemaName}]`, result);
+      });
 
   }
 
-  public query(sql:string, options:QueryOptions): Promise<any> {
+  public query(sql:string, options:QueryOptions): Promise<[any[], any]> {
     return this.driver.query(sql, options);
   }
 
