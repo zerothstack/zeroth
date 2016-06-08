@@ -5,12 +5,12 @@
   "main": "build/index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "start": "u watch",
+    "start": "u",
     "test": "u test",
     "coveralls": "u coveralls",
     "build": "u build",
     "postinstall": "typings install",
-    "postpublish": "u doc:deploy"
+    "postpublish": "u deploy docs"
   },
   "repository": {
     "type": "git",
