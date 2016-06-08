@@ -6,12 +6,19 @@ collectionSort: 0
 layout: guide.hbs
 -----------------
 
+## Prerequisites
+* Node installed (v6.2.0 has been verified, may work in earlier versions)
+
 ## Installation
+
+Ubiquits uses a commandline tool `u` to initialize a new project, and manage the building/watching/deployment/debugging etc within it's own shell.
+
+To get started, run the following command in your console *in an empty directory*:
+
 ```bash
-git clone https://github.com/ubiquits/ubiquits.git myapp \
-&& cd myapp \
-&& rm -rf .git \
-&& git init \
-&& npm i \
-&& u watch
+npm install -g @ubiquits/toolchain && u
 ```
+
+This will install the toolchain then initialize a new project by cloning the boilerplate, and running installation.
+
+For more information, visit the [cli guide page](/guide/cli)
