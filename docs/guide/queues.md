@@ -7,4 +7,3 @@ layout: guide.hbs
 pendingTask: true
 ---
 
-This has been completed for console logger and abstract, just need to write docs
