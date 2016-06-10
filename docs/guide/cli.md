@@ -22,7 +22,7 @@ Note that the quickstart requires `@ubiquits/toolchain` as a `devDependency` so 
 ## `ubiquits.js` file configuration
 You will notice in the root of your project there is a `ubiquits.js` file. This is akin to a `gulpfile` or `karma.conf.js` file. It is used to set the configuration for the toolchain.
 
-Note that this is a javascript file - unfortunately you cant use typescript here has it is not pre-compiled by the toolchain - that would be too slow.
+Note that this is a javascript file - unfortunately you cant use typescript here as it is not pre-compiled by the toolchain - that would be too slow.
 
 If this is not present, the cli will still work with default values applied.
 
