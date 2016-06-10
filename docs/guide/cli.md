@@ -114,6 +114,7 @@ config is merged with the defaults:
 })
 
 ```
+
 ### `configureDocs(config)`
 Configure the docs options. 
 
@@ -126,6 +127,51 @@ config is merged with the defaults:
 })
 
 ```
+
+### `registerCommand(command)`
+In addition to the supplied commands in the toolchain, you may register new commands.
+ 
+The toolchain uses Vantage (which is an extension of Vorpal) for command handling, and the `registerCommand` callback 
+ supplies an instance of vantage and the instance of the project.
+
+Visit the Vorpal documentation for instructions on how to define your own commands. 
+ 
+```javascript
+.registerCommand((cli, projectInstance) => {
+  cli.command('example', 'Outputs example text')
+    .action(function (args, callback) {
+      this.log('This is a custom command example');
+      callback();
+    });
+});
+
+```
+ 
+An instance of Gulp is attached to the `projectInstance` too, so you can create gulp commands and register them
+ to the ubiquits cli.
+  
+Example `ubiquits.js` file that adds custom Sass gulp command:
+```javascript
+const sass = require('gulp-sass');
+let {UbiquitsProject} = require('@ubiquits/toolchain');
+
+const project = new UbiquitsProject(__dirname);
+
+project.registerCommand((cli, projectInstance) => {
+
+  cli.command('sass', 'Compiles Sass files')
+    .action(function (args, callback) {
+    
+      projectInstance.gulp.src('./sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(projectInstance.gulp.dest('./css'))
+        .on('finish', callback); //this is required to notify to Vantage the command is finished
+    });
+});
+
+module.exports = project;
+```
+
 
 ## Uninstall
 To remove the cli, run the following command:

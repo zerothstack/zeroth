@@ -42,7 +42,7 @@ Pages can be easily added by just creating a new markdown document anywhere unde
 yaml [frontmatter](https://jekyllrb.com/docs/frontmatter/) meta information.
 
 For example the frontmatter for this page is:
-```
+```yaml
 ---
 title: Documentation
 date: 2016-06-09
