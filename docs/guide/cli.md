@@ -114,6 +114,18 @@ config is merged with the defaults:
 })
 
 ```
+### `configureDocs(config)`
+Configure the docs options. 
+
+config is merged with the defaults:
+```javascript
+.configureDocs({
+  meta: { //any attribute listed here is made available to the context of all handlebars templates
+    gaCode: null, // Google Analytic tracking code. If null the tracking snippet will not be embedded
+  }
+})
+
+```
 
 ## Uninstall
 To remove the cli, run the following command:
