@@ -5,7 +5,7 @@ function defaultHydratorFactory(modelStatic: ModelStatic<any>): RelationHydrator
   return (data: Object, reference: BaseModel): BaseModel => new modelStatic(data);
 }
 
-export function hasOne(modelStatic?: ModelStatic<any>, relationHydrator?: RelationHydrator) {
+export function hasOne(modelStatic?: ModelStatic<any>, relationHydrator?: RelationHydrator): PropertyDecorator {
   return (target: any, propertyKey: string) => {
     initializeRelationMap(target);
 
