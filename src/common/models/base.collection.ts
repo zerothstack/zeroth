@@ -1,16 +1,21 @@
-import { AbstractModel, identifier } from './abstract.model';
+import { BaseModel, identifier } from './base.model';
 
-export class BaseCollection<T extends AbstractModel> extends Array {
+export class BaseCollection<T extends BaseModel> extends Array<T> {
 
-  public findById(id: identifier): AbstractModel {
+  constructor(initialItems?: T[]) {
+    super();
+    this.push.apply(this, initialItems);
+  }
 
-    for (let model of this) {
-      if (model.getIdentifier() === id) {
-        return model;
-      }
+  public findById(id: identifier): BaseModel {
+
+    const found = this.find((model) => model.getIdentifier() === id);
+
+    if (!found) {
+      throw new Error(`Item with id [${id}] not in collection`);
     }
 
-    throw new Error(`Item with id [${id}] not in collection`);
+    return found;
   }
 
 }

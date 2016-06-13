@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Request as HapiRequest, IReply, Response } from 'hapi';
 import { Action } from './action.decorator';
 import { Logger } from '../services/logger.service';
-import { AbstractModel } from '../../common/models/abstract.model';
+import { BaseModel } from '../../common/models/base.model';
 
 export interface Request extends HapiRequest {
 
@@ -35,7 +35,7 @@ export abstract class AbstractController {
     this.registerRoutes();
   }
 
-  protected abstract getOneById(request: Request, routeParams: RouteParamMap): AbstractModel;
+  protected abstract getOneById(request: Request, routeParams: RouteParamMap): BaseModel;
 
   public registerActionMethod(methodSignature: string, method: ActionType, route: string) {
     if (!this.actionMethods) {

@@ -4,6 +4,7 @@
     "hapi": "registry:dt/hapi#13.0.0+20160423150146",
     "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
     "lodash": "registry:dt/lodash#3.10.0+20160330154726",
+    "moment-node": "registry:dt/moment-node#2.11.1+20160511043338",
     "node": "registry:dt/node#6.0.0+20160514165920",
     "sequelize": "registry:dt/sequelize#3.4.1+20160423143634",
     "socket.io": "registry:dt/socket.io#1.4.4+20160317120654",
