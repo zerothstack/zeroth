@@ -9,13 +9,10 @@ function defaultHydratorFactory(modelStatic: ModelStatic<any>): RelationHydrator
 
 }
 
-export function hasMany(modelStatic: ModelStatic<any>, relationHydrator?: RelationHydrator) {
+export function hasMany(modelStatic: ModelStatic<any>, relationHydrator: RelationHydrator = defaultHydratorFactory(modelStatic)): PropertyDecorator {
   return (target: any, propertyKey: string) => {
-    initializeRelationMap(target);
 
-    if (!relationHydrator) {
-      relationHydrator = defaultHydratorFactory(modelStatic);
-    }
+    initializeRelationMap(target);
 
     target.__relations.set(propertyKey, relationHydrator);
   };
