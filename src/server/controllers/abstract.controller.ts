@@ -2,8 +2,8 @@ import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { Request as HapiRequest, IReply, Response } from 'hapi';
 import { Action } from './action.decorator';
-import { Logger } from '../services/logger.service';
 import { BaseModel } from '../../common/models/base.model';
+import { Logger } from '../../common/services/logger.service';
 
 export interface Request extends HapiRequest {
 
@@ -35,7 +35,7 @@ export abstract class AbstractController {
     this.registerRoutes();
   }
 
-  protected abstract getOneById(request: Request, routeParams: RouteParamMap): BaseModel;
+  protected abstract getOneById(request: Request, routeParams: RouteParamMap): BaseModel | Promise<BaseModel>;
 
   public registerActionMethod(methodSignature: string, method: ActionType, route: string) {
     if (!this.actionMethods) {
@@ -63,7 +63,7 @@ export abstract class AbstractController {
 
       this.server.register({
         method: methodDefinition.method,
-        path: `/${this.routeBase}${methodDefinition.route}`,
+        path: `/api/${this.routeBase}${methodDefinition.route}`,
         handler: (request: Request, reply: IReply): Response => {
 
           //polyfill for `const paramMap = new Map(Object.entries(request.params)`

@@ -1,7 +1,7 @@
-import { Logger } from './logger.service';
 import { Injectable } from '@angular/core';
 import * as Sequelize from 'sequelize';
 import { QueryOptions } from 'sequelize';
+import { Logger } from '../../common/services/logger.service';
 
 @Injectable()
 export class Database {

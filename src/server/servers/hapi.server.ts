@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Server as Hapi, IRouteConfiguration } from 'hapi';
 import { Server } from './abstract.server';
-import { Logger } from '../services/logger.service';
 import { RemoteCli } from '../services/remoteCli.service';
+import { Logger } from '../../common/services/logger.service';
 
 @Injectable()
 export class HapiServer extends Server {

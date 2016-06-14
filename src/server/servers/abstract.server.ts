@@ -1,7 +1,7 @@
 import { IRouteConfiguration } from 'hapi';
-import { Logger } from '../services/logger.service';
 import { Injectable } from '@angular/core';
 import { RemoteCli } from '../services/remoteCli.service';
+import { Logger } from '../../common/services/logger.service';
 
 @Injectable()
 export abstract class Server {
