@@ -1,5 +1,6 @@
 ---
 title: Services
+description: Interact with other things and stuff
 date: 2016-06-09
 collection: guide
 collectionSort: 1

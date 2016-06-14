@@ -1,5 +1,6 @@
 ---
 title: Middleware
+description: Squeeze custom logic into the request-response cycle
 date: 2016-06-09
 collection: guide
 collectionSort: 1

@@ -1,5 +1,6 @@
 ---
 title: Quick Start
+description: Get up and running with your first Ubiquits application as quick as possible. What are you waiting for?
 date: 2016-06-02
 collection: guide
 collectionSort: 0

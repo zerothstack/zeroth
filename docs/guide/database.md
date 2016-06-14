@@ -1,5 +1,6 @@
 ---
 title: Database
+description: Poke your database in the ribs, carefully though - direct interaction is scary!
 date: 2016-06-01
 collection: guide
 collectionSort: 1

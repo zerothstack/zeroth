@@ -19,10 +19,9 @@ description: Full stack isomorphic typescript framework.
 
 ### Developer Preview [June 17th]
 - [ ] Model hydration and mocking
-- [ ] `BaseResourceController` implementation with CRUD routes
+- [ ] `ResourceController` implementation with CRUD routes
 - [ ] Post-initialization cli tour
 - [ ] Full stack demo in quickstart
-- [ ] Feature page in docs
 - [ ] FAQ page in docs
 
 ### Sprint 0 [June 10th]

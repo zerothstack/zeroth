@@ -1,5 +1,6 @@
 ---
 title: Dependency Injection
+description: Inject those dependencies everywhere, frontend, backend, anywhere!
 date: 2016-06-10
 collection: guide
 collectionSort: 1

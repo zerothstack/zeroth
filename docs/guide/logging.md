@@ -1,5 +1,6 @@
 ---
 title: Logging
+description: Keep track of things that happen. If you don't, did they really happen?
 date: 2016-06-09
 collection: guide
 collectionSort: 1
