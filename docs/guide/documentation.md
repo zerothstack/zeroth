@@ -86,7 +86,7 @@ Any file that matches the same name as the toolchain will override the default.
 ### Variables
 The `./package.json` file content is available globally to handlebars templates at `{{pkg}}`
 
-Any additional variables that you would like to add can be defined by [configuring the `meta` object of `configureDocs()` in the `ubiquits.js` file](http://localhost:8080/guide/cli/#-configuredocs-config-)
+Any additional variables that you would like to add can be defined by [configuring the `meta` object of `configureDocs()` in the `ubiquits.js` file](/guide/cli/#-configuredocs-config-)
 
 ## TypeDoc
 To document your API in it's full detail, [TypeDoc](http://typedoc.io) is used to automatically generate documentation.
@@ -106,7 +106,7 @@ By default, the documentation will deploy to the `gh-pages` branch at your repos
 If you have different requirements, see the [`UbiquitsProject.configureDeployment()`](/guide/cli/#-configuredeployment-config-) section for configuration options.
 
 ### Google Analytics
-You can add tracking with [Google Analytics](https://analytics.google.com) to your documentation by [configuring the `meta.gaCode` property of `configureDocs()` in the `ubiquits.js` file](http://localhost:8080/guide/cli/#-configuredocs-config-) 
+You can add tracking with [Google Analytics](https://analytics.google.com) to your documentation by [configuring the `meta.gaCode` property of `configureDocs()` in the `ubiquits.js` file](/guide/cli/#-configuredocs-config-) 
 
 ### Travis CI
 To automate deployment fully, you can use TravisCI to run the deployment process, however you will need to configure
