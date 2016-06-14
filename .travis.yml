@@ -18,7 +18,6 @@ branches:
   except:
   - "/^v[0-9\\.]+/"
 before_install:
-- openssl aes-256-cbc -K $encrypted_9f9521be16f9_key -iv $encrypted_9f9521be16f9_iv -in .travis/deployment_key.pem.enc -out .travis/deployment_key.pem -d
 - npm install -g pr-bumper
 - pr-bumper check
 - cp .env.example .env
@@ -36,10 +35,11 @@ script:
 - npm run build
 after_success:
 - npm run coveralls
+before_deploy:
 - eval "$(ssh-agent -s)" #start the ssh agent
 - chmod 600 .travis/deployment_key.pem
 - ssh-add .travis/deployment_key.pem
-before_deploy:
+- openssl aes-256-cbc -K $encrypted_9f9521be16f9_key -iv $encrypted_9f9521be16f9_iv -in .travis/deployment_key.pem.enc -out .travis/deployment_key.pem -d
 - pr-bumper bump
 - u doc build
 - u typedoc
