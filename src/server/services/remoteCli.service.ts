@@ -1,20 +1,33 @@
-import { Logger } from './logger.service';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { banner } from '../../common/util/banner';
 import Socket = SocketIO.Socket;
+import { Logger } from '../../common/services/logger.service';
+import { Server } from '../servers/abstract.server';
+import { IRoute } from 'hapi';
+import * as chalk from 'chalk';
 const Vantage = require('vantage');
 
 export interface ConnectedSocketCallback {
   (socket: Socket): void;
 }
 
+/**
+ * Class allows developers to register custom commands that can be remote executed in a
+ * shell environment. Useful for things like migrations and debugging.
+ */
 @Injectable()
 export class RemoteCli {
 
+  /**
+   * The instance of Vantage
+   */
   protected vantage: any;
+  /**
+   * Logger instance for the class, initialized with `remote-cli` source
+   */
   private logger: Logger;
 
-  constructor(loggerBase: Logger) {
+  constructor(loggerBase: Logger, private injector: Injector) {
 
     this.logger = loggerBase.source('remote-cli');
 
@@ -32,6 +45,9 @@ export class RemoteCli {
     this.registerCommands();
   }
 
+  /**
+   * Registers the pre-defined commands
+   */
   private registerCommands(): void {
 
     let remoteCli = this;
@@ -39,13 +55,37 @@ export class RemoteCli {
     this.vantage
       .command('foo')
       .description("Outputs 'bar'.")
-      .action(function(args: any, callback: any) {
+      .action(function (args: any, callback: Function) {
         remoteCli.logger.info('bar');
         this.log('hey there foo');
         callback();
       });
+
+    this.vantage.command('routes')
+      .description('outputs route table')
+      .action(function (args: any, callback: Function) {
+
+        remoteCli.logger.info('CLI session retrieving routes');
+
+        let server = remoteCli.injector.get(Server);
+
+        const routeTable = server.getEngine().connections[0].table()
+          .map((route: IRoute) => [route.method, route.path]);
+
+        routeTable.unshift(['Method', 'Path'].map((s: string) => chalk.blue(s)));
+
+        let table = remoteCli.logger.makeTable(routeTable);
+
+        this.log('\n' + table);
+        callback();
+      });
   }
 
+  /**
+   * Starts the Vantage server. This is done on start of the server so debugging can start immediately
+   * @param port
+   * @param callback
+   */
   public start(port: number, callback?: ConnectedSocketCallback): void {
 
     if (!callback) {

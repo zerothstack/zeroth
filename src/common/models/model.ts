@@ -1,28 +1,45 @@
-import { BaseCollection } from './base.collection';
+import { Collection } from './collection';
 
-export interface EntityNest extends Map<string, BaseModel|BaseCollection<BaseModel>> {
+export interface EntityNest extends Map<string, Model|Collection<Model>> {
 
 }
 
 export type identifier = string | number | symbol;
-export type uuid = string;
 
-export interface ModelStatic<T extends BaseModel> {
+/**
+ * Helper class for differentiating string keys with uuid keys
+ */
+export class UUID extends String {
+  constructor(value?: any) {
+    super(value);
+  }
+}
+
+export interface ModelSchema {
+//@todo define schema (separate to sequelize definition)
+}
+
+export interface ModelStatic<T extends Model> {
   new(data?: any, exists?: boolean): T;
+  identifierKey: string;
+  schema: ModelSchema;
+  modelName: string;
 }
 
 export interface TypeCaster {
-  (value: any, reference:BaseModel): any;
+  (value: any, reference: Model): any;
 }
 
 export interface RelationHydrator {
-  (modelCollection: Object | Object[], reference:BaseModel): BaseModel|BaseCollection<BaseModel>;
+  (modelCollection: Object | Object[], reference: Model): Model|Collection<Model>;
 }
 
-export abstract class BaseModel {
+export abstract class Model {
   protected nestedEntities: EntityNest;
 
-  protected identifierKey: identifier;
+  public static identifierKey: string;
+  public static schema: ModelSchema = {};
+  public static modelName: string;
 
   /**
    * Don't set these properties directly - they are defined by the model property decorators
@@ -40,6 +57,11 @@ export abstract class BaseModel {
     this.hydrate(data);
   }
 
+  /**
+   * Hydrates the model from given data
+   * @param data
+   * @returns {Model}
+   */
   protected hydrate(data: Object) {
 
     this.__rawData = Object.assign({}, data);
@@ -63,15 +85,18 @@ export abstract class BaseModel {
     this.__original = Object.assign({}, data);
 
     Object.assign(this, data);
+    return this;
   }
 
   public getIdentifier(): identifier {
-    return this[this.identifierKey];
+    const self = <typeof Model>this.constructor;
+    return this[self.identifierKey];
   }
 
 }
 
 export function primary(target: any, propertyKey: string) {
-  target.identifierKey = propertyKey;
+  console.log('set identifier to ', propertyKey);
+  target.constructor.identifierKey = propertyKey;
 }
 

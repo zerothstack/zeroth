@@ -1,12 +1,22 @@
-import { Logger } from './logger.service';
 import { Injectable } from '@angular/core';
 import * as Sequelize from 'sequelize';
 import { QueryOptions } from 'sequelize';
+import { Logger } from '../../common/services/logger.service';
 
+/**
+ * Core database service for connecting to the SQL db
+ */
 @Injectable()
 export class Database {
 
+  /**
+   * The underlying driver that handles the database connection.
+   * In this case an instance of Sequelize
+   */
   protected driver: Sequelize.Sequelize;
+  /**
+   * Logger instance for the class, initialized with `database` source
+   */
   private logger: Logger;
 
   constructor(loggerBase: Logger) {
@@ -18,7 +28,7 @@ export class Database {
       host: process.env.DB_HOST,
       dialect: process.env.DB_DIALECT,
       port: process.env.DB_PORT,
-      logging: (message:string, ...logs:any[]) => this.logger.debug(message, ...logs),
+      logging: (message: string, ...logs: any[]) => this.logger.debug(message, ...logs),
     });
 
     // const schemaName = process.env.DB_USERNAME;
@@ -46,6 +56,19 @@ export class Database {
     // });
   }
 
+  /**
+   * Retrive the driver instance
+   * @returns {Sequelize.Sequelize}
+   */
+  public getDriver(): Sequelize.Sequelize {
+    return this.driver;
+  }
+
+  /**
+   * Create a new schema in the database
+   * @param schemaName
+   * @returns {Promise<TResult>}
+   */
   public createSchema(schemaName: string): Promise<void> {
 
     return this.driver.createSchema(schemaName, null)
@@ -55,7 +78,13 @@ export class Database {
 
   }
 
-  public query(sql:string, options:QueryOptions): Promise<[any[], any]> {
+  /**
+   * Execute a raw query
+   * @param sql
+   * @param options
+   * @returns {Promise<any>}
+   */
+  public query(sql: string, options: QueryOptions): Promise<[any[], any]> {
     return this.driver.query(sql, options);
   }
 
