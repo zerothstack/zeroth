@@ -12,6 +12,10 @@ const project = new UbiquitsProject(__dirname)
       gaCode: 'UA-79131526-1'
     }
   })
+  .configureSocial({
+    twitter: 'ubiquits',
+    gitter: 'ubiquits/ubiquits'
+  })
 ;
 
 module.exports = project;

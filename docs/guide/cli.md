@@ -128,6 +128,22 @@ config is merged with the defaults:
 
 ```
 
+### `configureSocial(config)`
+Configure the social options. 
+
+config is merged with the defaults:
+```javascript
+.configureSocial({
+  github: {
+    forkMe: true, //show the github fork me ribbon on top right
+    star: true // show the stars count badge
+  },
+  twitter: false, //twitter username to add "Follow @username" badge
+  gitter: false //gitter user/repo to link to eg ubiquits/ubiquits
+})
+
+```
+
 ### `registerCommand(command)`
 In addition to the supplied commands in the toolchain, you may register new commands.
  
