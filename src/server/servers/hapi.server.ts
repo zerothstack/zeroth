@@ -11,6 +11,10 @@ export class HapiServer extends Server {
     super(logger, remoteCli);
   }
 
+  /**
+   * @inherit
+   * @returns {HapiServer}
+   */
   protected initialize() {
     this.engine = new Hapi();
 
@@ -21,10 +25,19 @@ export class HapiServer extends Server {
     return this;
   }
 
+  /**
+   * @inherit
+   * @param config
+   * @returns {any}
+   */
   public register(config: IRouteConfiguration): void {
     return this.engine.route(config);
   }
 
+  /**
+   * @inherit
+   * @returns {IThenable<HapiServer>|PromiseLike<HapiServer>|Promise<HapiServer>|IPromise<HapiServer>}
+   */
   public start(): Promise<this> {
     return this.engine.start().then(() => this);
   }

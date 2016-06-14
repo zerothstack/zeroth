@@ -1,2 +1,2 @@
-export * from './base.model';
-export * from './base.collection';
+export * from './model';
+export * from './collection';

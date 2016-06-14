@@ -5,17 +5,17 @@ import {
   beforeEachProviders,
   expect
 } from '@angular/core/testing';
-import { uuid, BaseModel, primary } from './base.model';
-import { BaseCollection } from './base.collection';
+import { UUID, Model, primary } from './model';
+import { Collection } from './collection';
 
-class BasicModel extends BaseModel {
+class BasicModel extends Model {
 
   @primary
   public id: number;
 }
 
 describe('Collection', () => {
-  let collection: BaseCollection<BasicModel>;
+  let collection: Collection<BasicModel>;
   let data: BasicModel[];
   beforeEach(() => {
 
@@ -24,7 +24,7 @@ describe('Collection', () => {
       new BasicModel({id: 2}),
     ];
 
-    collection = new BaseCollection(data);
+    collection = new Collection(data);
   });
 
   it('can iterate over the collection with forEach', () => {

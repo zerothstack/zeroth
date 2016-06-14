@@ -2,7 +2,7 @@ import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { Request as HapiRequest, IReply, Response } from 'hapi';
 import { Action } from './action.decorator';
-import { BaseModel } from '../../common/models/base.model';
+import { Model } from '../../common/models/model';
 import { Logger } from '../../common/services/logger.service';
 
 export interface Request extends HapiRequest {
@@ -22,6 +22,9 @@ export interface MethodDictionary {
   [methodSignature: string]: MethodDefinition;
 }
 
+/**
+ * Abstract controller that all controllers should extend from
+ */
 @Injectable()
 export abstract class AbstractController {
 
@@ -35,8 +38,13 @@ export abstract class AbstractController {
     this.registerRoutes();
   }
 
-  protected abstract getOneById(request: Request, routeParams: RouteParamMap): BaseModel | Promise<BaseModel>;
-
+  /**
+   * Register an action. This is used by the @Action() decoratore, but can also be used directly
+   * for custom route registration
+   * @param methodSignature
+   * @param method
+   * @param route
+   */
   public registerActionMethod(methodSignature: string, method: ActionType, route: string) {
     if (!this.actionMethods) {
       this.actionMethods = new Map<string, MethodDefinition>();
@@ -50,13 +58,10 @@ export abstract class AbstractController {
     this.actionMethods.set(methodSignature, methodDefinition);
   }
 
-  @Action('GET', '/{id}')
-  public getOne(request: Request, routeParams: RouteParamMap) {
-
-    return this.getOneById(request, routeParams);
-  }
-
-
+  /**
+   * Register all routes defined in this controller (or any extending instances)
+   * @returns {AbstractController}
+   */
   public registerRoutes(): this {
 
     this.actionMethods.forEach((methodDefinition: MethodDefinition, methodSignature: string) => {
@@ -86,5 +91,28 @@ export abstract class AbstractController {
 
     return this;
   }
+
+  // Common Routes
+
+  /**
+   * @todo move into an `abstract ResourceController extends AbstractController` to reduce clutter
+   * Get one entity
+   * @param request
+   * @param routeParams
+   * @returns {Model|Promise<Model>}
+   */
+  @Action('GET', '/{id}')
+  public getOne(request: Request, routeParams: RouteParamMap) {
+
+    return this.getOneById(request, routeParams);
+  }
+
+  /**
+   * @todo provide default concrete implementation with the ResourceController
+   * Supporter method for the `getOne` action. Must be implemented by the child controller
+   * @param request
+   * @param routeParams
+   */
+  protected abstract getOneById(request: Request, routeParams: RouteParamMap): Model | Promise<Model>;
 
 }

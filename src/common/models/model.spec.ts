@@ -1,23 +1,23 @@
 import { it, describe, expect } from '@angular/core/testing';
-import { uuid, BaseModel, primary } from './base.model';
+import { UUID, Model, primary } from './model';
 import { castDate } from '../types/date.decorator';
 import * as moment from 'moment';
-import { BaseCollection } from './base.collection';
+import { Collection } from './collection';
 import { hasOne, hasMany } from '../relations';
 import Moment = moment.Moment;
 
-class ChildModel extends BaseModel {
+class ChildModel extends Model {
 
   @primary
-  public id: uuid;
+  public id: UUID;
 
   public name: string;
 
 }
-class BasicModel extends BaseModel {
+class BasicModel extends Model {
 
   @primary
-  public id: uuid;
+  public id: UUID;
 
   public stringNoDefault: string;
   public stringWithDefault: string = 'foo';
@@ -29,7 +29,7 @@ class BasicModel extends BaseModel {
   public _child: ChildModel;
 
   @hasMany(ChildModel)
-  public _children: BaseCollection<ChildModel>;
+  public _children: Collection<ChildModel>;
 }
 
 describe('Model', () => {

@@ -11,10 +11,20 @@ export interface ConnectedSocketCallback {
   (socket: Socket): void;
 }
 
+/**
+ * Class allows developers to register custom commands that can be remote executed in a
+ * shell environment. Useful for things like migrations and debugging.
+ */
 @Injectable()
 export class RemoteCli {
 
+  /**
+   * The instance of Vantage
+   */
   protected vantage: any;
+  /**
+   * Logger instance for the class, initialized with `remote-cli` source
+   */
   private logger: Logger;
 
   constructor(loggerBase: Logger, private injector: Injector) {
@@ -35,6 +45,9 @@ export class RemoteCli {
     this.registerCommands();
   }
 
+  /**
+   * Registers the pre-defined commands
+   */
   private registerCommands(): void {
 
     let remoteCli = this;
@@ -68,6 +81,11 @@ export class RemoteCli {
       });
   }
 
+  /**
+   * Starts the Vantage server. This is done on start of the server so debugging can start immediately
+   * @param port
+   * @param callback
+   */
   public start(port: number, callback?: ConnectedSocketCallback): void {
 
     if (!callback) {
