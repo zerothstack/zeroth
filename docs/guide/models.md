@@ -1,5 +1,6 @@
 ---
 title: Models
+description: Give your data some shape, then make it a family by encouraging relationships
 date: 2016-06-09
 collection: guide
 collectionSort: 1

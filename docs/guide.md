@@ -5,5 +5,3 @@ collection: main
 collectionSort: 0
 layout: guide-listing.hbs
 -------------------------
-
-Here is the guide document

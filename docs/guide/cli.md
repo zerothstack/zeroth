@@ -1,5 +1,6 @@
 ---
 title: CLI
+description: Stick your nose in your server's business, while it is running. Or add shiny new commands to your build tools
 date: 2016-06-08
 collection: guide
 collectionSort: 1
