@@ -11,7 +11,6 @@ description: Full stack isomorphic typescript framework.
 - [ ] Docker deployment
 - [ ] Database migrations
 - [ ] Email sending
-- [ ] Custom middleware registration
 - [ ] Queue handling
 - [ ] Database seeding from `MockModelProvider`s
 - [ ] Full validation decorator complement
@@ -20,6 +19,7 @@ description: Full stack isomorphic typescript framework.
 ### Developer Preview [June 17th]
 - [ ] Model hydration and mocking
 - [ ] `ResourceController` implementation with CRUD routes
+- [ ] Custom middleware registration
 - [ ] Post-initialization cli tour
 - [ ] Full stack demo in quickstart
 - [ ] FAQ page in docs

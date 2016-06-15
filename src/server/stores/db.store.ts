@@ -11,6 +11,7 @@ import { DefineAttributes } from 'sequelize';
 import { DataTypeAbstract } from 'sequelize';
 import { Store } from '../../common/stores/store';
 import { Instance } from 'sequelize';
+import { Collection } from '../../common/models/collection';
 
 /**
  * This store is for saving and retrieving models from the database using Sequelize
@@ -82,9 +83,9 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
   }
 
   /**
-   * Retrive a record
+   * Retrieve a record
    * @param id
-   * @returns {Promise<TResult>}
+   * @return {Promise<TResult>}
    */
   public findOne(id: identifier): Promise<T> {
     return this.orm.findOne({
@@ -93,8 +94,26 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
         }
       })
       .then((modelData: Instance<any>): T => {
-        this.logger.debug('Found model', modelData);
         return new this.modelStatic(modelData.get());
+      })
+      .catch((e) => {
+        // @todo check if not found, if so throw NotFound exception
+        this.logger.error(e);
+        throw e;
+      });
+  }
+
+  /**
+   * Retrieve a set of records
+   * @returns {Promise<Collection<any>>}
+   * @param query
+   */
+  public findMany(query?:any): Promise<Collection<T>> {
+    return this.orm.findAll({
+      //@todo define query and restrict count with pagination
+      })
+      .then((modelCollection: Instance<any>[]): Collection<T> => {
+        return new Collection(modelCollection.map((modelData):T => new this.modelStatic(modelData.get())));
       })
       .catch((e) => {
         // @todo check if not found, if so throw NotFound exception

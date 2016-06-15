@@ -15,8 +15,8 @@ export abstract class Store<T extends Model> {
 
   // public abstract saveOne(model:T): Promise<T>;
   // public abstract deleteOne(id: identifier): Promise<void>;
-  
-  // public abstract findMany(query: Query): Promise<Collection<T>>;
+
+  public abstract findMany(query?: Query): Promise<Collection<T>>;
   // public abstract saveMany(models:Collection<T>): Promise<Collection<T>>;
   // public abstract deleteMany(models:Collection<T>): Promise<void>;
 

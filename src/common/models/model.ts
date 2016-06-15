@@ -96,7 +96,6 @@ export abstract class Model {
 }
 
 export function primary(target: any, propertyKey: string) {
-  console.log('set identifier to ', propertyKey);
   target.constructor.identifierKey = propertyKey;
 }
 
