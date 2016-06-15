@@ -7,6 +7,8 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
+![CLI Screenshot](/assets/image/ubiquits-cli.png)
+
 ## Installation
 To install the cli if you haven't done so in the [quickstart](/guide/quick-start), run the following:
 
