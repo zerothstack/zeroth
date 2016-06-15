@@ -8,6 +8,7 @@ import { Database } from './services/database.service';
 import { RemoteCli } from './services/remoteCli.service';
 import { Logger } from '../common/services/logger.service';
 import { ConsoleLogger } from '../common/services/consoleLogger.service';
+import { DebugLogMiddleware } from './middleware/debugLog.middleware';
 
 /**
  * The core injector is exported so implementations can pick up already registered injectables
@@ -18,6 +19,7 @@ export const coreInjector = ReflectiveInjector.resolveAndCreate([
   AbstractController,
   Database,
   RemoteCli,
+  DebugLogMiddleware,
   provide(Server, {useClass: HapiServer}),
   provide(Logger, {useClass: ConsoleLogger}),
 ]);
