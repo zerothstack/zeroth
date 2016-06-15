@@ -2,8 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { banner } from '../../common/util/banner';
 import Socket = SocketIO.Socket;
 import { Logger } from '../../common/services/logger.service';
-import { Server } from '../servers/abstract.server';
-import { IRoute } from 'hapi';
+import { Server, RouteInfo } from '../servers/abstract.server';
 import * as chalk from 'chalk';
 const Vantage = require('vantage');
 
@@ -69,8 +68,7 @@ export class RemoteCli {
 
         let server = remoteCli.injector.get(Server);
 
-        const routeTable = server.getEngine().connections[0].table()
-          .map((route: IRoute) => [route.method, route.path]);
+        const routeTable = server.getRoutes().map((route:RouteInfo) => [route.method, route.path]);
 
         routeTable.unshift(['Method', 'Path'].map((s: string) => chalk.blue(s)));
 

@@ -1,5 +1,5 @@
 import { ReflectiveInjector } from '@angular/core';
-import { Response } from '../controllers/abstract.controller';
+import { Response } from '../controllers/response';
 
 export interface Middleware {
   (request: any, response: any): Response | Promise<Response>;

@@ -1,7 +1,8 @@
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { InjectableMiddleware, Middleware, InjectableMiddlewareFactory } from './index';
-import { Response, Request } from '../controllers/abstract.controller';
+import { Response } from '../controllers/response';
+import { Request } from '../controllers/request';
 
 @Injectable()
 export class DebugLogMiddleware implements InjectableMiddleware {

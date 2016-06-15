@@ -1,19 +1,10 @@
 import { Server } from '../servers/abstract.server';
 import { Injectable, ReflectiveInjector } from '@angular/core';
-import { Request as HapiRequest, IReply, Response as HapiResponse } from 'hapi';
 import { Logger } from '../../common/services/logger.service';
 import { InjectableMiddlewareFactory, MiddlewareFactory } from '../middleware/index';
 import { PromiseFactory } from '../../common/util/serialPromise';
-
-export interface Request extends HapiRequest {
-
-}
-export interface Response extends HapiResponse {
-
-}
-
-export interface RouteParamMap extends Map<string,string> {
-}
+import { Response } from './response';
+import { Request } from './request';
 
 export type ActionType = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -48,7 +39,6 @@ export abstract class AbstractController {
 
   constructor(protected server: Server, logger: Logger) {
     this.logger = logger.source('controller');
-    this.registerRoutes();
   }
 
   /**
@@ -113,39 +103,26 @@ export abstract class AbstractController {
 
       const middlewareFactories = this.registeredMiddleware && this.registeredMiddleware.get(methodSignature);
 
+      let callStack: PromiseFactory<Response>[] = [];
+
+      callStack.push(this[methodSignature]);
+
+      if (middlewareFactories) {
+        callStack.unshift(...middlewareFactories.before.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+        callStack.push(...middlewareFactories.after.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+      }
+
       this.server.register({
         method: methodDefinition.method,
         path: `/api/${this.routeBase}${methodDefinition.route}`,
-        handler: (request: Request, reply: IReply): Promise<HapiResponse> => {
-
-          //polyfill for `const paramMap = new Map(Object.entries(request.params)`
-          const paramMap: RouteParamMap = ((object: Object) => {
-            let map = new Map();
-            for (let key in object) {
-              map.set(key, object[key]);
-            }
-            return map;
-          })(request.params);
-
-          let callStack:PromiseFactory<Response>[] = [];
-
-          callStack.push(this[methodSignature]);
-
-          if (middlewareFactories) {
-            callStack.unshift(...middlewareFactories.before.map((middleware: MiddlewareFactory) => middleware(this.injector)));
-            callStack.push(...middlewareFactories.after.map((middleware: MiddlewareFactory) => middleware(this.injector)));
-          }
-
+        callStackHandler: (request: Request, response: Response): Promise<Response> => {
           return callStack.reduce((current: Promise<Response>, next: PromiseFactory<Response>): Promise<Response> => {
 
-            return current.then((response:Response): Promise<Response> => {
-              return Promise.resolve(next.call(this, request, response, paramMap));
+            return current.then((response: Response): Promise<Response> => {
+              return Promise.resolve(next.call(this, request, response));
             });
 
-          }, Promise.resolve(request.response)) //initial value
-            .then((response) => reply(response))
-            .catch((err) => reply(err));
-
+          }, Promise.resolve(response)); //initial value
         }
       });
 
