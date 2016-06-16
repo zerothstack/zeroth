@@ -2,8 +2,10 @@ import { Injectable, Injector } from '@angular/core';
 import { banner } from '../../common/util/banner';
 import Socket = SocketIO.Socket;
 import { Logger } from '../../common/services/logger.service';
-import { Server, RouteInfo } from '../servers/abstract.server';
+import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
+import { Response } from '../controllers/response';
+import { PromiseFactory } from '../../common/util/serialPromise';
 const Vantage = require('vantage');
 
 export interface ConnectedSocketCallback {
@@ -68,9 +70,15 @@ export class RemoteCli {
 
         let server = remoteCli.injector.get(Server);
 
-        const routeTable = server.getRoutes().map((route:RouteInfo) => [route.method, route.path]);
+        const routeTable = server.getRoutes().map((route:RouteConfig) => {
 
-        routeTable.unshift(['Method', 'Path'].map((s: string) => chalk.blue(s)));
+          // @todo break into newlines when 'table' supports it
+          const stack = route.callStack.map((handler: PromiseFactory<Response>) => handler.name);
+
+          return [route.method, route.path, stack]
+        });
+
+        routeTable.unshift(['Method', 'Path', 'Stack'].map((s: string) => chalk.blue(s)));
 
         let table = remoteCli.logger.makeTable(routeTable);
 

@@ -15,7 +15,7 @@ export class DebugLogMiddleware implements InjectableMiddleware {
 
   public middlewareFactory(messages: string[]): Middleware {
 
-    return (request: Request, response: Response): Response => {
+    return function debugLog(request: Request, response: Response): Response {
       this.logger.debug(...messages);
       return response;
     }

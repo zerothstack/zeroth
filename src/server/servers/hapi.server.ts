@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Server as Hapi } from 'hapi';
 import { Request as HapiRequest, IReply, Response as HapiResponse } from 'hapi';
-import { Server, RouteConfig, RouteInfo } from './abstract.server';
+import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Response } from '../controllers/response';
@@ -34,7 +34,7 @@ export class HapiServer extends Server {
    * @returns {any}
    * @param routeConfig
    */
-  public register(routeConfig: RouteConfig): void {
+  protected registerRouteWithEngine(routeConfig: RouteConfig): this {
 
     const config = {
       path: routeConfig.path,
@@ -46,16 +46,21 @@ export class HapiServer extends Server {
 
         return routeConfig.callStackHandler(request, response)
           .then((response: Response) => {
+            this.logger.debug('Responding with', response);
             const res = <HapiResponse>reply(response.body);
 
             res.code(response.statusCode);
+            for (var [key, value] of response.headers.entries()) {
+              res.header(key, value);
+            }
             return res;
           })
           .catch((err) => reply(err));
       }
     };
 
-    return this.engine.route(config);
+    this.engine.route(config);
+    return this;
   }
 
   /**
@@ -65,16 +70,6 @@ export class HapiServer extends Server {
   public start(): Promise<this> {
     return this.engine.start()
       .then(() => this);
-  }
-
-  public getRoutes(): RouteInfo[] {
-    return this.getEngine().connections[0].table()
-      .map((route: IRoute) => {
-        return {
-          method: route.method,
-          path: route.path,
-        };
-      });
   }
 
 }

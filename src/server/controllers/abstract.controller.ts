@@ -5,6 +5,7 @@ import { InjectableMiddlewareFactory, MiddlewareFactory } from '../middleware/in
 import { PromiseFactory } from '../../common/util/serialPromise';
 import { Response } from './response';
 import { Request } from './request';
+import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 
 export type ActionType = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -31,7 +32,10 @@ export type MiddlewareLocation = 'before' | 'after';
 export abstract class AbstractController {
 
   protected actionMethods: Map<string, MethodDefinition>;
-  protected registeredMiddleware: Map<string, MiddlewareRegistry>;
+  public registeredMiddleware: {
+    methods: Map<string, MiddlewareRegistry>
+    all: MiddlewareRegistry
+  };
 
   protected routeBase: string;
   protected logger: Logger;
@@ -73,23 +77,28 @@ export abstract class AbstractController {
     this.actionMethods.set(methodSignature, methodDefinition);
   }
 
-  public registerMiddleware(methodSignature: string, location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[]): void {
-    if (!this.registeredMiddleware) {
-      this.registeredMiddleware = new Map<string, MiddlewareRegistry>();
+  public registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature?: string): this {
+
+    initializeMiddlewareRegister(this);
+
+    if (methodSignature){
+      let current: MiddlewareRegistry = this.registeredMiddleware.methods.get(methodSignature);
+
+      if (!current) {
+        current = {
+          before: [],
+          after: []
+        };
+
+        this.registeredMiddleware.methods.set(methodSignature, current);
+      }
+
+      current[location].push(...middlewareFactories);
+    } else { // not method signature, apply to all
+      this.registeredMiddleware.all[location].push(...middlewareFactories);
     }
 
-    let current: MiddlewareRegistry = this.registeredMiddleware.get(methodSignature);
-
-    if (!current) {
-      current = {
-        before: [],
-        after: []
-      };
-
-      this.registeredMiddleware.set(methodSignature, current);
-    }
-
-    current[location].push(...middlewareFactories);
+    return this;
 
   }
 
@@ -101,20 +110,27 @@ export abstract class AbstractController {
 
     this.actionMethods.forEach((methodDefinition: MethodDefinition, methodSignature: string) => {
 
-      const middlewareFactories = this.registeredMiddleware && this.registeredMiddleware.get(methodSignature);
-
       let callStack: PromiseFactory<Response>[] = [];
 
-      callStack.push(this[methodSignature]);
+      if (this.registeredMiddleware){
+        const methodMiddlewareFactories = this.registeredMiddleware.methods.get(methodSignature);
+        //wrap method registered factories with the class defined ones
+        methodMiddlewareFactories.before.unshift(...this.registeredMiddleware.all.before);
+        methodMiddlewareFactories.after.push(...this.registeredMiddleware.all.after);
 
-      if (middlewareFactories) {
-        callStack.unshift(...middlewareFactories.before.map((middleware: MiddlewareFactory) => middleware(this.injector)));
-        callStack.push(...middlewareFactories.after.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+        callStack.push(this[methodSignature]);
+
+        if (methodMiddlewareFactories) {
+          callStack.unshift(...methodMiddlewareFactories.before.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+          callStack.push(...methodMiddlewareFactories.after.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+        }
       }
+
 
       this.server.register({
         method: methodDefinition.method,
         path: `/api/${this.routeBase}${methodDefinition.route}`,
+        callStack: callStack,
         callStackHandler: (request: Request, response: Response): Promise<Response> => {
           return callStack.reduce((current: Promise<Response>, next: PromiseFactory<Response>): Promise<Response> => {
 
