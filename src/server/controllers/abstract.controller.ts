@@ -112,13 +112,13 @@ export abstract class AbstractController {
 
       let callStack: PromiseFactory<Response>[] = [];
 
+      callStack.push(this[methodSignature]);
+
       if (this.registeredMiddleware){
         const methodMiddlewareFactories = this.registeredMiddleware.methods.get(methodSignature);
         //wrap method registered factories with the class defined ones
         methodMiddlewareFactories.before.unshift(...this.registeredMiddleware.all.before);
         methodMiddlewareFactories.after.push(...this.registeredMiddleware.all.after);
-
-        callStack.push(this[methodSignature]);
 
         if (methodMiddlewareFactories) {
           callStack.unshift(...methodMiddlewareFactories.before.map((middleware: MiddlewareFactory) => middleware(this.injector)));
