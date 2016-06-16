@@ -49,7 +49,7 @@ export class RemoteCli {
   /**
    * Registers the pre-defined commands
    */
-  private registerCommands(): void {
+  protected registerCommands(): this {
 
     let remoteCli = this;
 
@@ -85,6 +85,8 @@ export class RemoteCli {
         this.log('\n' + table);
         callback();
       });
+
+    return this;
   }
 
   /**
@@ -92,7 +94,7 @@ export class RemoteCli {
    * @param port
    * @param callback
    */
-  public start(port: number, callback?: ConnectedSocketCallback): void {
+  public start(port: number, callback?: ConnectedSocketCallback): this {
 
     if (!callback) {
       callback = (socket: Socket) => {
@@ -102,6 +104,8 @@ export class RemoteCli {
 
     this.vantage.listen(port, callback);
     this.logger.info(`Vantage server started on ${port}`);
+
+    return this;
   }
 
 }

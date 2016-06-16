@@ -1,11 +1,5 @@
-import {
-  it, xit,
-  inject,
-  describe, xdescribe, fdescribe,
-  beforeEachProviders,
-  expect
-} from '@angular/core/testing';
-import { UUID, Model, primary } from './model';
+import { it, describe, beforeEach, expect } from '@angular/core/testing';
+import { Model, primary } from './model';
 import { Collection } from './collection';
 
 class BasicModel extends Model {

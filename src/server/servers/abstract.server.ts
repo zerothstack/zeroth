@@ -10,6 +10,7 @@ export type HttpMethod = 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE';
 
 export interface RouteConfig {
   path: string;
+  methodName: string;
   method: HttpMethod;
   callStack: PromiseFactory<Response>[];
   callStackHandler: (request: Request, response: Response) => Promise<Response>;

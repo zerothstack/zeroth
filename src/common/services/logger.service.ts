@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+
 const tableModule  = require('table');
 const table: Table = tableModule.default;
 
@@ -69,6 +71,7 @@ export interface Table {
   (data: any[][], config?: TableConfig): string;
 }
 
+@Injectable()
 export abstract class Logger {
 
   protected sourceName: string;

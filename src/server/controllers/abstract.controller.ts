@@ -1,5 +1,5 @@
 import { Server } from '../servers/abstract.server';
-import { Injectable, ReflectiveInjector } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { InjectableMiddlewareFactory, MiddlewareFactory } from '../middleware/index';
 import { PromiseFactory } from '../../common/util/serialPromise';
@@ -39,7 +39,7 @@ export abstract class AbstractController {
 
   protected routeBase: string;
   protected logger: Logger;
-  private injector: ReflectiveInjector;
+  private injector: Injector;
 
   constructor(protected server: Server, logger: Logger) {
     this.logger = logger.source('controller');
@@ -52,7 +52,7 @@ export abstract class AbstractController {
    * @param injector
    * @returns {AbstractController}
    */
-  public registerInjector(injector: ReflectiveInjector) {
+  public registerInjector(injector: Injector) {
     this.injector = injector;
     return this;
   }
@@ -99,7 +99,6 @@ export abstract class AbstractController {
     }
 
     return this;
-
   }
 
   /**
@@ -116,18 +115,19 @@ export abstract class AbstractController {
 
       if (this.registeredMiddleware){
         const methodMiddlewareFactories = this.registeredMiddleware.methods.get(methodSignature);
-        //wrap method registered factories with the class defined ones
-        methodMiddlewareFactories.before.unshift(...this.registeredMiddleware.all.before);
-        methodMiddlewareFactories.after.push(...this.registeredMiddleware.all.after);
+
+        //wrap method registered factories with the class defined ones [beforeAll, before, after, afterAll]
+        const beforeMiddleware = this.registeredMiddleware.all.before.concat(methodMiddlewareFactories.before);
+        const afterMiddleware = methodMiddlewareFactories.after.concat(this.registeredMiddleware.all.after);
 
         if (methodMiddlewareFactories) {
-          callStack.unshift(...methodMiddlewareFactories.before.map((middleware: MiddlewareFactory) => middleware(this.injector)));
-          callStack.push(...methodMiddlewareFactories.after.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+          callStack.unshift(...beforeMiddleware.map((middleware: MiddlewareFactory) => middleware(this.injector)));
+          callStack.push(...afterMiddleware.map((middleware: MiddlewareFactory) => middleware(this.injector)));
         }
       }
 
-
       this.server.register({
+        methodName: methodSignature,
         method: methodDefinition.method,
         path: `/api/${this.routeBase}${methodDefinition.route}`,
         callStack: callStack,

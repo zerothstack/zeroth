@@ -1,6 +1,5 @@
 import { AbstractController, MiddlewareRegistry } from '../controllers/abstract.controller';
 import { MiddlewareFactory } from './index';
-import { initializeRelationMap } from '../../common/relations/index';
 
 /**
  * Decorator for assigning before middleware method in a controller
@@ -51,7 +50,7 @@ export function initializeMiddlewareRegister(target: AbstractController): void {
 export function BeforeAll(...middlewareFactories: MiddlewareFactory[]): ClassDecorator {
   return function (target: Function): void {
     initializeMiddlewareRegister(target.prototype);
-    target.prototype.registeredMiddleware.all.before.push(...middlewareFactories);
+    target.prototype.registeredMiddleware.all.before = middlewareFactories;
   }
 }
 
@@ -64,6 +63,6 @@ export function BeforeAll(...middlewareFactories: MiddlewareFactory[]): ClassDec
 export function AfterAll(...middlewareFactories: MiddlewareFactory[]): ClassDecorator {
   return function (target: Function): void {
     initializeMiddlewareRegister(target.prototype);
-    target.prototype.registeredMiddleware.all.after.push(...middlewareFactories);
+    target.prototype.registeredMiddleware.all.after = middlewareFactories;
   }
 }

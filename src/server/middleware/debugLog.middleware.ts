@@ -9,8 +9,7 @@ export class DebugLogMiddleware implements InjectableMiddleware {
   protected logger: Logger;
 
   constructor(loggerBase: Logger) {
-    console.log('initialized log middleware', loggerBase);
-    this.logger = loggerBase.source('Log middleware');
+    this.logger = loggerBase.source('debugLog');
   }
 
   public middlewareFactory(messages: string[]): Middleware {
@@ -18,7 +17,8 @@ export class DebugLogMiddleware implements InjectableMiddleware {
     return function debugLog(request: Request, response: Response): Response {
       this.logger.debug(...messages);
       return response;
-    }
+    }.bind(this);
+
   }
 }
 
@@ -26,7 +26,7 @@ export function debugLog(...messages: string[]): InjectableMiddlewareFactory {
 
   return (injector: ReflectiveInjector): Middleware => {
     return injector.get(DebugLogMiddleware)
-      .middlewareFactory(messages)
+      .middlewareFactory(messages);
   }
 
 }
