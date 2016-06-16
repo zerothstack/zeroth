@@ -1,6 +1,7 @@
 import { Request as HapiRequest } from 'hapi';
+import { Request as ExpressRequest } from 'express';
 
-export type OriginalRequest = HapiRequest;
+export type OriginalRequest = HapiRequest|ExpressRequest;
 
 export class Request {
 

@@ -11,8 +11,18 @@ import { IRoute } from 'hapi';
 @Injectable()
 export class HapiServer extends Server {
 
+  private engine: Hapi;
+
   constructor(logger: Logger, remoteCli: RemoteCli) {
     super(logger, remoteCli);
+  }
+
+  /**
+   * @inherit
+   * @returns {Hapi}
+   */
+  public getEngine(): Hapi {
+    return this.engine;
   }
 
   /**
@@ -23,8 +33,8 @@ export class HapiServer extends Server {
     this.engine = new Hapi();
 
     this.engine.connection({
-      host: 'localhost',
-      port: 3000
+      host: this.host,
+      port: this.port
     });
     return this;
   }
@@ -65,11 +75,20 @@ export class HapiServer extends Server {
 
   /**
    * @inherit
-   * @returns {IThenable<HapiServer>|PromiseLike<HapiServer>|Promise<HapiServer>|IPromise<HapiServer>}
+   * @returns {Promise<HapiServer>}
    */
   public start(): Promise<this> {
-    return this.engine.start()
+
+    return new Promise((resolve, reject) => {
+      this.engine.start((err) => {
+        if (err){
+          return reject(err);
+        }
+        return resolve();
+      });
+    })
       .then(() => this);
+
   }
 
 }

@@ -15,6 +15,7 @@ import { RemoteCli } from './services/remoteCli.service';
 import { Logger } from '../common/services/logger.service';
 import { ConsoleLogger } from '../common/services/consoleLogger.service';
 import { DebugLogMiddleware } from './middleware/debugLog.middleware';
+import { ExpressServer } from './servers/express.server';
 export {provide} from '@angular/core';
 /**
  * The core injector is exported so implementations can pick up already registered injectables
@@ -26,7 +27,8 @@ export const coreInjector = ReflectiveInjector.resolveAndCreate([
   Database,
   RemoteCli,
   DebugLogMiddleware,
-  provide(Server, {useClass: HapiServer}),
+  // provide(Server, {useClass: HapiServer}),
+  provide(Server, {useClass: ExpressServer}),
   provide(Logger, {useClass: ConsoleLogger}),
 ]);
 

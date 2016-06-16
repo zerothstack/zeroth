@@ -5,6 +5,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ServerMock extends Server {
+  
+  public getEngine(): any {
+    return undefined;
+  }
 
   constructor(logger: Logger, remoteCli: RemoteCli) {
     super(logger, remoteCli);

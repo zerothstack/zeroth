@@ -5,6 +5,7 @@ import { Server as Hapi } from 'hapi';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
 import { PromiseFactory } from '../../common/util/serialPromise';
+import { Application as Express } from 'express';
 
 export type HttpMethod = 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE';
 
@@ -19,21 +20,25 @@ export interface RouteConfig {
 @Injectable()
 export abstract class Server {
 
+  protected host:string;
+  protected port:number;
+
   public configuredRoutes: RouteConfig[] = [];
   /**
    * Logger instance for the class, initialized with `server` source
    */
    protected logger: Logger;
-  /**
-   * The implementation of the underlying engine, could be hapi, koa, express etc
-   */
-   protected engine: Hapi|any;
 
   constructor(loggerBase: Logger, remoteCli: RemoteCli) {
 
     this.logger = loggerBase.source('server');
 
+    //@todo pull this config from process.env via .env variables
+    this.host = 'localhost';
+    this.port = 3000;
+
     this.initialize();
+
 
     remoteCli.start(3001);
   }
@@ -64,8 +69,10 @@ export abstract class Server {
    * Retrieves the underlying engine for custom calls
    * @returns {Hapi|any}
    */
-  public getEngine(): any {
-    return this.engine;
+  public abstract getEngine():Hapi|Express|any;
+
+  public getHost(){
+    return `http://${this.host}:${this.port}`;
   }
 
   public getRoutes(): RouteConfig[] {
