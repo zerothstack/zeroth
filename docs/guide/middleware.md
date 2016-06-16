@@ -51,7 +51,8 @@ If a middleware has simple requirements like basic request or response manipulat
 Here is an example of a basic middleware that defines a header to copy from the request to the response:
 ```typescript
 function forwardHeader(headerName: string): IsolatedMiddlewareFactory {
-  return () => (request: Request, response: Response): Response => {
+  //use a named function here so the call stack can easily be debugged to show the called middleware
+  return () => function forwardHeader(request: Request, response: Response): Response {
     response.header(headerName, request.headers().get(headerName));
     return response;
   }
@@ -80,12 +81,13 @@ export class AuthorizationMiddleware implements InjectableMiddleware {
 
   public middlewareFactory(claim:string): Middleware {
 
-    return (request: Request, response: Response): Response => {
+    //use a named function here so the call stack can easily be debugged to show the called middleware
+    return function authorize(request: Request, response: Response): Response {
       if (!this.auth.check(request, claim)) {
         throw new UnauthorizedException('Forbidden');
       }
       return response;
-    }
+    }.bind(this);
   }
 }
 

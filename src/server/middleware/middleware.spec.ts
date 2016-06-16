@@ -1,0 +1,122 @@
+import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { IsolatedMiddlewareFactory } from './index';
+import { Request } from '../controllers/request';
+import { Response } from '../controllers/response';
+import { Action } from '../controllers/action.decorator';
+import { AfterAll, BeforeAll, Before, After } from './middleware.decorator';
+import { AbstractController } from '../controllers/abstract.controller';
+import { Injectable, ReflectiveInjector } from '@angular/core';
+import { Logger } from '../../common/services/logger.service';
+import { Server, RouteConfig } from '../servers/abstract.server';
+import { LoggerMock } from '../../common/services/logger.service.spec';
+import { ServerMock } from '../servers/abstract.server.spec';
+import { RemoteCli } from '../services/remoteCli.service';
+import { RemoteCliMock } from '../services/remoteCli.service.spec';
+import { PromiseFactory } from '../../common/util/serialPromise';
+
+let middlewareCalls: string[] = [];
+
+function middlewareFixture(input: string): IsolatedMiddlewareFactory {
+  return () => function mockMiddleware(request: Request, response: Response): Response {
+    middlewareCalls.push(input);
+    return response;
+  }
+}
+
+@BeforeAll(middlewareFixture('one'), middlewareFixture('two'))
+@AfterAll(middlewareFixture('five'))
+@Injectable()
+class MiddlewareController extends AbstractController {
+
+  constructor(server: Server, logger: Logger) {
+    super(server, logger);
+  }
+
+  @Action('GET', '/test')
+  @Before(middlewareFixture('three'))
+  @After(middlewareFixture('four'))
+  public testMethod(request: Request, response: Response): Response {
+    return response;
+  }
+
+}
+
+const providers = [
+  MiddlewareController,
+  {provide: Server, useClass: ServerMock},
+  {provide: Logger, useClass: LoggerMock},
+  {provide: RemoteCli, useClass: RemoteCliMock},
+  ReflectiveInjector
+];
+
+describe('Middleware Decorators', () => {
+
+  let controller: MiddlewareController;
+
+  beforeEachProviders(() => providers);
+
+  it('defines registeredMiddleware on the controller',
+    inject([MiddlewareController, ReflectiveInjector],
+      (c:MiddlewareController, i:ReflectiveInjector) => {
+
+        controller = c.registerRoutes().registerInjector(i);
+
+        expect(controller.registeredMiddleware)
+          .not
+          .toBeNull();
+        expect(controller.registeredMiddleware.all.before.length)
+          .toEqual(2);
+        expect(controller.registeredMiddleware.all.after.length)
+          .toEqual(1);
+      }));
+
+
+  it('adds middleware to the call stack',
+    inject([MiddlewareController, ReflectiveInjector, Server],
+      (c:MiddlewareController, i:ReflectiveInjector, s:Server) => {
+
+        controller = c.registerRoutes().registerInjector(i);
+
+        const callStack:any = s.getRoutes().reduce((middlewareStackMap:Object, route:RouteConfig) => {
+          middlewareStackMap[route.methodName] = route.callStack.map((handler: PromiseFactory<Response>) => handler.name);
+          return middlewareStackMap;
+        }, {});
+
+        expect(callStack.testMethod).toEqual([
+          'mockMiddleware',
+          'mockMiddleware',
+          'mockMiddleware',
+          'testMethod',
+          'mockMiddleware',
+          'mockMiddleware'
+        ]);
+
+      }));
+
+
+  it('calls the stack in the correct order defined by middleware',
+    inject([MiddlewareController, ReflectiveInjector, Server],
+      (c:MiddlewareController, i:ReflectiveInjector, s:Server) => {
+
+        controller = c.registerRoutes().registerInjector(i);
+
+        const callStackHandler:any = s.getRoutes().find((route:RouteConfig) => route.methodName == 'testMethod').callStackHandler;
+
+        let request  = new Request();
+        let response = new Response();
+
+        return callStackHandler(request, response).then(() => {
+
+          expect(middlewareCalls).toEqual([
+            'one',
+            'two',
+            'three',
+            'four',
+            'five',
+          ]);
+
+        });
+
+      }));
+
+});

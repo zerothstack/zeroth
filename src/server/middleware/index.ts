@@ -1,4 +1,4 @@
-import { ReflectiveInjector } from '@angular/core';
+import { Injector } from '@angular/core';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
 
@@ -11,11 +11,11 @@ export interface InjectableMiddleware {
 }
 
 export interface InjectableMiddlewareFactory {
-  (injector: ReflectiveInjector): Middleware;
+  (injector: Injector): Middleware;
 }
 
 export interface IsolatedMiddlewareFactory {
-  (injector?: ReflectiveInjector): Middleware;
+  (injector?: Injector): Middleware;
 }
 
 export type MiddlewareFactory = InjectableMiddlewareFactory | IsolatedMiddlewareFactory;

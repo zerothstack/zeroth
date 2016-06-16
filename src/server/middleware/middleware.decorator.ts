@@ -1,30 +1,68 @@
-import { AbstractController } from '../controllers/abstract.controller';
-import { InjectableMiddlewareFactory } from './index';
+import { AbstractController, MiddlewareRegistry } from '../controllers/abstract.controller';
+import { MiddlewareFactory } from './index';
 
 /**
- * Decorator for assigning middleware method in a controller
+ * Decorator for assigning before middleware method in a controller
  * @returns {function(any, string, TypedPropertyDescriptor<T>): undefined}
  * @constructor
  * @param middlewareFactories
  */
-export function Before<T>(...middlewareFactories:InjectableMiddlewareFactory[]): MethodDecorator {
+export function Before<T>(...middlewareFactories: MiddlewareFactory[]): MethodDecorator {
 
   return function (target: AbstractController, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
 
-      target.registerMiddleware(propertyKey, 'before', middlewareFactories);
+    target.registerMiddleware('before', middlewareFactories, propertyKey);
   };
 }
 
 /**
- * Decorator for assigning middleware method in a controller
+ * Decorator for assigning after middleware method in a controller
  * @returns {function(any, string, TypedPropertyDescriptor<T>): undefined}
  * @constructor
  * @param middlewareFactories
  */
-export function After<T>(...middlewareFactories:InjectableMiddlewareFactory[]): MethodDecorator {
+export function After<T>(...middlewareFactories: MiddlewareFactory[]): MethodDecorator {
 
   return function (target: AbstractController, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
 
-      target.registerMiddleware(propertyKey, 'after', middlewareFactories);
+    target.registerMiddleware('after', middlewareFactories, propertyKey);
   };
+}
+
+export function initializeMiddlewareRegister(target: AbstractController): void {
+  if (!target.registeredMiddleware) {
+    target.registeredMiddleware = {
+      methods: new Map<string, MiddlewareRegistry>(),
+      all: {
+        before: [],
+        after: []
+      }
+    };
+  }
+}
+
+/**
+ * Decorator for assigning before middleware to all methods in a controller
+ * @param middlewareFactories
+ * @returns {function(AbstractController): void}
+ * @constructor
+ */
+export function BeforeAll(...middlewareFactories: MiddlewareFactory[]): ClassDecorator {
+  return function (target: Function): void {
+    initializeMiddlewareRegister(target.prototype);
+    target.prototype.registeredMiddleware.all.before = middlewareFactories;
+  }
+}
+
+/**
+ * Decorator for assigning after middleware to all methods in a controller
+ * @param middlewareFactories
+ * @returns {function(AbstractController): void}
+ * @constructor
+ */
+export function AfterAll(...middlewareFactories: MiddlewareFactory[]): ClassDecorator {
+  return function (target: Function): void {
+    initializeMiddlewareRegister(target.prototype);
+    target.prototype.registeredMiddleware.all.after = middlewareFactories;
+  }
 }

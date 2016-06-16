@@ -1,4 +1,4 @@
-import { it, describe, expect } from '@angular/core/testing';
+import { it, describe, expect, beforeEach } from '@angular/core/testing';
 import { UUID, Model, primary } from './model';
 import { castDate } from '../types/date.decorator';
 import * as moment from 'moment';
