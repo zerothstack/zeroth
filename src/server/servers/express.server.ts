@@ -30,7 +30,7 @@ export class ExpressServer extends Server {
    * @returns {Express}
    */
   protected initialize() {
-    this.engine = express();
+    this.engine     = express();
     this.httpServer = http.createServer(<any>(this.engine));
 
     return this;
@@ -43,17 +43,16 @@ export class ExpressServer extends Server {
    */
   protected registerRouteWithEngine(routeConfig: RouteConfig): this {
 
-    console.log(this.engine);
-
     this.engine[routeConfig.method.toLowerCase()](routeConfig.path, (req: ExpressRequest, res: ExpressResponse) => {
 
-      let request  = new Request(req);
-      let response = new Response();
+      let request = new Request(req,
+        Request.extractMapFromDictionary<string, string>(req.params),
+        Request.extractMapFromDictionary<string, string>(req.headers));
+
+      let response = this.getDefaultResponse();
 
       return routeConfig.callStackHandler(request, response)
         .then((response: Response) => {
-          this.logger.debug('Responding with', response);
-
           return this.send(response, res);
         })
         .catch((err) => this.sendErr(err, res));
@@ -74,7 +73,12 @@ export class ExpressServer extends Server {
       .then(() => this);
   }
 
-  private send(response: Response, res: ExpressResponse):void {
+  /**
+   * Send the response
+   * @param response
+   * @param res
+   */
+  private send(response: Response, res: ExpressResponse): void {
 
     res.status(response.statusCode);
 
@@ -85,7 +89,18 @@ export class ExpressServer extends Server {
     res.send(response.body);
   }
 
-  private sendErr(err:any, res: ExpressResponse):void {
+  /**
+   * Send the error response
+   * @param err
+   * @param res
+   */
+  private sendErr(err: any, res: ExpressResponse): void {
+
+    //make sure the status is of error type
+    if (res.statusCode < 400) {
+      res.status(500);
+    }
+
     res.send(err);
   }
 }

@@ -53,7 +53,7 @@ Here is an example of a basic middleware that defines a header to copy from the 
 function forwardHeader(headerName: string): IsolatedMiddlewareFactory {
   //use a named function here so the call stack can easily be debugged to show the called middleware
   return () => function forwardHeader(request: Request, response: Response): Response {
-    response.header(headerName, request.headers().get(headerName));
+    response.header(headerName, request.headers().get(headerName.toLowerCase()));
     return response;
   }
 }

@@ -1,28 +1,26 @@
-import { Request as HapiRequest } from 'hapi';
-import { Request as ExpressRequest } from 'express';
-
-export type OriginalRequest = HapiRequest|ExpressRequest;
+import { IncomingMessage } from 'http';
 
 export class Request {
 
-  constructor(private original?: OriginalRequest) {
+  constructor(protected raw: IncomingMessage = undefined,
+              protected paramsMap: Map<string, string> = new Map(),
+              protected headersMap: Map<string, string> = new Map()) {
 
   }
 
-  public getOriginal(): OriginalRequest {
-    return this.original;
+  public getRaw(): IncomingMessage {
+    return this.raw;
   }
 
   public headers(): Map<string, string> {
-    return Request.extractMapFromDictionary<string, string>(this.original.headers);
+    return this.headersMap;
   }
 
   public params(): Map<string, string> {
-    return Request.extractMapFromDictionary<string, string>(this.original.params);
+    return this.paramsMap;
   }
 
-
-  private static extractMapFromDictionary<K, V>(dictionary:Object):Map<K, V> {
+  public static extractMapFromDictionary<K, V>(dictionary: Object): Map<K, V> {
     let map = new Map();
 
     for (let key in dictionary) {

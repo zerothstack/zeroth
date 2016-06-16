@@ -6,7 +6,7 @@ import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
 import { PromiseFactory } from '../../common/util/serialPromise';
 import { Application as Express } from 'express';
-import {Server as HttpServer} from 'http';
+import { Server as HttpServer } from 'http';
 
 export type HttpMethod = 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE';
 
@@ -21,16 +21,19 @@ export interface RouteConfig {
 @Injectable()
 export abstract class Server {
 
-  protected host:string;
-  protected port:number;
-  
-  protected httpServer:HttpServer;
+  /** Hostname eg `localhost`, `example.com` */
+  protected host: string;
+  /** Port number server is running on */
+  protected port: number;
 
+  /** require('http').Server object from the base class */
+  protected httpServer: HttpServer;
+
+  /** All Configured routes */
   public configuredRoutes: RouteConfig[] = [];
-  /**
-   * Logger instance for the class, initialized with `server` source
-   */
-   protected logger: Logger;
+
+  /** Logger instance for the class, initialized with `server` source */
+  protected logger: Logger;
 
   constructor(loggerBase: Logger, remoteCli: RemoteCli) {
 
@@ -41,7 +44,6 @@ export abstract class Server {
     this.port = 3000;
 
     this.initialize();
-
 
     remoteCli.start(3001);
   }
@@ -72,18 +74,42 @@ export abstract class Server {
    * Retrieves the underlying engine for custom calls
    * @returns {Hapi|any}
    */
-  public abstract getEngine():Hapi|Express|any;
+  public abstract getEngine(): Hapi|Express|any;
 
-  public getHttpServer(){
+  /**
+   * Retrieve the base instance of require('http').Server
+   * @returns {HttpServer}
+   */
+  public getHttpServer() {
     return this.httpServer;
   }
 
-  public getHost():string{
+  /**
+   * Get the host name (for logging)
+   * @returns {string}
+   */
+  public getHost(): string {
     return `http://${this.host}:${this.port}`;
   }
 
+  /**
+   * Retrieve all configured routes
+   * @returns {RouteConfig[]}
+   */
   public getRoutes(): RouteConfig[] {
     return this.configuredRoutes;
+  }
+
+  /**
+   * Get the default response object
+   * @returns {Response}
+   */
+  protected getDefaultResponse(): Response {
+
+    return new Response()
+    // Outputs eg `X-Powered-By: Ubiquits<Angular,Express>`
+      .header('X-Powered-By', `Ubiquits<Angular,${this.constructor.name.replace('Server', '')}>`);
+
   }
 
 }
