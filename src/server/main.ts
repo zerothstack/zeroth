@@ -27,8 +27,8 @@ export const coreInjector = ReflectiveInjector.resolveAndCreate([
   Database,
   RemoteCli,
   DebugLogMiddleware,
-  // provide(Server, {useClass: HapiServer}),
-  provide(Server, {useClass: ExpressServer}),
+  provide(Server, {useClass: HapiServer}),
+  // provide(Server, {useClass: ExpressServer}),
   provide(Logger, {useClass: ConsoleLogger}),
 ]);
 

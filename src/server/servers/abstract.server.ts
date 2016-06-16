@@ -6,6 +6,7 @@ import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
 import { PromiseFactory } from '../../common/util/serialPromise';
 import { Application as Express } from 'express';
+import {Server as HttpServer} from 'http';
 
 export type HttpMethod = 'GET' | 'PUT' | 'PATCH' | 'POST' | 'DELETE';
 
@@ -22,6 +23,8 @@ export abstract class Server {
 
   protected host:string;
   protected port:number;
+  
+  protected httpServer:HttpServer;
 
   public configuredRoutes: RouteConfig[] = [];
   /**
@@ -71,7 +74,11 @@ export abstract class Server {
    */
   public abstract getEngine():Hapi|Express|any;
 
-  public getHost(){
+  public getHttpServer(){
+    return this.httpServer;
+  }
+
+  public getHost():string{
     return `http://${this.host}:${this.port}`;
   }
 

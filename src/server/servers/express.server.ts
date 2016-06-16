@@ -6,6 +6,7 @@ import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
 import * as express from 'express';
 import { Application, Request as ExpressRequest, Response as ExpressResponse } from 'express';
+import * as http from 'http';
 
 @Injectable()
 export class ExpressServer extends Server {
@@ -30,6 +31,7 @@ export class ExpressServer extends Server {
    */
   protected initialize() {
     this.engine = express();
+    this.httpServer = http.createServer(<any>(this.engine));
 
     return this;
   }
@@ -67,7 +69,7 @@ export class ExpressServer extends Server {
    */
   public start(): Promise<this> {
     return new Promise((resolve, reject) => {
-      this.engine.listen(this.port, this.host, resolve);
+      this.httpServer.listen(this.port, this.host, resolve);
     })
       .then(() => this);
   }

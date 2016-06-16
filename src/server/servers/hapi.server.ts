@@ -36,6 +36,9 @@ export class HapiServer extends Server {
       host: this.host,
       port: this.port
     });
+
+    this.httpServer = this.engine.listener;
+
     return this;
   }
 
@@ -46,8 +49,13 @@ export class HapiServer extends Server {
    */
   protected registerRouteWithEngine(routeConfig: RouteConfig): this {
 
+    if (/[\*\?]/.test(routeConfig.path)){
+      throw new Error('Hapi syntax for optional or multi-segment parameters is not supported');
+    }
+
     const config = {
-      path: routeConfig.path,
+      //re-map /path/{param} to /path/{param} (the inverse if needed later is .replace(/{([-_a-zA-Z0-9]+).*?}/g, ':$1')
+      path: routeConfig.path.replace(/:(.+?)(\/|$)/g, "{$1}$2"),
       method: routeConfig.method,
       handler: (req: HapiRequest, reply: IReply): Promise<HapiResponse> => {
 

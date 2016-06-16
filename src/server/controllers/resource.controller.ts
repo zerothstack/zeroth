@@ -25,7 +25,7 @@ export abstract class ResourceController<M extends Model> extends AbstractContro
    * @param response
    * @returns {any}
    */
-  @Action('GET', '/{id}')
+  @Action('GET', '/:id')
   public getOne(request: Request, response: Response): Promise<Response> {
 
     this.logger.debug('reading params', request);
