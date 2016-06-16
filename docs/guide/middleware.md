@@ -87,7 +87,7 @@ export class AuthorizationMiddleware implements InjectableMiddleware {
         throw new UnauthorizedException('Forbidden');
       }
       return response;
-    }
+    }.bind(this);
   }
 }
 
