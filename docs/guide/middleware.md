@@ -22,7 +22,7 @@ Middleware are applied with the method decorators `@Before(...middlewareFactorie
 Middleware is applied in left to right order of the decorator params.
 For example:
 ```typescript
-  @Action('GET', '/example')
+  @Route('GET', '/example')
   @Before(debugLog('Middleware ran 1'), debugLog('Middleware ran 2'))
   @After(debugLog('Middleware ran 3'))
   public exampleMethod(request: Request, response: Response): Response {

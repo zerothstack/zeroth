@@ -2,7 +2,7 @@ import { it, inject, beforeEachProviders, expect, describe } from '@angular/core
 import { IsolatedMiddlewareFactory } from './index';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
-import { Action } from '../controllers/action.decorator';
+import { Route } from '../controllers/route.decorator';
 import { AfterAll, BeforeAll, Before, After } from './middleware.decorator';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Injectable, ReflectiveInjector } from '@angular/core';
@@ -32,7 +32,7 @@ class MiddlewareController extends AbstractController {
     super(server, logger);
   }
 
-  @Action('GET', '/test')
+  @Route('GET', '/test')
   @Before(middlewareFixture('three'))
   @After(middlewareFixture('four'))
   public testMethod(request: Request, response: Response): Response {

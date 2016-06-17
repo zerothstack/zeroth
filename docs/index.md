@@ -19,7 +19,7 @@ description: Full stack isomorphic typescript framework.
 ### Developer Preview [June 17th]
 - [ ] Model hydration and mocking
 - [ ] `ResourceController` implementation with CRUD routes
-- [ ] Custom middleware registration
+- [x] Custom middleware registration
 - [ ] Post-initialization cli tour
 - [ ] Full stack demo in quickstart
 - [ ] FAQ page in docs
@@ -37,7 +37,7 @@ description: Full stack isomorphic typescript framework.
   - [x] Full stack debug breakpoints in Webstorm
   - [x] Live reloading browser
   - [x] Live restarting server
-  - [x] Route registration with `@Action` decorator
+  - [x] Route registration with `@Route` decorator
   - [x] `docker-compose.json` running postgres db
   - [x] Connection to database from localhost with `Sequelize`
   - [x] Testing framework for both frontend and backend

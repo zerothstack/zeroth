@@ -55,43 +55,43 @@ of methods for interacting with the resource that controller provides.
 
 ### `getOne`
 ```typescript
-   @Action('GET', '/{id}')
+   @Route('GET', '/:id')
    getOne(request: Request, routeParams: RouteParamMap):Response;
    ```
 
 ### `getMany` (planned)
 ```typescript
-@Action('GET', '/')
+@Route('GET', '/')
 getMany(request: Request, routeParams: RouteParamMap):Response;
 ```
 ### `postOne` (planned)
 ```typescript
-@Action('POST', '/')
+@Route('POST', '/')
 postOne(request: Request, routeParams: RouteParamMap):Response;
 ```
 ### `postMany` (planned)
 ```typescript
-@Action('POST', '/')
+@Route('POST', '/')
 postMany(request: Request, routeParams: RouteParamMap):Response;
 ```
 ### `putOne` (planned)
 ```typescript
-@Action('PUT', '/{id}')
+@Route('PUT', '/:id')
 putOne(request: Request, routeParams: RouteParamMap):Response;
 ```
 ### `putMany` (planned)
 ```typescript
-@Action('PUT', '/')
+@Route('PUT', '/')
 putMany(request: Request, routeParams: RouteParamMap):Response;
 ```
 ### `deleteOne` (planned)
 ```typescript
-@Action('DELETE', '/{id}')
+@Route('DELETE', '/:id')
 deleteOne(request: Request, routeParams: RouteParamMap):Response;
 ```
 ### `deleteMany` (planned)
 ```typescript
-@Action('DELETE', '/')
+@Route('DELETE', '/')
 deleteMany(request: Request, routeParams: RouteParamMap):Response;
 ```
 
