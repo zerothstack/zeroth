@@ -4,17 +4,20 @@ import { Store } from '../../common/stores/store';
 import { identifier, ModelStatic, Model } from '../../common/models/model';
 import { Logger } from '../../common/services/logger.service';
 import { Collection } from '../../common/models/collection';
+import 'rxjs/add/operator/toPromise';
+
 
 @Injectable()
 export abstract class HttpStore<T extends Model> extends Store<T> {
 
-  private endpoint: string = 'api/users';
   protected logger: Logger;
 
   constructor(modelStatic: ModelStatic<T>, protected http: Http, loggerBase: Logger) {
     super(modelStatic);
     this.logger = loggerBase.source('HTTP Store');
   }
+
+  protected abstract endpoint(id?: identifier):string;
 
   /**
    * Retrieve one model from the REST api
@@ -23,7 +26,7 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
    */
   public findOne(id: identifier): Promise<T> {
 
-    return this.http.get(`${this.endpoint}/${id}`)
+    return this.http.get(this.endpoint(id))
       .toPromise()
       .then((res: Response) => this.extractModel(res))
       .catch((error) => this.handleError(error));
@@ -31,7 +34,7 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
   }
 
   public findMany(query?:any):Promise<Collection<T>> {
-    return this.http.get(`${this.endpoint}/`)
+    return this.http.get(this.endpoint())
       .toPromise()
       .then((res: Response) => this.extractCollection(res))
       .catch((error) => this.handleError(error));
