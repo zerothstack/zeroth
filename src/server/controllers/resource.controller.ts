@@ -28,8 +28,6 @@ export abstract class ResourceController<M extends Model> extends AbstractContro
   @Route('GET', '/:id')
   public getOne(request: Request, response: Response): Promise<Response> {
 
-    this.logger.debug('reading params', request);
-
     return this.modelStore
       .findOne(request.params().get('id'))
       .then((model:M) => response.data(model));

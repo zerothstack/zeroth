@@ -9,16 +9,19 @@ import { Logger } from '../common/services/logger.service';
 import { ConsoleLogger } from '../common/services/consoleLogger.service';
 import { DebugLogMiddleware } from './middleware/debugLog.middleware';
 import { ExpressServer } from './servers/express.server';
-export {provide} from '@angular/core';
+export { provide } from '@angular/core';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import * as _ from 'lodash';
 
 /**
  * Load .env variables into process.env.*
  */
 dotenv.config({
-  path: path.resolve(process.cwd(), './env/.default.env')
+  path: path.resolve(process.cwd(), '.env')
 });
+
+process.env = _.mapKeys(process.env, (value:any, key:string) => key.replace(/^PUBLIC_/, ''));
 
 /**
  * The core injector is exported so implementations can pick up already registered injectables

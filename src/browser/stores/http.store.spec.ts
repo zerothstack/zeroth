@@ -71,8 +71,6 @@ describe('Http store', () => {
       body: [{id: 1, name: 'foo'}],
       status: 200,
       headers: null,
-      statusText: 'OK',
-      type: 0,
       url: `${process.env.API_BASE}/tests`,
       merge: null
     }));
