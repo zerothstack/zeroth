@@ -1,11 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
 import { banner } from '../../common/util/banner';
-import Socket = SocketIO.Socket;
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
 import { Response } from '../controllers/response';
 import { PromiseFactory } from '../../common/util/serialPromise';
+import Socket = SocketIO.Socket;
 const Vantage = require('vantage');
 
 export interface ConnectedSocketCallback {
@@ -32,6 +32,14 @@ export class RemoteCli {
 
     this.logger = loggerBase.source('remote-cli');
 
+    this.initializeVantage();
+  }
+
+  /**
+   * Initialize the vantage client
+   * @returns {RemoteCli}
+   */
+  protected initializeVantage(): this {
     this.vantage = new Vantage();
 
     this.vantage.delimiter('ubiquits-runtime~$');
@@ -43,7 +51,7 @@ export class RemoteCli {
 
     this.vantage.banner(displayBanner);
 
-    this.registerCommands();
+    return this.registerCommands();
   }
 
   /**
@@ -90,7 +98,8 @@ export class RemoteCli {
   }
 
   /**
-   * Starts the Vantage server. This is done on start of the server so debugging can start immediately
+   * Starts the Vantage server. This is done on start of the server so debugging can start
+   * immediately
    * @param port
    * @param callback
    */

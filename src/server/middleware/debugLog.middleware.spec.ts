@@ -9,7 +9,7 @@ import {
 import { IsolatedMiddlewareFactory } from './index';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
-import { Action } from '../controllers/action.decorator';
+import { Route } from '../controllers/route.decorator';
 import { AfterAll, BeforeAll, Before, After } from './middleware.decorator';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Injectable, Injector, Provider, provide } from '@angular/core';
@@ -29,7 +29,7 @@ class MiddlewareController extends AbstractController {
     super(server, logger);
   }
 
-  @Action('GET', '/test')
+  @Route('GET', '/test')
   @Before(debugLog('test log input'))
   public testMethod(request: Request, response: Response): Response {
     return response;

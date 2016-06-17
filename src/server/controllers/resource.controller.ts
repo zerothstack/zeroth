@@ -2,7 +2,7 @@ import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { AbstractController} from './abstract.controller';
 import { Logger } from '../../common/services/logger.service';
-import { Action } from './action.decorator';
+import { Route } from './route.decorator';
 import { Model } from '../../common/models/model';
 import { Response } from './response';
 import { Request } from './request';
@@ -25,7 +25,7 @@ export abstract class ResourceController<M extends Model> extends AbstractContro
    * @param response
    * @returns {any}
    */
-  @Action('GET', '/:id')
+  @Route('GET', '/:id')
   public getOne(request: Request, response: Response): Promise<Response> {
 
     this.logger.debug('reading params', request);
@@ -41,7 +41,7 @@ export abstract class ResourceController<M extends Model> extends AbstractContro
    * @param response
    * @returns {any}
    */
-  @Action('GET', '/')
+  @Route('GET', '/')
   public getMany(request: Request, response: Response): Promise<Response> {
 
     return this.modelStore
