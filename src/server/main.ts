@@ -11,12 +11,13 @@ import { DebugLogMiddleware } from './middleware/debugLog.middleware';
 import { ExpressServer } from './servers/express.server';
 export {provide} from '@angular/core';
 import * as dotenv from 'dotenv';
+import * as path from 'path';
 
 /**
  * Load .env variables into process.env.*
  */
 dotenv.config({
-  path: './env/.default.env'
+  path: path.resolve(process.cwd(), './env/.default.env')
 });
 
 /**

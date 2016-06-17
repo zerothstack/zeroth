@@ -8,6 +8,61 @@ import { PromiseFactory } from '../../common/util/serialPromise';
 import Socket = SocketIO.Socket;
 const Vantage = require('vantage');
 
+const tableModule  = require('table');
+const table: Table = tableModule.default;
+
+
+export interface TableBorderTemplate {
+
+  topBody?: string;
+  topJoin?: string;
+  topLeft?: string;
+  topRight?: string;
+
+  bottomBody?: string;
+  bottomJoin?: string;
+  bottomLeft?: string;
+  bottomRight?: string;
+
+  bodyLeft?: string;
+  bodyRight?: string;
+  bodyJoin?: string;
+
+  joinBody?: string;
+  joinLeft?: string;
+  joinRight?: string;
+  joinJoin?: string;
+
+}
+export interface TableBorderTemplateFactory {
+  (name: string): TableBorderTemplate;
+}
+
+export interface TableConfig {
+  columnDefault?: {
+    width?: number;
+    paddingLeft?: number;
+    paddingRight?: number;
+  };
+  columnCount?: number;
+  columns?: {
+    [key: number]: {
+      width?: number;
+      minWidth?: number;
+      alignment?: 'center' | 'left' | 'right';
+      truncate: number;
+      wrapWord: boolean;
+    };
+  };
+  border?: TableBorderTemplate | TableBorderTemplateFactory;
+  drawHorizontalLine: (index: number, size: number) => boolean;
+  drawJoin: () => boolean;
+}
+
+export interface Table {
+  (data: any[][], config?: TableConfig): string;
+}
+
 export interface ConnectedSocketCallback {
   (socket: Socket): void;
 }
@@ -88,7 +143,7 @@ export class RemoteCli {
 
         routeTable.unshift(['Method', 'Path', 'Stack'].map((s: string) => chalk.blue(s)));
 
-        let table = remoteCli.logger.makeTable(routeTable);
+        let table = remoteCli.makeTable(routeTable);
 
         this.log('\n' + table);
         callback();
@@ -115,6 +170,11 @@ export class RemoteCli {
     this.logger.info(`Vantage server started on ${port}`);
 
     return this;
+  }
+
+
+  public makeTable(data: any[][], config?: TableConfig): string {
+    return table(data, config);
   }
 
 }
