@@ -18,11 +18,12 @@ description: Full stack isomorphic typescript framework.
 
 ### Developer Preview [June 17th]
 - [ ] Model hydration and mocking
-- [ ] `ResourceController` implementation with CRUD routes
-- [ ] Custom middleware registration
+- [x] `ResourceController` implementation with CRUD routes
+- [x] Custom middleware registration
 - [ ] Post-initialization cli tour
 - [ ] Full stack demo in quickstart
 - [ ] FAQ page in docs
+- [x] Documented contribution guidelines
 
 ### Sprint 0 [June 10th]
 - [x] Full stack proof of concept
