@@ -24,12 +24,7 @@ export class Database {
     this.logger = loggerBase.source('database');
 
     this.logger.info('Connecting to database');
-    this.driver = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-      host: process.env.DB_HOST,
-      dialect: process.env.DB_DIALECT,
-      port: process.env.DB_PORT,
-      logging: (message: string, ...logs: any[]) => this.logger.debug(message, ...logs),
-    });
+    this.driver = Database.connect((message: string, ...logs: any[]) => this.logger.debug(message, ...logs));
 
     // const schemaName = process.env.DB_USERNAME;
     //
@@ -54,6 +49,15 @@ export class Database {
     //   });
     //
     // });
+  }
+
+  public static connect(logFunction?:Function):Sequelize.Sequelize {
+    return new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      dialect: process.env.DB_DIALECT,
+      logging: logFunction,
+    });
   }
 
   /**
@@ -87,5 +91,14 @@ export class Database {
   public query(sql: string, options: QueryOptions): Promise<[any[], any]> {
     return this.driver.query(sql, options);
   }
+
+  /**
+   * Check there is a connection
+   * @returns {Promise<void>}
+   */
+  public static checkDatabase():Promise<any>{
+
+    return Database.connect().authenticate();
+  };
 
 }
