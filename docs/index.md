@@ -15,6 +15,7 @@ description: Full stack isomorphic typescript framework.
 - [ ] Database seeding from `MockModelProvider`s
 - [ ] Full validation decorator complement
 - [ ] 100% Code coverage
+- [ ] Integrate code generations from Angular CLI 
 
 ### Developer Preview [June 17th]
 - [ ] Model hydration and mocking
