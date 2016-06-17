@@ -1,4 +1,4 @@
-import { Server } from '../servers/abstract.server';
+import { Server, HttpMethod } from '../servers/abstract.server';
 import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { InjectableMiddlewareFactory, MiddlewareFactory } from '../middleware/index';
@@ -7,10 +7,10 @@ import { Response } from './response';
 import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 
-export type ActionType = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+export const httpMethods:HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
 export interface MethodDefinition {
-  method: ActionType;
+  method: HttpMethod;
   route: string;
 }
 
@@ -58,13 +58,13 @@ export abstract class AbstractController {
   }
 
   /**
-   * Register an action. This is used by the @Action() decoratore, but can also be used directly
+   * Register an action. This is used by the @Route() decoratore, but can also be used directly
    * for custom route registration
    * @param methodSignature
    * @param method
    * @param route
    */
-  public registerActionMethod(methodSignature: string, method: ActionType, route: string): void {
+  public registerActionMethod(methodSignature: string, method: HttpMethod, route: string): void {
     if (!this.actionMethods) {
       this.actionMethods = new Map<string, MethodDefinition>();
     }
@@ -129,7 +129,7 @@ export abstract class AbstractController {
       this.server.register({
         methodName: methodSignature,
         method: methodDefinition.method,
-        path: `/api/${this.routeBase}${methodDefinition.route}`,
+        path: `${process.env.API_BASE}/${this.routeBase}${methodDefinition.route}`,
         callStack: callStack,
         callStackHandler: (request: Request, response: Response): Promise<Response> => {
           return callStack.reduce((current: Promise<Response>, next: PromiseFactory<Response>): Promise<Response> => {
