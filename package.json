@@ -53,7 +53,7 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "^0.1.21"
+    "@ubiquits/toolchain": "^0.1.22"
   },
   "directories": {
     "doc": "docs"

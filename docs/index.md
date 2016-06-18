@@ -15,15 +15,16 @@ description: Full stack isomorphic typescript framework.
 - [ ] Database seeding from `MockModelProvider`s
 - [ ] Full validation decorator complement
 - [ ] 100% Code coverage
+- [ ] on initialization generate passwords and certificate for auth
 - [ ] Integrate code generations from Angular CLI 
 
 ### Developer Preview [June 17th]
-- [ ] Model hydration and mocking
+- [x] Model hydration and mocking
 - [x] `ResourceController` implementation with CRUD routes
 - [x] Custom middleware registration
 - [ ] Post-initialization cli tour
 - [ ] Full stack demo in quickstart
-- [ ] FAQ page in docs
+- [x] FAQ page in docs
 - [x] Documented contribution guidelines
 
 ### Sprint 0 [June 10th]
