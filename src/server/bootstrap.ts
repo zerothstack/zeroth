@@ -4,14 +4,12 @@ import {
   ReflectiveInjector,
   Provider,
   Type,
-  provide,
   ResolvedReflectiveProvider
 } from '@angular/core';
 import { Server } from './servers/abstract.server';
 import { AbstractController } from './controllers/abstract.controller';
 import { Logger, LogLevel } from '../common/services/logger.service';
 import { coreInjector } from './main';
-export {provide} from '@angular/core';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;

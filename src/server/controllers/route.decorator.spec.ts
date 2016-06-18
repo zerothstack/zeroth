@@ -2,7 +2,7 @@ import { it, inject, beforeEachProviders, expect, describe } from '@angular/core
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { AbstractController } from '../controllers/abstract.controller';
-import { Injectable, Injector, provide } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.spec';
@@ -29,9 +29,9 @@ class TestController extends AbstractController {
 
 const providers = [
   TestController,
-  provide(Server, {useClass: ServerMock}),
-  provide(Logger, {useClass: LoggerMock}),
-  provide(RemoteCli, {useClass: RemoteCliMock}),
+  {provide: Server, useClass: ServerMock},
+  {provide: Logger, useClass: LoggerMock},
+  {provide: RemoteCli, useClass: RemoteCliMock},
 ];
 
 describe('@Route & @RouteBase decorators', () => {
@@ -45,11 +45,13 @@ describe('@Route & @RouteBase decorators', () => {
         let controller = c.registerInjector(i)
           .registerRoutes();
 
-        const routeConfig:RouteConfig = s.getRoutes()
+        const routeConfig: RouteConfig = s.getRoutes()
           .find((route: RouteConfig) => route.methodName == 'testMethod');
 
-        expect(routeConfig.method).toEqual('PUT');
-        expect(routeConfig.path).toEqual(process.env.API_BASE + '/base/test/:id');
+        expect(routeConfig.method)
+          .toEqual('PUT');
+        expect(routeConfig.path)
+          .toEqual(process.env.API_BASE + '/base/test/:id');
 
       }));
 

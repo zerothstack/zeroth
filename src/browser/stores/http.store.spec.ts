@@ -1,7 +1,7 @@
 import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http, BaseRequestOptions, Response } from '@angular/http';
-import { Injectable, provide } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { HttpStore } from './http.store';
@@ -37,11 +37,12 @@ const providers = [
   TestHttpStore,
   MockBackend,
   BaseRequestOptions,
-  provide(Http, {
+  {
+    provide: Http,
     deps: [MockBackend, BaseRequestOptions],
     useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions) => new Http(backend, defaultOptions),
-  }),
-  provide(Logger, {useClass: LoggerMock}),
+  },
+  {provide: Logger, useClass: LoggerMock},
 ];
 
 describe('Http store', () => {
