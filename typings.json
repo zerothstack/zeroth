@@ -1,5 +1,6 @@
 {
   "globalDependencies": {
+    "chance": "registry:dt/chance#0.7.3+20160317120654",
     "dotenv": "registry:dt/dotenv#2.0.0+20160327131627",
     "express": "registry:dt/express#4.0.0+20160317120654",
     "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160602151406",
