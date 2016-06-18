@@ -37,9 +37,9 @@ export class ServerMock extends Server {
 describe('Server', () => {
 
   const providers = [
-    provide(Server, {useClass: ServerMock}),
-    provide(Logger, {useClass: LoggerMock}),
-    provide(RemoteCli, {useClass: RemoteCliMock}),
+    {provide: Server, useClass: ServerMock},
+    {provide: Logger, useClass: LoggerMock},
+    {provide: RemoteCli, useClass: RemoteCliMock},
   ];
 
   beforeEachProviders(() => providers);
@@ -104,15 +104,18 @@ describe('Server', () => {
 
   it('starts the server running and returns promise', inject([Server], (server: Server) => {
 
-    let spy = spyOn(server, 'start').and.callThrough();
+    let spy = spyOn(server, 'start')
+      .and
+      .callThrough();
 
     let response = server.start();
 
     expect(spy)
       .toHaveBeenCalled();
 
-    return response.then((onStart:Server) => {
-      expect(onStart).toEqual(server);
+    return response.then((onStart: Server) => {
+      expect(onStart)
+        .toEqual(server);
     });
 
   }));
@@ -120,7 +123,8 @@ describe('Server', () => {
   it('starts the server running and returns promise', inject([Server], (server: Server) => {
     const response: Response = (<any>server).getDefaultResponse();
 
-    expect(response instanceof Response).toBe(true);
+    expect(response instanceof Response)
+      .toBe(true);
 
   }));
 

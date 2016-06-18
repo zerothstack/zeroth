@@ -1,25 +1,16 @@
-import {
-  it,
-  inject,
-  beforeEachProviders,
-  expect,
-  describe,
-  fdescribe
-} from '@angular/core/testing';
-import { IsolatedMiddlewareFactory } from './index';
+import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { Route } from '../controllers/route.decorator';
-import { AfterAll, BeforeAll, Before, After } from './middleware.decorator';
+import { Before } from './middleware.decorator';
 import { AbstractController } from '../controllers/abstract.controller';
-import { Injectable, Injector, Provider, provide } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.spec';
-import { PromiseFactory } from '../../common/util/serialPromise';
 import { debugLog, DebugLogMiddleware } from './debugLog.middleware';
 
 @Injectable()
@@ -50,17 +41,19 @@ let mockLogger = {
 };
 
 const providers = [
-  MiddlewareController,
-  provide(Server, {useClass: ServerMock}),
-  provide(Logger, {useClass: LoggerMock}),
-  provide(RemoteCli, {useClass: RemoteCliMock}),
-  provide(DebugLogMiddleware, {
-    deps: [],
-    useFactory: () => {
-      return new DebugLogMiddleware(<Logger>mockLogger)
-    },
-  })
-];
+        MiddlewareController,
+        {provide: Server, useClass: ServerMock},
+        {provide: Logger, useClass: LoggerMock},
+        {provide: RemoteCli, useClass: RemoteCliMock},
+        {
+          provide: DebugLogMiddleware,
+          deps: [],
+          useFactory: () => {
+            return new DebugLogMiddleware(<Logger>mockLogger)
+          },
+        }
+      ]
+  ;
 
 describe('debugLog middleware', () => {
 
