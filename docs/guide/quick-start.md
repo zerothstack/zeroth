@@ -8,7 +8,7 @@ layout: guide.hbs
 -----------------
 
 ## Prerequisites
-* Node installed (v6.2.0 has been verified, may work in earlier versions)
+* Node installed (v6.2.0 is recommended)
 
 ## Installation
 
@@ -21,5 +21,7 @@ npm install -g @ubiquits/toolchain && u
 ```
 
 This will install the toolchain then initialize a new project by cloning the boilerplate, and running installation.
+
+Once installation is complete, you will be taken on a brief tour of the features to get you familiarized with the cli.
 
 For more information, visit the [cli guide page](/guide/cli)
