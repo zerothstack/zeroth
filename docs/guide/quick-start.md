@@ -8,7 +8,7 @@ layout: guide.hbs
 -----------------
 
 ## Prerequisites
-* Node installed (v6.2.0 has been verified, may work in earlier versions)
+* Node installed (v6.2.0 is recommended)
 
 ## Installation
 
