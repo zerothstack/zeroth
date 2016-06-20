@@ -1,4 +1,5 @@
 import { Collection } from './collection';
+import { DataTypeAbstract } from 'sequelize';
 
 export interface EntityNest extends Map<string, Model|Collection<Model>> {
 
@@ -24,6 +25,7 @@ export interface ModelStatic<T extends Model> {
   identifierKey: string;
   schema: ModelSchema;
   modelName: string;
+  storedProperties: Map<string, string>;
 }
 
 export interface TypeCaster {
@@ -39,6 +41,7 @@ export abstract class Model {
 
   public static identifierKey: string;
   public static schema: ModelSchema = {};
+  public static storedProperties: Map<string, string>;
   public static modelName: string;
 
   /**
@@ -50,8 +53,6 @@ export abstract class Model {
   /**
    * References maintained from initial hydration
    */
-  protected __rawData: Object;
-  protected __original: Object;
 
   constructor(data?: any) {
     this.hydrate(data);
@@ -63,8 +64,6 @@ export abstract class Model {
    * @returns {Model}
    */
   protected hydrate(data: Object) {
-
-    this.__rawData = Object.assign({}, data);
 
     if (this.__typeCasts) {
       for (const [key, caster] of this.__typeCasts) {
@@ -82,8 +81,6 @@ export abstract class Model {
       }
     }
 
-    this.__original = Object.assign({}, data);
-
     Object.assign(this, data);
     return this;
   }
@@ -95,7 +92,4 @@ export abstract class Model {
 
 }
 
-export function primary(target: any, propertyKey: string) {
-  target.constructor.identifierKey = propertyKey;
-}
 

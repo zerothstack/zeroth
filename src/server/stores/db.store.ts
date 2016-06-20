@@ -12,6 +12,8 @@ import { DataTypeAbstract } from 'sequelize';
 import { Store } from '../../common/stores/store';
 import { Instance } from 'sequelize';
 import { Collection } from '../../common/models/collection';
+import { NotFoundException } from '../exeptions/exceptions';
+import { DefineAttributeColumnOptions } from 'sequelize';
 
 /**
  * This store is for saving and retrieving models from the database using Sequelize
@@ -29,12 +31,16 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
    */
   protected logger: Logger;
 
+  protected initialized: Promise<this>;
+
   constructor(modelStatic: ModelStatic<T>, protected database: Database, protected loggerBase: Logger) {
     super(modelStatic);
     this.logger = loggerBase.source('DB Store');
     this.orm    = this.initializeOrm(modelStatic);
 
-    this.orm.sync();
+    this.initialized = database.initialized
+      .then(() => this.orm.sync())
+      .then(() => this);
   }
 
   /**
@@ -44,8 +50,6 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
    */
   protected initializeOrm(modelStatic: ModelStatic<T>): any/*SequelizeModel<any, any>*/ {
     const schema: DefineAttributes = this.parseSchema(modelStatic);
-
-    this.logger.debug(`Registering ${modelStatic.modelName} with schema`, schema);
 
     return this.database.getDriver()
       .define(modelStatic.modelName, schema, {
@@ -62,22 +66,31 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
     const schema: DefineAttributes = {};
 
     let pk     = modelStatic.identifierKey;
-    let pkType = Reflect.getMetadata("design:type", modelStatic.prototype, pk);
 
-    let type: DataTypeAbstract;
-    switch (pkType) {
-      case String:
-        type = Sequelize.STRING;
-        break;
-      case Number:
-        type = Sequelize.NUMBER;
-        break;
-      case UUID:
-        type = Sequelize.UUID;
-        break;
-    }
+    modelStatic.storedProperties.forEach((propertyType:any, property:string) => {
+      let type: DataTypeAbstract;
+      switch (propertyType) {
+        case String:
+          type = Sequelize.STRING;
+          break;
+        case Number:
+          type = Sequelize.NUMBER;
+          break;
+        case UUID:
+          type = Sequelize.UUID;
+          break;
+        case Date:
+          type = Sequelize.DATE;
+          break;
+      }
 
-    schema[pk] = {primaryKey: true, type};
+      schema[property] = {type};
+      if (property === pk){
+        (schema[property] as DefineAttributeColumnOptions).primaryKey = true;
+      }
+    });
+
+
 
     return schema;
   }
@@ -88,18 +101,12 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
    * @return {Promise<TResult>}
    */
   public findOne(id: identifier): Promise<T> {
-    return this.orm.findOne({
-        where: {
-          [this.modelStatic.identifierKey]: id
-        }
-      })
+    return this.orm.findByPrimary(<number|string>id)
       .then((modelData: Instance<any>): T => {
+        if (!modelData){
+          throw new NotFoundException(`Model not found for id [${id}]`);
+        }
         return new this.modelStatic(modelData.get());
-      })
-      .catch((e) => {
-        // @todo check if not found, if so throw NotFound exception
-        this.logger.error(e);
-        throw e;
       });
   }
 

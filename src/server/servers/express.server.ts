@@ -95,7 +95,6 @@ export class ExpressServer extends Server {
    * @param res
    */
   private sendErr(err: any, res: ExpressResponse): void {
-
     //make sure the status is of error type
     if (res.statusCode < 400) {
       res.status(500);

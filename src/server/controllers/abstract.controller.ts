@@ -6,8 +6,9 @@ import { PromiseFactory } from '../../common/util/serialPromise';
 import { Response } from './response';
 import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
+import { HttpException, InternalServerErrorException } from '../exeptions/exceptions';
 
-export const httpMethods:HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+export const httpMethods: HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
 export interface MethodDefinition {
   method: HttpMethod;
@@ -81,7 +82,7 @@ export abstract class AbstractController {
 
     initializeMiddlewareRegister(this);
 
-    if (methodSignature){
+    if (methodSignature) {
       let current: MiddlewareRegistry = this.registeredMiddleware.methods.get(methodSignature);
 
       if (!current) {
@@ -113,12 +114,13 @@ export abstract class AbstractController {
 
       callStack.push(this[methodSignature]);
 
-      if (this.registeredMiddleware){
+      if (this.registeredMiddleware) {
         const methodMiddlewareFactories = this.registeredMiddleware.methods.get(methodSignature);
 
-        //wrap method registered factories with the class defined ones [beforeAll, before, after, afterAll]
+        //wrap method registered factories with the class defined ones [beforeAll, before, after,
+        // afterAll]
         const beforeMiddleware = this.registeredMiddleware.all.before.concat(methodMiddlewareFactories.before);
-        const afterMiddleware = methodMiddlewareFactories.after.concat(this.registeredMiddleware.all.after);
+        const afterMiddleware  = methodMiddlewareFactories.after.concat(this.registeredMiddleware.all.after);
 
         if (methodMiddlewareFactories) {
           callStack.unshift(...beforeMiddleware.map((middleware: MiddlewareFactory) => middleware(this.injector)));
@@ -134,11 +136,24 @@ export abstract class AbstractController {
         callStackHandler: (request: Request, response: Response): Promise<Response> => {
           return callStack.reduce((current: Promise<Response>, next: PromiseFactory<Response>): Promise<Response> => {
 
-            return current.then((response: Response): Promise<Response> => {
-              return Promise.resolve(next.call(this, request, response));
-            });
+              return current.then((response: Response): Promise<Response> => {
+                return Promise.resolve(next.call(this, request, response));
+              });
 
-          }, Promise.resolve(response)); //initial value
+            }, Promise.resolve(response)) //initial value
+            .catch((e) => {
+
+              this.logger.debug('Error encountered', e);
+
+              if (!(e instanceof HttpException)) {
+                e = new InternalServerErrorException(e.message);
+              }
+              response.status(e.getStatusCode());
+              response.data({
+                message: e.toString()
+              });
+              return response;
+            });
         }
       });
 

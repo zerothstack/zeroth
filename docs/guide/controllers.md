@@ -1,6 +1,6 @@
 ---
 title: Controllers
-description: Take requests and shove them where they need to go. Throw the results somewhere.
+description: Take requests and shove them where they need to go. Send the results somewhere
 date: 2016-06-01
 collection: guide
 collectionSort: 1
