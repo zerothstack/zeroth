@@ -26,7 +26,7 @@ description: Full stack isomorphic typescript framework.
 - [x] Custom middleware registration
 - [x] Demo model schema sync and seed
 - [x] Http exceptions
-- [ ] Post-initialization cli tour
+- [x] Post-initialization cli tour
 - [x] Full stack demo in quickstart
 - [x] FAQ page in docs
 - [x] Documented contribution guidelines
