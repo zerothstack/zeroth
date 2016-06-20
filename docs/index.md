@@ -17,13 +17,17 @@ description: Full stack isomorphic typescript framework.
 - [ ] 100% Code coverage
 - [ ] on initialization generate passwords and certificate for auth
 - [ ] Integrate code generations from Angular CLI 
+- [ ] Migration to TypeORM
+- [ ] Docker integration into toolchain for local dev
 
-### Developer Preview [June 17th]
+### Developer Preview [June 20th]
 - [x] Model hydration and mocking
 - [x] `ResourceController` implementation with CRUD routes
 - [x] Custom middleware registration
+- [x] Demo model schema sync and seed
+- [x] Http exceptions
 - [ ] Post-initialization cli tour
-- [ ] Full stack demo in quickstart
+- [x] Full stack demo in quickstart
 - [x] FAQ page in docs
 - [x] Documented contribution guidelines
 

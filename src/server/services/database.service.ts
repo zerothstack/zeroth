@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Sequelize from 'sequelize';
+import * as _ from 'lodash';
 import { QueryOptions } from 'sequelize';
 import { Logger } from '../../common/services/logger.service';
 
@@ -19,39 +20,38 @@ export class Database {
    */
   private logger: Logger;
 
+  /**
+   * Promise that the database has initialised. Useful for deferring startup database processes like
+   * migrations or schema creations
+   */
+  public initialized:Promise<Sequelize.Sequelize>;
+
   constructor(loggerBase: Logger) {
 
     this.logger = loggerBase.source('database');
 
     this.logger.info('Connecting to database');
-    this.driver = Database.connect((message: string, ...logs: any[]) => this.logger.debug(message, ...logs));
+    this.driver = Database.connect((message: string, ...logs: any[]) => this.logger.debug(message, ...logs))
 
-    // const schemaName = process.env.DB_USERNAME;
-    //
-    // this.createSchema(schemaName).then(() => {
-    //
-    //   var User = this.driver.define('user', {
-    //     username: Sequelize.STRING,
-    //     birthday: Sequelize.DATE
-    //   }, {
-    //     schema: schemaName
-    //   });
-    //
-    //   this.driver.sync().then(() => {
-    //     return User.create({
-    //       username: 'janedoe',
-    //       birthday: new Date(1980, 6, 20)
-    //     });
-    //   }).then((jane: any) => {
-    //     this.logger.info(jane.get({
-    //       plain: true
-    //     }));
-    //   });
-    //
-    // });
+    this.initialized = this.driver.authenticate()
+      .then(() => {
+        this.logger.debug('Checking schemas');
+        return this.driver.showAllSchemas({});
+      })
+      .then((schemas) => {
+
+        this.logger.debug('Current schemas', schemas);
+
+        if (!_.includes(schemas, process.env.SCHEMA)){
+          return this.createSchema(process.env.SCHEMA);
+        }
+
+      }).catch((e) => {
+        this.logger.warning(e);
+      }).then(() => this.driver);
   }
 
-  public static connect(logFunction?:Function):Sequelize.Sequelize {
+  public static connect(logFunction?: Function): Sequelize.Sequelize {
     return new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
       host: process.env.DB_HOST,
       port: process.env.DB_PORT,
@@ -96,9 +96,10 @@ export class Database {
    * Check there is a connection
    * @returns {Promise<void>}
    */
-  public static checkDatabase():Promise<any>{
+  public static checkDatabase(): Promise<any> {
 
-    return Database.connect().authenticate();
+    return Database.connect()
+      .authenticate();
   };
 
 }

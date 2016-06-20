@@ -1,10 +1,11 @@
 import { it, describe, expect, beforeEach } from '@angular/core/testing';
-import { UUID, Model, primary } from './model';
+import { UUID, Model } from './model';
 import { castDate } from '../types/date.decorator';
 import * as moment from 'moment';
 import { Collection } from './collection';
 import { hasOne, hasMany } from '../relations';
 import Moment = moment.Moment;
+import { primary } from '../types/primary.decorator';
 
 class ChildModel extends Model {
 

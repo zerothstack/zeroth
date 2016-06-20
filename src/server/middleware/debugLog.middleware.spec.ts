@@ -40,7 +40,7 @@ let mockLogger = {
   }
 };
 
-const providers = [
+const providers:any[] = [
         MiddlewareController,
         {provide: Server, useClass: ServerMock},
         {provide: Logger, useClass: LoggerMock},
