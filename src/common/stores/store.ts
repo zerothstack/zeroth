@@ -36,7 +36,7 @@ export abstract class Store<T extends Model> {
     return validateAsync(model, validatorOptions)
       .catch(e => {
         if (e instanceof ValidationError){
-          throw new ValidationException(null, e.errors);
+          e = new ValidationException(null, e.errors);
         }
         throw e;
       });
