@@ -25,7 +25,8 @@ import {
   PaymentRequiredException,
   UnauthorizedException,
   BadRequestException,
-  HttpException, ValidationException
+  HttpException,
+  ValidationException
 } from './exceptions';
 
 describe('Exceptions', () => {
@@ -74,7 +75,7 @@ describe('Exceptions', () => {
   });
 
 
-  fit('creates an exception that is an instance of it\'s parents', () => {
+  it('creates an exception that is an instance of it\'s parents', () => {
 
     let exception = new ValidationException(null, []);
 
