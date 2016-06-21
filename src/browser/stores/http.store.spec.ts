@@ -90,7 +90,8 @@ describe('Http store', () => {
     const testPromise = s.findMany()
       .catch((res) => {
 
-        expect(logSpy).toHaveBeenCalledWith('not found');
+        expect(logSpy)
+          .toHaveBeenCalledWith('not found');
       });
 
     let response = new Response({
@@ -145,8 +146,8 @@ describe('Http store', () => {
 
     const testPromise = s.findOne(null)
       .catch((res) => {
-
-        expect(logSpy).toHaveBeenCalledWith('Internal Error');
+        expect(logSpy)
+          .toHaveBeenCalledWith('Internal Error');
       });
     connection.mockError(new Error('Internal Error'));
 
@@ -154,7 +155,7 @@ describe('Http store', () => {
 
   }));
 
-  it('Retrieves saves a single model with http', inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+  it('Saves a single model with http', inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
 
     let connection: MockConnection;
     b.connections.subscribe((c: MockConnection) => connection = c);
@@ -166,9 +167,8 @@ describe('Http store', () => {
     const testPromise = s.saveOne(mock)
       .then((res) => {
 
-        expect(connection.request.json())
-          .toEqual(modelData);
-
+        expect(connection.request.getBody())
+          .toEqual(JSON.stringify(modelData));
         expect(res instanceof TestModel)
           .toBe(true);
         expect(res.id)
