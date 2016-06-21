@@ -28,16 +28,39 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
 
     return this.http.get(this.endpoint(id))
       .toPromise()
+      .then((res: Response) => this.checkStatus(res))
       .then((res: Response) => this.extractModel(res))
       .catch((error) => this.handleError(error));
 
   }
 
+  /**
+   * Find many models
+   * @param query
+   * @returns {IPromise<void>|Promise<T>}
+   */
   public findMany(query?:any):Promise<Collection<T>> {
     return this.http.get(this.endpoint())
       .toPromise()
+      .then((res: Response) => this.checkStatus(res))
       .then((res: Response) => this.extractCollection(res))
       .catch((error) => this.handleError(error));
+  }
+
+  /**
+   * Save a model
+   * @param model
+   * @returns {Promise<void>|IPromise<void>|Promise<T>}
+   */
+  public saveOne(model:T):Promise<T> {
+    //@todo consider toJson method if custom serializing is needed?
+    //@todo extract only changed properties
+    //@todo switch on if existing and decide if put or patch request
+    return this.http.put(this.endpoint(model.getIdentifier()), model)
+      .toPromise()
+      .then((res: Response) => this.checkStatus(res))
+      .then(() => model) //@todo flag model as existing
+      // .catch((error) => this.handleError(error));
   }
 
   /**
@@ -66,9 +89,34 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
    * @returns {Promise<void>|Promise<T>}
    */
   private handleError(error: any) {
-    let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    let message:any;
+
+    if (error instanceof Response){
+      message = error.json();
+      if (message.message){
+        message = message.message;
+      }
+    } else {
+      message = error.message;
+    }
+
+    let errMsg = (message) ? message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+
     this.logger.error(errMsg);
     return Promise.reject(errMsg);
   }
 
+  /**
+   * Check the status is ok.
+   * This only seems to be required for unit testing @todo resolve why there is a discrepancy
+   * @param res
+   * @returns {any}
+   */
+  private checkStatus(res: Response):Response|Promise<any> {
+    if (res.ok){
+      return res;
+    }
+
+    return Promise.reject(res);
+  }
 }

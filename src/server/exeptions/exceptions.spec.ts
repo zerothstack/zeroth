@@ -25,8 +25,10 @@ import {
   PaymentRequiredException,
   UnauthorizedException,
   BadRequestException,
-  HttpException
+  HttpException,
+  ValidationException
 } from './exceptions';
+import { ValidationErrorInterface } from 'class-validator/ValidationErrorInterface';
 
 describe('Exceptions', () => {
 
@@ -74,5 +76,30 @@ describe('Exceptions', () => {
   });
 
 
+  it('creates an exception that is an instance of it\'s parents', () => {
+
+    let exception = new ValidationException(null, []);
+
+    expect(exception instanceof HttpException).toBe(true);
+    expect(exception instanceof UnprocessableEntityException).toBe(true);
+  });
+
+  it('retrieves data from exception with .data()', () => {
+
+    let errors:ValidationErrorInterface[] = [{
+      objectClass: null,
+      property: 'name',
+      errorCode: 302,
+      errorName: 'max_length',
+      errorMessage: 'too long',
+      value: 10,
+      required: true,
+    }];
+
+    let exception = new ValidationException(null, errors);
+
+    expect(exception.getData()).toEqual(errors);
+
+  });
 
 });

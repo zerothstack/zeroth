@@ -1,4 +1,5 @@
 import { IncomingMessage } from 'http';
+import { UnprocessableEntityException, PayloadTooLargeException } from '../exeptions/exceptions';
 
 export class Request {
 
@@ -30,4 +31,33 @@ export class Request {
     return map;
   }
 
+  public getPayload(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.raw.setEncoding('utf8');
+
+      let data:string = '';
+
+      this.raw.on('data', (d:string) => {
+        data += d;
+
+        if(data.length > 1e6) {
+          data = "";
+          let e = new PayloadTooLargeException();
+          (this.raw as any).destroy(e);
+          throw e;
+        }
+      });
+
+      this.raw.on('end', () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch (e){
+          throw new UnprocessableEntityException();
+        }
+
+      });
+
+      this.raw.on('error', reject);
+    });
+  }
 }

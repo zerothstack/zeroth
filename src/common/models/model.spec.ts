@@ -98,3 +98,15 @@ describe('Model', () => {
   });
 
 });
+
+describe('UUID', () => {
+
+  it('extends String', () => {
+
+    const id = new UUID('72eed629-c4ab-4520-a987-4ea26b134d8c');
+
+    expect(id instanceof UUID).toBe(true);
+    expect(id instanceof String).toBe(true);
+  });
+
+});

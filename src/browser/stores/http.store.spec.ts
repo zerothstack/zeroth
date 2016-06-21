@@ -1,4 +1,4 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { fit, it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http, BaseRequestOptions, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
@@ -80,14 +80,114 @@ describe('Http store', () => {
 
   }));
 
-  xit('Logs error on failed collection retrieval', () => {
-    // @todo
-  });
-  xit('Retrieves a single model from http', () => {
-    // @todo
-  });
-  xit('Logs error on failed model retrieval', () => {
-    // @todo
-  });
+  it('Logs error on failed collection retrieval', inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+
+    let logSpy = spyOn((s as any).logger, 'error');
+
+    let connection: MockConnection;
+    b.connections.subscribe((c: MockConnection) => connection = c);
+
+    const testPromise = s.findMany()
+      .catch((res) => {
+
+        expect(logSpy)
+          .toHaveBeenCalledWith('not found');
+      });
+
+    let response = new Response({
+      body: {message: 'not found'},
+      status: 404,
+      headers: null,
+      url: `${process.env.API_BASE}/tests`,
+      merge: null
+    });
+
+    connection.mockRespond(response);
+
+    return testPromise;
+
+  }));
+
+  it('Retrieves a single model from http', inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+
+    let connection: MockConnection;
+    b.connections.subscribe((c: MockConnection) => connection = c);
+
+    const testPromise = s.findOne(123)
+      .then((res) => {
+
+        expect(res instanceof TestModel)
+          .toBe(true);
+        expect(res.id)
+          .toEqual(123);
+        expect(res.name)
+          .toEqual('foo');
+
+      });
+
+    connection.mockRespond(new Response({
+      body: {id: 123, name: 'foo'},
+      status: 200,
+      headers: null,
+      url: `${process.env.API_BASE}/tests/123`,
+      merge: null
+    }));
+
+    return testPromise;
+
+  }));
+
+  it('Logs error on failed model retrieval', inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+
+    let logSpy = spyOn((s as any).logger, 'error');
+
+    let connection: MockConnection;
+    b.connections.subscribe((c: MockConnection) => connection = c);
+
+    const testPromise = s.findOne(null)
+      .catch((res) => {
+        expect(logSpy)
+          .toHaveBeenCalledWith('Internal Error');
+      });
+    connection.mockError(new Error('Internal Error'));
+
+    return testPromise;
+
+  }));
+
+  it('Saves a single model with http', inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+
+    let connection: MockConnection;
+    b.connections.subscribe((c: MockConnection) => connection = c);
+
+    const modelData = {id: 123, name: 'foo'};
+
+    const mock = new TestModel(modelData);
+
+    const testPromise = s.saveOne(mock)
+      .then((res) => {
+
+        expect(connection.request.getBody())
+          .toEqual(JSON.stringify(modelData));
+        expect(res instanceof TestModel)
+          .toBe(true);
+        expect(res.id)
+          .toEqual(123);
+        expect(res.name)
+          .toEqual('foo');
+
+      });
+
+    connection.mockRespond(new Response({
+      body: {id: 123, name: 'foo'},
+      status: 200,
+      headers: null,
+      url: `${process.env.API_BASE}/tests/123`,
+      merge: null
+    }));
+
+    return testPromise;
+
+  }));
 
 });

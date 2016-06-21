@@ -143,15 +143,16 @@ export abstract class AbstractController {
             }, Promise.resolve(response)) //initial value
             .catch((e) => {
 
-              this.logger.debug('Error encountered', e);
+              this.logger.debug('Error encountered', e, 'is HttpException: ', (e instanceof HttpException), e.stack);
 
               if (!(e instanceof HttpException)) {
                 e = new InternalServerErrorException(e.message);
               }
               response.status(e.getStatusCode());
-              response.data({
-                message: e.toString()
-              });
+
+              const message = e.getData() || e.toString();
+
+              response.data({message});
               return response;
             });
         }
