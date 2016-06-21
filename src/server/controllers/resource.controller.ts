@@ -47,4 +47,19 @@ export abstract class ResourceController<M extends Model> extends AbstractContro
       .then((collection:Collection<M>) => response.data(collection));
   }
 
+  /**
+   * Process and persist an entity
+   * @param request
+   * @param response
+   */
+  @Route('PUT', '/:id')
+  public putOne(request: Request, response: Response): Promise<Response> {
+
+    return request.getPayload()
+      .then((data:any) => this.modelStore.hydrate(data))
+      .then((model:M) => this.modelStore.validate(model))
+      .then((model:M) => this.modelStore.saveOne(model))
+      .then((model:M) => response.data(model));
+  }
+
 }

@@ -129,4 +129,9 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
       });
   }
 
+  public saveOne(model:T): Promise<T> {
+    // @todo implement
+    return Promise.resolve(model);
+  }
+
 }
