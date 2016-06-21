@@ -33,11 +33,31 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
 
   }
 
+  /**
+   * Find many models
+   * @param query
+   * @returns {IPromise<void>|Promise<T>}
+   */
   public findMany(query?:any):Promise<Collection<T>> {
     return this.http.get(this.endpoint())
       .toPromise()
       .then((res: Response) => this.extractCollection(res))
       .catch((error) => this.handleError(error));
+  }
+
+  /**
+   * Save a model
+   * @param model
+   * @returns {Promise<void>|IPromise<void>|Promise<T>}
+   */
+  public saveOne(model:T):Promise<T> {
+    //@todo consider toJson method if custom serializing is needed?
+    //@todo extract only changed properties
+    //@todo switch on if existing and decide if put or patch request
+    return this.http.put(this.endpoint(model.getIdentifier()), model)
+      .toPromise()
+      .then(() => model) //@todo flag model as existing
+      // .catch((error) => this.handleError(error));
   }
 
   /**

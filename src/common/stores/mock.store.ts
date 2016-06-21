@@ -34,4 +34,8 @@ export abstract class MockStore<T extends Model> extends Store<T> {
     return Promise.resolve(new Collection(models));
   }
 
+  public saveOne(model:T): Promise<T> {
+    return Promise.resolve(model);
+  }
+
 }
