@@ -37,7 +37,7 @@ export function deferredLog(level:LogLevel, ...messages:any[]) {
   deferredLogs.push({level, messages});
 }
 
-export function bootstrap(controllers: ControllerDictionary<any>, providers: ProviderDefinition[] = []): Promise<BootstrapResponse> {
+export function bootstrap(controllers: ControllerDictionary<any>, providers: ProviderDefinition[] = []): () => Promise<BootstrapResponse> {
 
   let logger: Logger;
 
@@ -48,45 +48,51 @@ export function bootstrap(controllers: ControllerDictionary<any>, providers: Pro
     // resolve all controllers
     let resolvedControllerProviders = ReflectiveInjector.resolve(controllerArray);
 
-    return Promise.all(providers).then((providers: ProviderType[]) => {
+    return ():Promise<BootstrapResponse> => {
 
-      // resolve all other user classes
-      const resolvedProviders:ResolvedReflectiveProvider[] = ReflectiveInjector.resolve(providers)
-        .concat(resolvedControllerProviders);
+      deferredLog('info', 'Bootstrapping server');
 
-      // get an injector from the resolutions, using the core injector as parent
-      const injector = ReflectiveInjector.fromResolvedProviders(resolvedProviders, coreInjector);
+      return Promise.all(providers).then((providers: ProviderType[]) => {
 
-      // assign logger instance as soon as possible so the error handler might use it
-      logger = injector.get(Logger).source('bootstrap');
-      deferredLogs.forEach((log:DeferredLog) => {
-        logger[log.level](...log.messages);
+        // resolve all other user classes
+        const resolvedProviders:ResolvedReflectiveProvider[] = ReflectiveInjector.resolve(providers)
+          .concat(resolvedControllerProviders);
+
+        // get an injector from the resolutions, using the core injector as parent
+        const injector = ReflectiveInjector.fromResolvedProviders(resolvedProviders, coreInjector);
+
+        // assign logger instance as soon as possible so the error handler might use it
+        logger = injector.get(Logger).source('bootstrap');
+        deferredLogs.forEach((log:DeferredLog) => {
+          logger[log.level](...log.messages);
+        });
+
+        // iterate over the controller providers, instantiating them to register their routes
+        resolvedControllerProviders.forEach((resolvedControllerProvider: ResolvedReflectiveProvider) => {
+          logger.info(`initializing ${resolvedControllerProvider.key.displayName}`);
+          injector.instantiateResolved(resolvedControllerProvider)
+            .registerInjector(injector)
+            .registerRoutes();
+        });
+
+        // get vars for the bootstrapper
+        const server: Server = injector.get(Server);
+
+        return {injector, server, logger};
+
       });
 
-      // iterate over the controller providers, instantiating them to register their routes
-      resolvedControllerProviders.forEach((resolvedControllerProvider: ResolvedReflectiveProvider) => {
-        logger.info(`initializing ${resolvedControllerProvider.key.displayName}`);
-        injector.instantiateResolved(resolvedControllerProvider)
-          .registerInjector(injector)
-          .registerRoutes();
-      });
-
-      // get vars for the bootstrapper
-      const server: Server = injector.get(Server);
-
-      return {injector, server, logger};
-
-    });
+    }
 
   } catch (e) {
-    
+
     if (logger){
       deferredLogs.forEach((log:DeferredLog) => {
         logger[log.level](...log.messages);
       });
-      
+
       logger.critical(e);
-      
+
     } else {
       console.error('Failed to initialize Logger, falling back to console');
 
