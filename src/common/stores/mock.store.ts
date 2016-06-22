@@ -1,6 +1,7 @@
 import { identifier, ModelStatic, Model } from '../models/model';
 import { Collection } from '../models/collection';
 import { Store, Query } from './store';
+import {Injector} from '@angular/core';
 import {Chance} from 'chance';
 import * as _ from 'lodash';
 
@@ -10,8 +11,8 @@ export abstract class MockStore<T extends Model> extends Store<T> {
 
   protected chanceInstance: ChanceInstance;
 
-  constructor(modelStatic: ModelStatic<T>) {
-    super(modelStatic);
+  constructor(modelStatic: ModelStatic<T>, injector:Injector) {
+    super(modelStatic, injector);
   }
 
   protected chance(seed?: any): ChanceInstance {

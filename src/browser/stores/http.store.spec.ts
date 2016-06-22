@@ -1,7 +1,7 @@
 import { fit, it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http, BaseRequestOptions, Response } from '@angular/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { HttpStore } from './http.store';
@@ -16,8 +16,8 @@ class TestModel extends Model {
 @Injectable()
 class TestHttpStore extends HttpStore<TestModel> {
 
-  constructor(http: Http, loggerBase: Logger) {
-    super(TestModel, http, loggerBase);
+  constructor(injector: Injector, http: Http, loggerBase: Logger) {
+    super(TestModel, injector, http, loggerBase);
   }
 
   protected endpoint(id?: string): string {

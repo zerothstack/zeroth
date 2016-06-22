@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Store } from '../../common/stores/store';
 import { identifier, ModelStatic, Model } from '../../common/models/model';
@@ -12,8 +12,8 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
 
   protected logger: Logger;
 
-  constructor(modelStatic: ModelStatic<T>, protected http: Http, loggerBase: Logger) {
-    super(modelStatic);
+  constructor(modelStatic: ModelStatic<T>, injector:Injector, protected http: Http, loggerBase: Logger) {
+    super(modelStatic, injector);
     this.logger = loggerBase.source('HTTP Store');
   }
 

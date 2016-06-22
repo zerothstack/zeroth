@@ -15,6 +15,7 @@ import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
 import { DefineAttributeColumnOptions } from 'sequelize';
 
+import {Injector} from '@angular/core';
 /**
  * This store is for saving and retrieving models from the database using Sequelize
  */
@@ -33,8 +34,8 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
 
   protected initialized: Promise<this>;
 
-  constructor(modelStatic: ModelStatic<T>, protected database: Database, protected loggerBase: Logger) {
-    super(modelStatic);
+  constructor(modelStatic: ModelStatic<T>, injector:Injector, protected database: Database, protected loggerBase: Logger) {
+    super(modelStatic, injector);
     this.logger = loggerBase.source('DB Store');
     this.orm    = this.initializeOrm(modelStatic);
 
