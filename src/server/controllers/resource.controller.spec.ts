@@ -32,7 +32,7 @@ abstract class FruitStore extends Store<Fruit> {
 class FruitMockStore extends MockStore<Fruit> {
 
   constructor() {
-    super(Fruit);
+    super(Fruit, null);
   }
 
   protected getMock(id?: identifier): Fruit {
