@@ -8,7 +8,7 @@ import { Model, identifier } from '../../common/models/model';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { MockStore } from '../../common/stores/mock.store';
 import { Store } from '../../common/stores/store';
-import { primary } from '../../common/types/primary.decorator';
+import { Primary } from '../../common/types/primary.decorator';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.spec';
 import { Request } from './request';
@@ -18,7 +18,7 @@ import { EventEmitter } from 'events';
 import { IncomingMessage } from 'http';
 
 class Fruit extends Model {
-  @primary
+  @Primary()
   public fruitId: number;
 
   public name: string;

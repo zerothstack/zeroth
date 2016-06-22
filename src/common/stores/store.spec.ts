@@ -3,7 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
 import { Model, identifier } from '../models/model';
 import { Store } from './store';
-import { primary } from '../types/primary.decorator';
+import { Primary } from '../types/primary.decorator';
 import { MinLength, Validate, ValidatorConstraint } from '../validation';
 import { ValidationException } from '../../server/exeptions/exceptions';
 import { ValidatorInterface } from 'class-validator';
@@ -33,7 +33,7 @@ class CustomValidator implements ValidatorInterface {
 }
 
 class Ship extends Model {
-  @primary
+  @Primary()
   public shipId: number;
 
   @MinLength(2)

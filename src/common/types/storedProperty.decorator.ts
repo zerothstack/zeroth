@@ -1,4 +1,4 @@
-export function StoredProperty(target: any, propertyKey: string): void {
+export function StoredProperty2(target: any, propertyKey: string): void {
 
   if (!target.constructor.storedProperties) {
     target.constructor.storedProperties = new Map();

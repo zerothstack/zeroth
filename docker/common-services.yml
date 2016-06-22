@@ -5,7 +5,7 @@ version: "2"
 services:
 
   database:
-    image: postgres:9.5.3
+    image: ${DB_IMAGE}
 
   cache:
     image: redis:3.0.7

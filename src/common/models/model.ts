@@ -1,5 +1,4 @@
 import { Collection } from './collection';
-import { DataTypeAbstract } from 'sequelize';
 
 export interface EntityNest extends Map<string, Model|Collection<Model>> {
 
@@ -16,14 +15,9 @@ export class UUID extends String {
   }
 }
 
-export interface ModelSchema {
-//@todo define schema (separate to sequelize definition)
-}
-
 export interface ModelStatic<T extends Model> {
   new(data?: any, exists?: boolean): T;
   identifierKey: string;
-  schema: ModelSchema;
   modelName: string;
   storedProperties: Map<string, string>;
 }
@@ -40,7 +34,6 @@ export abstract class Model {
   protected nestedEntities: EntityNest;
 
   public static identifierKey: string;
-  public static schema: ModelSchema = {};
   public static storedProperties: Map<string, string>;
   public static modelName: string;
 

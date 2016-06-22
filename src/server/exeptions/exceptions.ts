@@ -5,7 +5,7 @@ export abstract class HttpException extends Error {
   protected statusCode: number = 500;
   protected data: any;
 
-  constructor(public message?: string) {
+  constructor(public message: string) {
     super(message);
     // this.name = 'HttpException';
     // this.message = message;
