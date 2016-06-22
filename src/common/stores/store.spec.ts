@@ -69,7 +69,6 @@ describe('Mock Store', () => {
   it('retrieves a promise of a mock entity', inject([TestClass], (c: TestClass) => {
 
     return c.shipStore.findOne(1234).then((entity) => {
-      console.log(entity);
 
       expect(entity instanceof Ship).toBe(true);
       expect(entity.getIdentifier()).toBe(1234);
