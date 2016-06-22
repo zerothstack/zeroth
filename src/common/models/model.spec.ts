@@ -5,20 +5,20 @@ import * as moment from 'moment';
 import { Collection } from './collection';
 import { hasOne, hasMany } from '../relations';
 import Moment = moment.Moment;
-import { primary } from '../types/primary.decorator';
+import { Primary } from '../types/primary.decorator';
 
 class ChildModel extends Model {
 
-  @primary
-  public id: UUID;
+  @Primary()
+  public id: string;//UUID;
 
   public name: string;
 
 }
 class BasicModel extends Model {
 
-  @primary
-  public id: UUID;
+  @Primary()
+  public id: string;//UUID;
 
   public stringNoDefault: string;
   public stringWithDefault: string = 'foo';
@@ -47,7 +47,7 @@ describe('Model', () => {
       .toEqual(id);
   });
 
-  it('retrieves the identifier with @primary decorator', () => {
+  it('retrieves the identifier with @Primary decorator', () => {
     expect(instance.getIdentifier())
       .toEqual(id);
   });

@@ -43,7 +43,7 @@ For example in the following model, the birthday property is cast to a `Date` ty
 ```typescript
 export class UserBirthday extends Model {
 
-  @primary
+  @Primary()
   public userId: UUID;
 
   @castDate
