@@ -1,9 +1,9 @@
 import { it, describe, beforeEach, expect } from '@angular/core/testing';
-import { Model } from './model';
+import { BaseModel } from './model';
 import { Collection } from './collection';
 import { Primary } from '../types/primary.decorator';
 
-class BasicModel extends Model {
+class BasicModel extends BaseModel {
 
   @Primary()
   public id: number;

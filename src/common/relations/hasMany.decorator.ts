@@ -1,4 +1,4 @@
-import { RelationHydrator, ModelStatic, Model } from '../models/model';
+import { RelationHydrator, ModelStatic, BaseModel } from '../models/model';
 import { Collection } from '../models/collection';
 import { initializeRelationMap } from './index';
 
@@ -8,8 +8,8 @@ import { initializeRelationMap } from './index';
  * @returns {function(Object[], Model=): Collection<Model>}
  */
 function defaultHydratorFactory(modelStatic: ModelStatic<any>): RelationHydrator {
-  return (data: Object[], reference?: Model): Collection<Model> => {
-    return new Collection(data.map((item: Object): Model => new modelStatic(item)));
+  return (data: Object[], reference?: BaseModel): Collection<BaseModel> => {
+    return new Collection(data.map((item: Object): BaseModel => new modelStatic(item)));
   };
 }
 

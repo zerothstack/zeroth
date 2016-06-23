@@ -10,6 +10,7 @@ import { Server } from './servers/abstract.server';
 import { AbstractController } from './controllers/abstract.controller';
 import { Logger, LogLevel } from '../common/services/logger.service';
 import { coreInjector } from './main';
+import { registry, EntityType } from '../common/registry/entityRegistry';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;
@@ -23,7 +24,7 @@ export interface BootstrapResponse {
   logger: Logger;
 }
 
-export interface ControllerDictionary<T extends AbstractController> {
+export interface ClassDictionary<T extends AbstractController> {
   [key: string]: T;
 }
 
@@ -59,18 +60,17 @@ function handleBootstrapError(e: Error, logger: Logger) {
   process.exit(1);
 }
 
-export function bootstrap(controllers: ControllerDictionary<any>, providers: ProviderDefinition[] = [], afterBootstrap?:(bootstrap:BootstrapResponse)=>void): () => Promise<BootstrapResponse> {
+function resolveRegistryMap(type:EntityType):ResolvedReflectiveProvider[] {
+  return ReflectiveInjector.resolve([...registry.getAllOfType(type).values()]);
+}
+
+export function bootstrap(loadClasses:ClassDictionary<any>[], providers: ProviderDefinition[] = [], afterBootstrap?:(bootstrap:BootstrapResponse)=>void): () => Promise<BootstrapResponse> {
 
   let logger: Logger;
 
   try {
 
-    let controllerArray = Object.keys(controllers)
-      .map(key => controllers[key]);
-
-    // resolve all controllers
-    let resolvedControllerProviders = ReflectiveInjector.resolve(controllerArray);
-
+    deferredLog('info', registry);
     return (): Promise<BootstrapResponse> => {
 
       deferredLog('info', 'Bootstrapping server');
@@ -78,9 +78,15 @@ export function bootstrap(controllers: ControllerDictionary<any>, providers: Pro
       return Promise.all(providers)
         .then((providers: ProviderType[]) => {
 
+          let resolvedControllerProviders = resolveRegistryMap('controller');
+          let resolvedSeederProviders = resolveRegistryMap('seeder');
+
           // resolve all other user classes
-          const resolvedProviders: ResolvedReflectiveProvider[] = ReflectiveInjector.resolve(providers)
-            .concat(resolvedControllerProviders);
+          const resolvedProviders: ResolvedReflectiveProvider[] = ReflectiveInjector
+            .resolve(providers)
+            .concat(resolvedControllerProviders)
+            .concat(resolvedSeederProviders)
+          ;
 
           // get an injector from the resolutions, using the core injector as parent
           const injector = ReflectiveInjector.fromResolvedProviders(resolvedProviders, coreInjector);
@@ -88,8 +94,18 @@ export function bootstrap(controllers: ControllerDictionary<any>, providers: Pro
           // assign logger instance as soon as possible so the error handler might use it
           logger = injector.get(Logger)
             .source('bootstrap');
+
           deferredLogs.forEach((log: DeferredLog) => {
             logger[log.level](...log.messages);
+          });
+
+          // iterate seeders, to fill the db @todo change to register "unseeded" with the remote cli
+          // so they can be executed on demand
+          resolvedSeederProviders.forEach((resolvedSeederProvider: ResolvedReflectiveProvider) => {
+            logger.info(`seeding ${resolvedSeederProvider.key.displayName}`);
+            injector.instantiateResolved(resolvedSeederProvider)
+              .seed();
+
           });
 
           // iterate over the controller providers, instantiating them to register their routes
@@ -105,11 +121,11 @@ export function bootstrap(controllers: ControllerDictionary<any>, providers: Pro
           const server: Server = injector.get(Server);
 
           let response = {injector, server, logger};
-          
+
           if (afterBootstrap){
             afterBootstrap(response)
           }
-          
+
           return response;
 
         })

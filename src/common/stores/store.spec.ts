@@ -1,8 +1,8 @@
 import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
-import { Model, identifier } from '../models/model';
-import { Store } from './store';
+import { BaseModel, identifier } from '../models/model';
+import { BaseStore } from './store';
 import { Primary } from '../types/primary.decorator';
 import { MinLength, Validate, ValidatorConstraint } from '../validation';
 import { ValidationException } from '../../server/exeptions/exceptions';
@@ -32,7 +32,7 @@ class CustomValidator implements ValidatorInterface {
 
 }
 
-class Ship extends Model {
+class Ship extends BaseModel {
   @Primary()
   public shipId: number;
 
@@ -47,7 +47,7 @@ class Ship extends Model {
 
 }
 
-abstract class ShipStore extends Store<Ship> {
+abstract class ShipStore extends BaseStore<Ship> {
 
 }
 
@@ -101,7 +101,7 @@ describe('Mock Store', () => {
 
     expect(c instanceof TestClass)
       .toBe(true);
-    expect(c.shipStore instanceof Store)
+    expect(c.shipStore instanceof BaseStore)
       .toBe(true);
     expect(c.shipStore instanceof ShipMockStore)
       .toBe(true);

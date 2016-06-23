@@ -5,10 +5,10 @@ import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { HttpStore } from './http.store';
-import { Model } from '../../common/models/model';
+import { BaseModel } from '../../common/models/model';
 import { Collection } from '../../common/models/collection';
 
-class TestModel extends Model {
+class TestModel extends BaseModel {
   id: number;
   name: string;
 }

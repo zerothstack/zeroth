@@ -1,5 +1,5 @@
 import { it, describe, expect, beforeEach } from '@angular/core/testing';
-import { UUID, Model } from './model';
+import { UUID, BaseModel } from './model';
 import { castDate } from '../types/date.decorator';
 import * as moment from 'moment';
 import { Collection } from './collection';
@@ -7,7 +7,7 @@ import { hasOne, hasMany } from '../relations';
 import Moment = moment.Moment;
 import { Primary } from '../types/primary.decorator';
 
-class ChildModel extends Model {
+class ChildModel extends BaseModel {
 
   @Primary()
   public id: string;//UUID;
@@ -15,7 +15,7 @@ class ChildModel extends Model {
   public name: string;
 
 }
-class BasicModel extends Model {
+class BasicModel extends BaseModel {
 
   @Primary()
   public id: string;//UUID;
