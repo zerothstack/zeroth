@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  Model, ModelStatic, identifier,
+  BaseModel, ModelStatic, identifier,
   UUID
 } from '../../common/models/model';
 import { Database } from '../services/database.service';
 import { Logger } from '../../common/services/logger.service';
-import { Store } from '../../common/stores/store';
+import { BaseStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
 import { Repository, Connection } from 'typeorm';
@@ -15,7 +15,7 @@ import { Injector } from '@angular/core';
  * This store is for saving and retrieving models from the database using Sequelize
  */
 @Injectable()
-export abstract class DatabaseStore<T extends Model> extends Store<T> {
+export abstract class DatabaseStore<T extends BaseModel> extends BaseStore<T> {
 
   /**
    * The TypeORM repository instance

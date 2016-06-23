@@ -1,4 +1,4 @@
-import { RelationHydrator, ModelStatic, Model } from '../models/model';
+import { RelationHydrator, ModelStatic, BaseModel } from '../models/model';
 import { initializeRelationMap } from './index';
 
 /**
@@ -8,7 +8,7 @@ import { initializeRelationMap } from './index';
  */
 function defaultHydratorFactory(modelStatic: ModelStatic<any>): RelationHydrator {
 
-  return (data: Object, reference: Model): Model => new modelStatic(data);
+  return (data: Object, reference: BaseModel): BaseModel => new modelStatic(data);
 }
 
 /**

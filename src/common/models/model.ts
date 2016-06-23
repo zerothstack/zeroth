@@ -1,6 +1,6 @@
 import { Collection } from './collection';
 
-export interface EntityNest extends Map<string, Model|Collection<Model>> {
+export interface EntityNest extends Map<string, BaseModel|Collection<BaseModel>> {
 
 }
 
@@ -15,7 +15,7 @@ export class UUID extends String {
   }
 }
 
-export interface ModelStatic<T extends Model> {
+export interface ModelStatic<T extends BaseModel> {
   new(data?: any, exists?: boolean): T;
   identifierKey: string;
   modelName: string;
@@ -23,14 +23,14 @@ export interface ModelStatic<T extends Model> {
 }
 
 export interface TypeCaster {
-  (value: any, reference: Model): any;
+  (value: any, reference: BaseModel): any;
 }
 
 export interface RelationHydrator {
-  (modelCollection: Object | Object[], reference: Model): Model|Collection<Model>;
+  (modelCollection: Object | Object[], reference: BaseModel): BaseModel|Collection<BaseModel>;
 }
 
-export abstract class Model {
+export abstract class BaseModel {
   protected nestedEntities: EntityNest;
 
   public static identifierKey: string;
@@ -54,7 +54,7 @@ export abstract class Model {
   /**
    * Hydrates the model from given data
    * @param data
-   * @returns {Model}
+   * @returns {BaseModel}
    */
   protected hydrate(data: Object) {
 
@@ -83,7 +83,7 @@ export abstract class Model {
   }
 
   public getIdentifier(): identifier {
-    const self = <typeof Model>this.constructor;
+    const self = <typeof BaseModel>this.constructor;
     return this[self.identifierKey];
   }
 
