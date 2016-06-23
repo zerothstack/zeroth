@@ -27,39 +27,39 @@ export abstract class Logger {
 
   }
 
-  public emergency(...args: any[]): Promise<this> | this {
+  public emergency(...args: any[]): this {
     return this.log('emergency', ...args);
   }
 
-  public alert(...args: any[]): Promise<this> | this {
+  public alert(...args: any[]): this {
     return this.log('alert', ...args);
   }
 
-  public critical(...args: any[]): Promise<this> | this {
+  public critical(...args: any[]): this {
     return this.log('critical', ...args);
   }
 
-  public error(...args: any[]): Promise<this> | this {
+  public error(...args: any[]): this {
     return this.log('error', ...args);
   }
 
-  public warning(...args: any[]): Promise<this> | this {
+  public warning(...args: any[]): this {
     return this.log('warning', ...args);
   }
 
-  public notice(...args: any[]): Promise<this> | this {
+  public notice(...args: any[]): this {
     return this.log('notice', ...args);
   }
 
-  public info(...args: any[]): Promise<this> | this {
+  public info(...args: any[]): this {
     return this.log('info', ...args);
   }
 
-  public debug(...args: any[]): Promise<this> | this {
+  public debug(...args: any[]): this {
     return this.log('debug', ...args);
   }
 
-  public log(logLevel: LogLevel, ...args: any[]): Promise<this> | this {
+  public log(logLevel: LogLevel, ...args: any[]): this {
     return this.persistLog(logLevel, args);
   }
 
@@ -72,6 +72,6 @@ export abstract class Logger {
     return new this.impl().setSource(source);
   }
 
-  public abstract persistLog(logLevel: LogLevel, messages: any[]): Promise<this> | this;
+  public abstract persistLog(logLevel: LogLevel, messages: any[]): this;
 
 }

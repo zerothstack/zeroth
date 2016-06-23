@@ -9,7 +9,7 @@ export class LoggerMock extends Logger {
     super(LoggerMock);
   }
 
-  public persistLog(logLevel: LogLevel, messages: any[]): Promise<this>|this {
+  public persistLog(logLevel: LogLevel, messages: any[]): this {
     return this;
   }
 

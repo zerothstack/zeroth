@@ -16,6 +16,16 @@ export abstract class Store<T extends Model> {
   constructor(protected modelStatic: ModelStatic<T>, protected injector:Injector) {
   }
 
+  /**
+   * Promise that store is initialized.
+   * Override this function for stores that have async initialization like Database stores that
+   * require a connection etc.
+   * @returns {Promise<Store>}
+   */
+  public initialized():Promise<this> {
+    return Promise.resolve(this);
+  }
+
   public abstract findOne(id: identifier): Promise<T>;
 
   public abstract saveOne(model:T): Promise<T>;
