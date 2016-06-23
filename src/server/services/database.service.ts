@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../../common/services/logger.service';
+import { Logger, LogLevel } from '../../common/services/logger.service';
 import { createConnection, CreateConnectionOptions, Connection } from "typeorm";
 
 export interface DatabaseLogFunction {
-  (message: any, level: "log"|"debug"|"info"|"error"): void;
+  (level: LogLevel, ...messages: any[]): void;
 }
 
 /**
@@ -32,18 +32,8 @@ export class Database {
 
     this.logger = loggerBase.source('database');
 
-    this.logger.info('Connecting to database');
-
-    this.initialized = Database.connect((message: any, level: "log"|"debug"|"info"|"error") => this.logger[level](message))
-      .then((connection: Connection) => {
-        this.connection = connection;
-
-        //@todo if localhost AND requested to sync/reload. Probably will just remove entirely and
-        // only run with migrations use SchemaCreatorFactory
-        connection.syncSchema(true);
-
-        return connection;
-      })
+    this.initialized = Database.connect((level: LogLevel, message: any) => this.logger[level](message))
+      .then((c) => this.connection = c)
       .catch((e) => {
         this.logger.critical(e);
         throw e;
@@ -51,6 +41,8 @@ export class Database {
   }
 
   public static connect(logFunction?: DatabaseLogFunction): Promise<Connection> {
+
+    logFunction('info', 'Connecting to database');
 
     const options: CreateConnectionOptions = {
       driver: process.env.DB_DRIVER, // Right now only "mysql" is supported
@@ -60,10 +52,16 @@ export class Database {
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        autoSchemaCreate: true, // if set to true, then database schema will be automatically
+        autoSchemaCreate: false, // if set to true, then database schema will be automatically
                                 // created on each application start
         logging: {
-          logger: logFunction
+          logger: (message: any, level: 'log'|'debug'|'info'|'error'):void => {
+            if (level == 'log'){
+              level = 'info';
+            }
+            logFunction((level as LogLevel), message)
+          },
+          logQueries: true,
         }
       },
       entityDirectories: [
@@ -73,15 +71,16 @@ export class Database {
 
     };
 
+    logFunction('info', 'reading directories', options.entityDirectories);
+
     return createConnection(options);
   }
 
   /**
    * Retrieve the driver instance
-   * @returns {Sequelize.Sequelize}
    */
-  public getConnection(): Connection {
-    return this.connection;
+  public getConnection(): Promise<Connection> {
+    return this.initialized.then(() => this.connection);
   }
 
   /**

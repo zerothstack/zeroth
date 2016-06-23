@@ -58,6 +58,10 @@ export abstract class Model {
    */
   protected hydrate(data: Object) {
 
+    if (!data){
+      return this;
+    }
+
     if (this.__typeCasts) {
       for (const [key, caster] of this.__typeCasts) {
         if (data.hasOwnProperty(key)) {
