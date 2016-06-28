@@ -3,11 +3,11 @@ import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
 import { BaseModel, identifier } from '../models/model';
 import { BaseStore } from './store';
-import { Primary } from '../types/primary.decorator';
 import { MinLength, Validate, ValidatorConstraint } from '../validation';
 import { ValidationException } from '../../server/exeptions/exceptions';
 import { ValidatorInterface } from 'class-validator';
 import Spy = jasmine.Spy;
+import { Primary } from '../models/types/primary.decorator';
 
 @Injectable()
 class StubService {

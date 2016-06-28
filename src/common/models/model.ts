@@ -18,7 +18,7 @@ export class UUID extends String {
 export interface ModelStatic<T extends BaseModel> {
   new(data?: any, exists?: boolean): T;
   identifierKey: string;
-  modelName: string;
+  metadata?: ModelMetadata;
   storedProperties: Map<string, string>;
 }
 
@@ -30,12 +30,16 @@ export interface RelationHydrator {
   (modelCollection: Object | Object[], reference: BaseModel): BaseModel|Collection<BaseModel>;
 }
 
+export interface ModelMetadata {
+  storageKey?:string; //the key used for storing the model data. Use for API endpoint, table name etc
+}
+
 export abstract class BaseModel {
   protected nestedEntities: EntityNest;
 
   public static identifierKey: string;
   public static storedProperties: Map<string, string>;
-  public static modelName: string;
+  public static metadata: ModelMetadata;
 
   constructor(data?: any) {
     this.hydrate(data);

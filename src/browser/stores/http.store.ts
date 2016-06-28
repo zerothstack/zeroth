@@ -17,7 +17,16 @@ export abstract class HttpStore<T extends BaseModel> extends BaseStore<T> {
     this.logger = loggerBase.source('HTTP Store');
   }
 
-  protected abstract endpoint(id?: identifier):string;
+
+  protected endpoint(id?: identifier): string {
+
+    let endpoint = `${process.env.API_BASE}/${this.modelStatic.metadata.storageKey}`;
+
+    if (id) {
+      endpoint += `/${id}`;
+    }
+    return endpoint;
+  };
 
   /**
    * Retrieve one model from the REST api

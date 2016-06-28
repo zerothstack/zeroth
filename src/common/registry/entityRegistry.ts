@@ -1,5 +1,7 @@
 export type EntityType = 'model' | 'controller' | 'seeder' | 'middleware' | 'migration' | 'store';
-export type Entity = Function;
+export interface Entity extends Function {
+  metadata?:any[];
+}
 
 export class EntityRegistry {
 
@@ -8,13 +10,15 @@ export class EntityRegistry {
   constructor() {
   }
 
-  public register<T extends Entity>(type: EntityType, entity: T): this {
+  public register<T extends Entity>(type: EntityType, entity: T, metadata?:any): this {
 
     if (!this.registry.get(type)) {
       this.registry.set(type, new Map());
     }
 
     let typeRegistry = this.registry.get(type);
+    
+    entity.metadata = metadata;
 
     typeRegistry.set(entity.name, entity);
 

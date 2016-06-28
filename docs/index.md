@@ -13,11 +13,12 @@ description: Full stack isomorphic typescript framework.
 - [ ] Email sending
 - [ ] Queue handling
 - [ ] Database seeding from `MockModelProvider`s
-- [ ] Full validation decorator complement
+- [x] Full validation decorator complement
 - [ ] 100% Code coverage
 - [ ] on initialization generate passwords and certificate for auth
 - [ ] Integrate code generations from Angular CLI 
-- [ ] Migration to TypeORM
+- [x] Migration to TypeORM
+- [x] Entity registry with decorators for registering components anywhere
 - [ ] Docker integration into toolchain for local dev
 
 ### Developer Preview [June 20th]

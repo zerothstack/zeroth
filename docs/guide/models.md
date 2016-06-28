@@ -21,38 +21,9 @@ easily mocked for unit testing, or refactored to interact with a microservice ra
 
 For more detail on `Store`s and the methods they provide, see the [Model Store guide page](/guide/model-stores).
 
-## Hydration
-Hydration is the process that turns a `new` and empty model into one that contains it's data. The execution of the `hydrate`
-method should always be done *by* the `<model>Store`, however the actual assignment of that data into it's own data model
-is the model's responsibility as the raw input should be the same no matter the `<model>Store` implementation.
-
-In general, you should never have to override the `AbstractController.hydrate()` method, however it is good to know that
-it is there as it can of course be overridden if you wish to modify its behavior.
-
-In brief, the hydrator does the following actions:
-1. Take a raw copy of the data for later comparison
-1. Assign all properties of the input data to itself, replacing properties with getters & setters
-1. Recursively hydrate any nested related models and associate as relations
-
-
-## Data types
-Data types are method decorators that define the typecasting from the raw data of a model. They are used by the hydrator
-to get the data into the expected data types defined by the property types of the model.
-
-For example in the following model, the birthday property is cast to a `Date` type with the `@castDate` decorator
-```typescript
-export class UserBirthday extends Model {
-
-  @Primary()
-  public userId: UUID;
-
-  @castDate
-  public birthday: Date;
-}
-```
-
 ## Relationships
 This feature has not yet been implemented
-## Validation
-This feature has not yet been implemented
 
+## See Also
+
+* [Model Validation](/guide/validation)

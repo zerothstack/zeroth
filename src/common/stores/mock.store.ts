@@ -24,7 +24,7 @@ export abstract class MockStore<T extends BaseModel> extends BaseStore<T> {
 
   protected abstract getMock(id?:identifier):T;
 
-  public findOne(id: identifier): Promise<T> {
+  public findOne(id?: identifier): Promise<T> {
     return Promise.resolve(this.getMock(id));
   }
 

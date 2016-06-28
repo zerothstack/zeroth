@@ -7,7 +7,9 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { HttpStore } from './http.store';
 import { BaseModel } from '../../common/models/model';
 import { Collection } from '../../common/models/collection';
+import { Model } from '../../common/registry/decorators';
 
+@Model('tests')
 class TestModel extends BaseModel {
   id: number;
   name: string;
@@ -19,17 +21,6 @@ class TestHttpStore extends HttpStore<TestModel> {
   constructor(injector: Injector, http: Http, loggerBase: Logger) {
     super(TestModel, injector, http, loggerBase);
   }
-
-  protected endpoint(id?: string): string {
-
-    let endpoint = `${process.env.API_BASE}/tests`;
-
-    if (id) {
-      endpoint += id;
-    }
-
-    return endpoint;
-  };
 
 }
 
