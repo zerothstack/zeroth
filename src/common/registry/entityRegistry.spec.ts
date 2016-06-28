@@ -208,6 +208,16 @@ describe('Entity registry', () => {
 
     });
 
+    it('registers any passed metadata to the registry', () => {
+      @Model('example')
+      class BarModel {
+      }
+
+      let foundClass = registry.findByType('model', BarModel.name);
+      expect(foundClass.metadata).toEqual({storageKey: 'example'});
+
+    });
+
   });
 
 });

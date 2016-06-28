@@ -1,11 +1,7 @@
 import { it, describe, expect, beforeEach } from '@angular/core/testing';
 import { UUID, BaseModel } from './model';
-import { castDate } from '../types/date.decorator';
-import * as moment from 'moment';
-import { Collection } from './collection';
-import { hasOne, hasMany } from '../relations';
+import { Primary } from './types/primary.decorator';
 import Moment = moment.Moment;
-import { Primary } from '../types/primary.decorator';
 
 class ChildModel extends BaseModel {
 
@@ -15,6 +11,7 @@ class ChildModel extends BaseModel {
   public name: string;
 
 }
+
 class BasicModel extends BaseModel {
 
   @Primary()
@@ -23,14 +20,6 @@ class BasicModel extends BaseModel {
   public stringNoDefault: string;
   public stringWithDefault: string = 'foo';
 
-  @castDate
-  public date: Moment;
-
-  @hasOne()
-  public _child: ChildModel;
-
-  @hasMany(ChildModel)
-  public _children: Collection<ChildModel>;
 }
 
 describe('Model', () => {
@@ -60,41 +49,6 @@ describe('Model', () => {
   it('returns undefined for properties without default', () => {
     expect(instance.stringNoDefault)
       .toEqual(undefined);
-  });
-
-  it('casts date string to date object', () => {
-
-    const dateModel = new BasicModel({id, date: '2016-06-13T14:22:13.312Z'});
-
-    expect(typeof dateModel.date)
-      .not
-      .toBe('string');
-    expect(moment.isMoment(dateModel.date))
-      .toBe(true);
-
-  });
-
-  it('hydrates nested hasOne relations', () => {
-
-    const nested = new BasicModel({id, _child: {name: 'childModel'}});
-
-    expect(nested._child instanceof ChildModel)
-      .toBe(true);
-    expect(nested._child.name)
-      .toEqual('childModel');
-
-  });
-
-  it('hydrates nested hasMany relations', () => {
-
-    const nested = new BasicModel({id, _children: [{name: 'childModel'}]});
-
-    expect(nested._children[0] instanceof ChildModel)
-      .toBe(true);
-
-    expect(nested._children[0].name)
-      .toEqual('childModel');
-
   });
 
 });

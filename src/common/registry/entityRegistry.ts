@@ -1,5 +1,7 @@
 export type EntityType = 'model' | 'controller' | 'seeder' | 'middleware' | 'migration' | 'store';
-export type Entity = Function;
+export interface Entity extends Function {
+  metadata?:any[];
+}
 
 export class EntityRegistry {
 
@@ -8,15 +10,15 @@ export class EntityRegistry {
   constructor() {
   }
 
-  public register<T extends Entity>(type: EntityType, entity: T): this {
-
-    console.log('registering to type', type, entity);
+  public register<T extends Entity>(type: EntityType, entity: T, metadata?:any): this {
 
     if (!this.registry.get(type)) {
       this.registry.set(type, new Map());
     }
 
     let typeRegistry = this.registry.get(type);
+    
+    entity.metadata = metadata;
 
     typeRegistry.set(entity.name, entity);
 
@@ -24,7 +26,7 @@ export class EntityRegistry {
   }
 
   public getAllOfType(type: EntityType): Map<string, Entity> {
-    if (!this.registry.has(type)){
+    if (!this.registry.has(type)) {
       return new Map();
     }
     return this.registry.get(type);
@@ -56,7 +58,7 @@ export class EntityRegistry {
       .get(name);
   }
 
-  public findAllWithName(name: string): Map<EntityType, Entity>| null {
+  public findAllWithName(name: string): Map<EntityType, Entity> | null {
 
     let found: Map<EntityType, Entity> = new Map();
     this.registry.forEach((entitySet: Map<string, Entity>, key: EntityType) => {
@@ -66,7 +68,7 @@ export class EntityRegistry {
       }
     });
 
-    if (!found.size){
+    if (!found.size) {
       return null;
     }
 

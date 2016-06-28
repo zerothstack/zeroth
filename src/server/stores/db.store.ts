@@ -8,7 +8,8 @@ import { Logger } from '../../common/services/logger.service';
 import { BaseStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
-import { Repository, Connection } from 'typeorm';
+import { Repository } from '@ubiquits/typeorm';
+import { Connection } from '@ubiquits/typeorm/backend';
 
 import { Injector } from '@angular/core';
 /**

@@ -1,3 +1,4 @@
 export * from './model';
 export * from './collection';
-export * from './storedModel.decorator';
+export * from './types';
+export * from './relations';
