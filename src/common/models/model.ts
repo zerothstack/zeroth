@@ -37,16 +37,6 @@ export abstract class BaseModel {
   public static storedProperties: Map<string, string>;
   public static modelName: string;
 
-  /**
-   * Don't set these properties directly - they are defined by the model property decorators
-   */
-  protected __typeCasts: Map<string, TypeCaster>;
-  protected __relations: Map<string, RelationHydrator>;
-
-  /**
-   * References maintained from initial hydration
-   */
-
   constructor(data?: any) {
     this.hydrate(data);
   }
@@ -60,22 +50,6 @@ export abstract class BaseModel {
 
     if (!data){
       return this;
-    }
-
-    if (this.__typeCasts) {
-      for (const [key, caster] of this.__typeCasts) {
-        if (data.hasOwnProperty(key)) {
-          data[key] = caster(data[key], this); //cast type
-        }
-      }
-    }
-
-    if (this.__relations) {
-      for (const [key, relationHydrator] of this.__relations) {
-        if (data.hasOwnProperty(key)) {
-          data[key] = relationHydrator(data[key], this); //hydrate nested relations
-        }
-      }
     }
 
     Object.assign(this, data);

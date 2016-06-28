@@ -1,11 +1,11 @@
 /**
- * This decorator extends the PrimaryColumn decorator from typeorm to assign the identifierKey
+ * This decorator extends the PrimaryColumn decorator from @ubiquits/typeorm to assign the identifierKey
  * of the model.
  * @todo determine if this can be removed by getting key from model another way
  */
-import { PrimaryColumn } from 'typeorm/columns';
-import {ColumnType} from 'typeorm/metadata/types/ColumnTypes'
-import {ColumnOptions} from 'typeorm/decorator/options/ColumnOptions';
+import { PrimaryColumn } from '@ubiquits/typeorm/columns';
+import {ColumnType} from '@ubiquits/typeorm/metadata/types/ColumnTypes'
+import {ColumnOptions} from '@ubiquits/typeorm/decorator/options/ColumnOptions';
 
 export function Primary(options?: ColumnOptions): PropertyDecorator;
 export function Primary(type?: ColumnType, options?: ColumnOptions): PropertyDecorator;
