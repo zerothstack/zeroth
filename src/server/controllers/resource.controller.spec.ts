@@ -4,11 +4,10 @@ import { ResourceController } from './resource.controller';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { Model, identifier } from '../../common/models/model';
+import { BaseModel, identifier } from '../../common/models/model';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { MockStore } from '../../common/stores/mock.store';
-import { Store } from '../../common/stores/store';
-import { primary } from '../../common/types/primary.decorator';
+import { BaseStore } from '../../common/stores/store';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.spec';
 import { Request } from './request';
@@ -16,16 +15,17 @@ import { Response } from './response';
 import { Collection } from '../../common/models/collection';
 import { EventEmitter } from 'events';
 import { IncomingMessage } from 'http';
+import { Primary } from '../../common/models/types/primary.decorator';
 
-class Fruit extends Model {
-  @primary
+class Fruit extends BaseModel {
+  @Primary()
   public fruitId: number;
 
   public name: string;
 
 }
 
-abstract class FruitStore extends Store<Fruit> {
+abstract class FruitStore extends BaseStore<Fruit> {
 
 }
 

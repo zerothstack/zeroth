@@ -1,4 +1,4 @@
-import { identifier, ModelStatic, Model } from '../models/model';
+import { identifier, ModelStatic, BaseModel } from '../models/model';
 import {Injector} from '@angular/core';
 import { Collection } from '../models/collection';
 import { ValidationError} from 'class-validator/ValidationError';
@@ -11,9 +11,19 @@ export interface Query {
 }
 
 
-export abstract class Store<T extends Model> {
+export abstract class BaseStore<T extends BaseModel> {
 
   constructor(protected modelStatic: ModelStatic<T>, protected injector:Injector) {
+  }
+
+  /**
+   * Promise that store is initialized.
+   * Override this function for stores that have async initialization like Database stores that
+   * require a connection etc.
+   * @returns {Promise<BaseStore>}
+   */
+  public initialized():Promise<this> {
+    return Promise.resolve(this);
   }
 
   public abstract findOne(id: identifier): Promise<T>;

@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import * as Sequelize from 'sequelize';
-import * as _ from 'lodash';
-import { QueryOptions } from 'sequelize';
-import { Logger } from '../../common/services/logger.service';
+import { Logger, LogLevel } from '../../common/services/logger.service';
+import { createConnection, CreateConnectionOptions, Connection } from "@ubiquits/typeorm/backend";
+import { registry } from '../../common/registry/entityRegistry';
+
+export interface DatabaseLogFunction {
+  (level: LogLevel, ...messages: any[]): void;
+}
 
 /**
  * Core database service for connecting to the SQL db
@@ -14,7 +17,7 @@ export class Database {
    * The underlying driver that handles the database connection.
    * In this case an instance of Sequelize
    */
-  protected driver: Sequelize.Sequelize;
+  protected connection: Connection;
   /**
    * Logger instance for the class, initialized with `database` source
    */
@@ -24,82 +27,78 @@ export class Database {
    * Promise that the database has initialised. Useful for deferring startup database processes like
    * migrations or schema creations
    */
-  public initialized:Promise<Sequelize.Sequelize>;
+  public initialized: Promise<Connection>;
 
   constructor(loggerBase: Logger) {
 
     this.logger = loggerBase.source('database');
 
-    this.logger.info('Connecting to database');
-    this.driver = Database.connect((message: string, ...logs: any[]) => this.logger.debug(message, ...logs))
+    this.initialized = Database.connect((level: LogLevel, message: any) => this.logger[level](message))
+      .then((c) => this.connection = c)
+      .catch((e) => {
+        this.logger.critical(e);
+        throw e;
+      });
+  }
 
-    this.initialized = this.driver.authenticate()
-      .then(() => {
-        this.logger.debug('Checking schemas');
-        return this.driver.showAllSchemas({});
-      })
-      .then((schemas) => {
+  public static connect(logFunction?: DatabaseLogFunction): Promise<Connection> {
 
-        this.logger.debug('Current schemas', schemas);
+    logFunction('info', 'Connecting to database');
 
-        if (!_.includes(schemas, process.env.SCHEMA)){
-          return this.createSchema(process.env.SCHEMA);
+    const options: CreateConnectionOptions = {
+      driver: process.env.DB_DRIVER, // Right now only "mysql" is supported
+      connection: {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
+        autoSchemaCreate: false, // if set to true, then database schema will be automatically
+                                // created on each application start
+        logging: {
+          logger: (message: any, level: 'log'|'debug'|'info'|'error'):void => {
+            if (level == 'log'){
+              level = 'info';
+            }
+            logFunction((level as LogLevel), message)
+          },
+          logQueries: true,
         }
+      },
+      entities: [...registry.getAllOfType('model').values()],
+      // entityDirectories: [
+      //   process.cwd() + '/lib/server/common/models' //@todo make configurable so bootstrap can
+      //                                               define relative values
+      // ],
 
-      }).catch((e) => {
-        this.logger.warning(e);
-      }).then(() => this.driver);
-  }
+    };
 
-  public static connect(logFunction?: Function): Sequelize.Sequelize {
-    return new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT,
-      dialect: process.env.DB_DIALECT,
-      logging: logFunction,
-    });
+    logFunction('info', 'reading directories', options.entityDirectories);
+
+    return createConnection(options);
   }
 
   /**
-   * Retrive the driver instance
-   * @returns {Sequelize.Sequelize}
+   * Retrieve the driver instance
    */
-  public getDriver(): Sequelize.Sequelize {
-    return this.driver;
+  public getConnection(): Promise<Connection> {
+    return this.initialized.then(() => this.connection);
   }
 
   /**
-   * Create a new schema in the database
+   * Create a new schema in the database (not implemented yet as postgres is pending)
    * @param schemaName
    * @returns {Promise<TResult>}
    */
-  public createSchema(schemaName: string): Promise<void> {
-
-    return this.driver.createSchema(schemaName, null)
-      .then((result: any) => {
-        this.logger.info(`Created Schema [${schemaName}]`, result);
-      });
-
-  }
+  // public createSchema(schemaName: string): Promise<void> {}
 
   /**
    * Execute a raw query
    * @param sql
-   * @param options
    * @returns {Promise<any>}
    */
-  public query(sql: string, options: QueryOptions): Promise<[any[], any]> {
-    return this.driver.query(sql, options);
+  public query(sql: string): Promise<any> {
+    return this.connection.driver.query(sql);
   }
-
-  /**
-   * Check there is a connection
-   * @returns {Promise<void>}
-   */
-  public static checkDatabase(): Promise<any> {
-
-    return Database.connect()
-      .authenticate();
-  };
 
 }

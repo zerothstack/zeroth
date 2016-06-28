@@ -1,13 +1,13 @@
 import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
-import { Model, identifier } from '../models/model';
-import { Store } from './store';
-import { primary } from '../types/primary.decorator';
+import { BaseModel, identifier } from '../models/model';
+import { BaseStore } from './store';
 import { MinLength, Validate, ValidatorConstraint } from '../validation';
 import { ValidationException } from '../../server/exeptions/exceptions';
 import { ValidatorInterface } from 'class-validator';
 import Spy = jasmine.Spy;
+import { Primary } from '../models/types/primary.decorator';
 
 @Injectable()
 class StubService {
@@ -32,8 +32,8 @@ class CustomValidator implements ValidatorInterface {
 
 }
 
-class Ship extends Model {
-  @primary
+class Ship extends BaseModel {
+  @Primary()
   public shipId: number;
 
   @MinLength(2)
@@ -47,7 +47,7 @@ class Ship extends Model {
 
 }
 
-abstract class ShipStore extends Store<Ship> {
+abstract class ShipStore extends BaseStore<Ship> {
 
 }
 
@@ -101,7 +101,7 @@ describe('Mock Store', () => {
 
     expect(c instanceof TestClass)
       .toBe(true);
-    expect(c.shipStore instanceof Store)
+    expect(c.shipStore instanceof BaseStore)
       .toBe(true);
     expect(c.shipStore instanceof ShipMockStore)
       .toBe(true);

@@ -3,19 +3,19 @@ import { Injectable } from '@angular/core';
 import { AbstractController} from './abstract.controller';
 import { Logger } from '../../common/services/logger.service';
 import { Route } from './route.decorator';
-import { Model } from '../../common/models/model';
+import { BaseModel } from '../../common/models/model';
 import { Response } from './response';
 import { Request } from './request';
-import { Store } from '../../common/stores/store';
+import { BaseStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 
 /**
  * Abstract controller that all controllers should extend from
  */
 @Injectable()
-export abstract class ResourceController<M extends Model> extends AbstractController {
+export abstract class ResourceController<M extends BaseModel> extends AbstractController {
 
-  constructor(server: Server, logger: Logger, protected modelStore:Store<M>) {
+  constructor(server: Server, logger: Logger, protected modelStore:BaseStore<M>) {
     super(server, logger);
   }
 

@@ -1,14 +1,14 @@
 import { Injectable, Injector } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Store } from '../../common/stores/store';
-import { identifier, ModelStatic, Model } from '../../common/models/model';
+import { BaseStore } from '../../common/stores/store';
+import { identifier, ModelStatic, BaseModel } from '../../common/models/model';
 import { Logger } from '../../common/services/logger.service';
 import { Collection } from '../../common/models/collection';
 import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
-export abstract class HttpStore<T extends Model> extends Store<T> {
+export abstract class HttpStore<T extends BaseModel> extends BaseStore<T> {
 
   protected logger: Logger;
 
@@ -17,7 +17,16 @@ export abstract class HttpStore<T extends Model> extends Store<T> {
     this.logger = loggerBase.source('HTTP Store');
   }
 
-  protected abstract endpoint(id?: identifier):string;
+
+  protected endpoint(id?: identifier): string {
+
+    let endpoint = `${process.env.API_BASE}/${this.modelStatic.metadata.storageKey}`;
+
+    if (id) {
+      endpoint += `/${id}`;
+    }
+    return endpoint;
+  };
 
   /**
    * Retrieve one model from the REST api

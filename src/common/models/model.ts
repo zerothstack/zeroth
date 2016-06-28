@@ -1,7 +1,6 @@
 import { Collection } from './collection';
-import { DataTypeAbstract } from 'sequelize';
 
-export interface EntityNest extends Map<string, Model|Collection<Model>> {
+export interface EntityNest extends Map<string, BaseModel|Collection<BaseModel>> {
 
 }
 
@@ -16,43 +15,31 @@ export class UUID extends String {
   }
 }
 
-export interface ModelSchema {
-//@todo define schema (separate to sequelize definition)
-}
-
-export interface ModelStatic<T extends Model> {
+export interface ModelStatic<T extends BaseModel> {
   new(data?: any, exists?: boolean): T;
   identifierKey: string;
-  schema: ModelSchema;
-  modelName: string;
+  metadata?: ModelMetadata;
   storedProperties: Map<string, string>;
 }
 
 export interface TypeCaster {
-  (value: any, reference: Model): any;
+  (value: any, reference: BaseModel): any;
 }
 
 export interface RelationHydrator {
-  (modelCollection: Object | Object[], reference: Model): Model|Collection<Model>;
+  (modelCollection: Object | Object[], reference: BaseModel): BaseModel|Collection<BaseModel>;
 }
 
-export abstract class Model {
+export interface ModelMetadata {
+  storageKey?:string; //the key used for storing the model data. Use for API endpoint, table name etc
+}
+
+export abstract class BaseModel {
   protected nestedEntities: EntityNest;
 
   public static identifierKey: string;
-  public static schema: ModelSchema = {};
   public static storedProperties: Map<string, string>;
-  public static modelName: string;
-
-  /**
-   * Don't set these properties directly - they are defined by the model property decorators
-   */
-  protected __typeCasts: Map<string, TypeCaster>;
-  protected __relations: Map<string, RelationHydrator>;
-
-  /**
-   * References maintained from initial hydration
-   */
+  public static metadata: ModelMetadata;
 
   constructor(data?: any) {
     this.hydrate(data);
@@ -61,24 +48,12 @@ export abstract class Model {
   /**
    * Hydrates the model from given data
    * @param data
-   * @returns {Model}
+   * @returns {BaseModel}
    */
   protected hydrate(data: Object) {
 
-    if (this.__typeCasts) {
-      for (const [key, caster] of this.__typeCasts) {
-        if (data.hasOwnProperty(key)) {
-          data[key] = caster(data[key], this); //cast type
-        }
-      }
-    }
-
-    if (this.__relations) {
-      for (const [key, relationHydrator] of this.__relations) {
-        if (data.hasOwnProperty(key)) {
-          data[key] = relationHydrator(data[key], this); //hydrate nested relations
-        }
-      }
+    if (!data){
+      return this;
     }
 
     Object.assign(this, data);
@@ -86,7 +61,7 @@ export abstract class Model {
   }
 
   public getIdentifier(): identifier {
-    const self = <typeof Model>this.constructor;
+    const self = <typeof BaseModel>this.constructor;
     return this[self.identifierKey];
   }
 

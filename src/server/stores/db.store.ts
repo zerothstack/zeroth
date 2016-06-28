@@ -1,99 +1,53 @@
 import { Injectable } from '@angular/core';
-import * as Sequelize from 'sequelize';
 import {
-  Model, ModelStatic, identifier, ModelSchema,
+  BaseModel, ModelStatic, identifier,
   UUID
 } from '../../common/models/model';
 import { Database } from '../services/database.service';
-import { Model as SequelizeModel } from 'sequelize';
 import { Logger } from '../../common/services/logger.service';
-import { DefineAttributes } from 'sequelize';
-import { DataTypeAbstract } from 'sequelize';
-import { Store } from '../../common/stores/store';
-import { Instance } from 'sequelize';
+import { BaseStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
-import { DefineAttributeColumnOptions } from 'sequelize';
+import { Repository } from '@ubiquits/typeorm';
+import { Connection } from '@ubiquits/typeorm/backend';
 
-import {Injector} from '@angular/core';
+import { Injector } from '@angular/core';
 /**
  * This store is for saving and retrieving models from the database using Sequelize
  */
 @Injectable()
-export abstract class DatabaseStore<T extends Model> extends Store<T> {
+export abstract class DatabaseStore<T extends BaseModel> extends BaseStore<T> {
 
   /**
-   * The `Sequelize` `Model` instance
+   * The TypeORM repository instance
    */
-  protected orm: SequelizeModel<any, any>;
+  protected repositoryPromise: Promise<Repository<T>>; //@todo change to reactive repository for
+                                                       // RxJS goodness
 
   /**
    * Logger for the class, initialized with source
    */
   protected logger: Logger;
 
-  protected initialized: Promise<this>;
-
-  constructor(modelStatic: ModelStatic<T>, injector:Injector, protected database: Database, protected loggerBase: Logger) {
+  constructor(modelStatic: ModelStatic<T>, injector: Injector, protected database: Database, protected loggerBase: Logger) {
     super(modelStatic, injector);
     this.logger = loggerBase.source('DB Store');
-    this.orm    = this.initializeOrm(modelStatic);
+  }
 
-    this.initialized = database.initialized
-      .then(() => this.orm.sync())
-      .then(() => this);
+  public getRepository(): Promise<Repository<T>> {
+    if (!this.repositoryPromise) {
+      this.repositoryPromise = this.database.initialized.then((connection: Connection) => connection.getRepository(this.modelStatic))
+    }
+
+    return this.repositoryPromise;
   }
 
   /**
-   * With the static model create a Sequelize model
-   * @param modelStatic
-   * @returns {Model<TInstance, TAttributes>}
+   * @inherit
+   * @returns {Promise<DatabaseStore>}
    */
-  protected initializeOrm(modelStatic: ModelStatic<T>): any/*SequelizeModel<any, any>*/ {
-    const schema: DefineAttributes = this.parseSchema(modelStatic);
-
-    return this.database.getDriver()
-      .define(modelStatic.modelName, schema, {
-        schema: process.env.SCHEMA
-      });
-  }
-
-  /**
-   * Parse the modelStatic to get the schema that Sequelize understands
-   * @param modelStatic
-   * @returns {DefineAttributes}
-   */
-  protected parseSchema(modelStatic: ModelStatic<T>): DefineAttributes {
-    const schema: DefineAttributes = {};
-
-    let pk     = modelStatic.identifierKey;
-
-    modelStatic.storedProperties.forEach((propertyType:any, property:string) => {
-      let type: DataTypeAbstract;
-      switch (propertyType) {
-        case String:
-          type = Sequelize.STRING;
-          break;
-        case Number:
-          type = Sequelize.NUMBER;
-          break;
-        case UUID:
-          type = Sequelize.UUID;
-          break;
-        case Date:
-          type = Sequelize.DATE;
-          break;
-      }
-
-      schema[property] = {type};
-      if (property === pk){
-        (schema[property] as DefineAttributeColumnOptions).primaryKey = true;
-      }
-    });
-
-
-
-    return schema;
+  public initialized():Promise<this> {
+    return this.getRepository().then(() => this);
   }
 
   /**
@@ -102,12 +56,13 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
    * @return {Promise<TResult>}
    */
   public findOne(id: identifier): Promise<T> {
-    return this.orm.findByPrimary(<number|string>id)
-      .then((modelData: Instance<any>): T => {
-        if (!modelData){
-          throw new NotFoundException(`Model not found for id [${id}]`);
+    return this.getRepository()
+      .then((repo) => repo.findOneById(id))
+      .then((model:T) => {
+        if (!model){
+          throw new NotFoundException(`${this.modelStatic.name} not found with id [${id}]`);
         }
-        return new this.modelStatic(modelData.get());
+        return model;
       });
   }
 
@@ -116,23 +71,28 @@ export abstract class DatabaseStore<T extends Model> extends Store<T> {
    * @returns {Promise<Collection<any>>}
    * @param query
    */
-  public findMany(query?:any): Promise<Collection<T>> {
-    return this.orm.findAll({
-      //@todo define query and restrict count with pagination
-      })
-      .then((modelCollection: Instance<any>[]): Collection<T> => {
-        return new Collection(modelCollection.map((modelData):T => new this.modelStatic(modelData.get())));
+  public findMany(query?: any): Promise<Collection<T>> {
+    return this.getRepository()
+      .then((repo) => repo.find({
+        //@todo define query and restrict count with pagination
+      }))
+      .then((entityArray: T[]): Collection<T> => {
+
+        if (!entityArray.length) {
+          throw new NotFoundException(`No ${this.modelStatic.name} found with query params [${JSON.stringify(query)}]`);
+        }
+
+        return new Collection(entityArray);
       })
       .catch((e) => {
-        // @todo check if not found, if so throw NotFound exception
         this.logger.error(e);
         throw e;
       });
   }
 
-  public saveOne(model:T): Promise<T> {
-    // @todo implement
-    return Promise.resolve(model);
+  public saveOne(model: T): Promise<T> {
+    return this.getRepository()
+      .then((repo) => repo.persist(model));
   }
 
 }

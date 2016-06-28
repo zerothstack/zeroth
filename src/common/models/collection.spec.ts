@@ -1,11 +1,11 @@
 import { it, describe, beforeEach, expect } from '@angular/core/testing';
-import { Model } from './model';
+import { BaseModel } from './model';
 import { Collection } from './collection';
-import { primary } from '../types/primary.decorator';
+import { Primary } from './types/primary.decorator';
 
-class BasicModel extends Model {
+class BasicModel extends BaseModel {
 
-  @primary
+  @Primary()
   public id: number;
 }
 
