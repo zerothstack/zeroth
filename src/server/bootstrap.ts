@@ -39,7 +39,6 @@ export function deferredLog(level: LogLevel, ...messages: any[]) {
 }
 
 function handleBootstrapError(e: Error, logger: Logger) {
-  // console.log('e', e);
   if (logger) {
     deferredLogs.forEach((log: DeferredLog) => {
       logger[log.level](...log.messages);
@@ -74,9 +73,12 @@ export function bootstrap(loadClasses:ClassDictionary<any>[], providers: Provide
     return (): Promise<BootstrapResponse> => {
 
       deferredLog('info', 'Bootstrapping server');
+      console.log('awaiting deferred providers');
 
       return Promise.all(providers)
         .then((providers: ProviderType[]) => {
+
+          console.log('providers completed');
 
           let resolvedControllerProviders = resolveRegistryMap('controller');
           let resolvedSeederProviders = resolveRegistryMap('seeder');

@@ -1,5 +1,9 @@
 import { Collection } from './collection';
 
+import { RegistryEntity } from '../registry/entityRegistry';
+import { RelationType, Relation } from './relations/index';
+import { ModelMetadata } from '../metadata/metadata';
+
 export interface EntityNest extends Map<string, BaseModel|Collection<BaseModel>> {
 
 }
@@ -15,31 +19,18 @@ export class UUID extends String {
   }
 }
 
-export interface ModelStatic<T extends BaseModel> {
+export interface ModelConstructor<T extends BaseModel> extends Function {
+  constructor: ModelStatic<T>;
+}
+
+export interface ModelStatic<T extends BaseModel> extends RegistryEntity {
   new(data?: any, exists?: boolean): T;
-  identifierKey: string;
-  metadata?: ModelMetadata;
-  storedProperties: Map<string, string>;
-}
-
-export interface TypeCaster {
-  (value: any, reference: BaseModel): any;
-}
-
-export interface RelationHydrator {
-  (modelCollection: Object | Object[], reference: BaseModel): BaseModel|Collection<BaseModel>;
-}
-
-export interface ModelMetadata {
-  storageKey?:string; //the key used for storing the model data. Use for API endpoint, table name etc
+  prototype: T;
 }
 
 export abstract class BaseModel {
-  protected nestedEntities: EntityNest;
 
-  public static identifierKey: string;
-  public static storedProperties: Map<string, string>;
-  public static metadata: ModelMetadata;
+  public static __metadata: ModelMetadata;
 
   constructor(data?: any) {
     this.hydrate(data);
@@ -52,7 +43,7 @@ export abstract class BaseModel {
    */
   protected hydrate(data: Object) {
 
-    if (!data){
+    if (!data) {
       return this;
     }
 
@@ -61,8 +52,25 @@ export abstract class BaseModel {
   }
 
   public getIdentifier(): identifier {
-    const self = <typeof BaseModel>this.constructor;
-    return this[self.identifierKey];
+    return this[this.getMetadata().identifierKey];
+  }
+
+  /**
+   * Get the metadata for the model (static side)
+   * @returns {ModelMetadata}
+   */
+  public static getMetadata(): ModelMetadata {
+    return (this.constructor as ModelStatic<any>).__metadata;
+  }
+
+  /**
+   * Get the metadata for the model (instance side)
+   * Note this is the same as Model.getMetadata(), but more convenient if you don't know or have
+   * access to the model name
+   * @returns {ModelMetadata}
+   */
+  public getMetadata(): ModelMetadata {
+    return (this.constructor as ModelStatic<this>).__metadata;
   }
 
 }

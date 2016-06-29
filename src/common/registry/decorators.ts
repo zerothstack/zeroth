@@ -1,29 +1,15 @@
-import { registry, EntityType, Entity } from './entityRegistry';
-import { Table } from '@ubiquits/typeorm/tables';
-import { TableOptions } from '@ubiquits/typeorm/decorator/options/TableOptions';
+import { registry, EntityType, RegistryEntity, EntityMetadata } from './entityRegistry';
+import { ModelMetadata } from '../metadata/metadata';
 
-function entityRegistryFunction(type: EntityType, metadata?:any) {
+function entityRegistryFunction(type: EntityType, metadata?:EntityMetadata) {
   return function <TFunction extends Function>(target: TFunction): void {
-    registry.register(type, (target as Entity), metadata);
+    registry.register(type, (target as RegistryEntity), metadata);
   }
 }
 
-/**
- * This decorator extends the Table decorator from @ubiquits/typeorm
- * of the model.
- */
-export function Model(storageKey?:string, options?:TableOptions): ClassDecorator {
+export function Model(metadata?:ModelMetadata): ClassDecorator {
 
-  const originalDecorator = (Table(storageKey, options) as ClassDecorator);
-  const register = entityRegistryFunction('model', {storageKey});
-
-  return function (target: Function) {
-
-    originalDecorator(target);
-    register(target);
-
-  }
-
+  return entityRegistryFunction('model', metadata);
 }
 
 export function Controller(): ClassDecorator {

@@ -1,17 +1,11 @@
-import { Injectable } from '@angular/core';
-import {
-  BaseModel, ModelStatic, identifier,
-  UUID
-} from '../../common/models/model';
+import { Injectable, Injector } from '@angular/core';
+import { BaseModel, ModelStatic, identifier } from '../../common/models/model';
 import { Database } from '../services/database.service';
 import { Logger } from '../../common/services/logger.service';
 import { BaseStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
-import { Repository } from '@ubiquits/typeorm';
-import { Connection } from '@ubiquits/typeorm/backend';
-
-import { Injector } from '@angular/core';
+import { Repository, Connection } from 'typeorm';
 /**
  * This store is for saving and retrieving models from the database using Sequelize
  */

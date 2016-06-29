@@ -20,7 +20,7 @@ export abstract class HttpStore<T extends BaseModel> extends BaseStore<T> {
 
   protected endpoint(id?: identifier): string {
 
-    let endpoint = `${process.env.API_BASE}/${this.modelStatic.metadata.storageKey}`;
+    let endpoint = `${process.env.API_BASE}/${this.modelStatic.getMetadata().storageKey}`;
 
     if (id) {
       endpoint += `/${id}`;
