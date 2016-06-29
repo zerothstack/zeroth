@@ -66,14 +66,7 @@ export class Database {
         }
       },
       entities: [...registry.getAllOfType('model').values()],
-      // entityDirectories: [
-      //   process.cwd() + '/lib/server/common/models' //@todo make configurable so bootstrap can
-      //                                               define relative values
-      // ],
-
     };
-
-    logFunction('info', 'reading directories', options.entityDirectories);
 
     return createConnection(options);
   }

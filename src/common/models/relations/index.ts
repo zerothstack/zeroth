@@ -9,7 +9,7 @@ export interface Relation {
 }
 
 export function initializeRelationMap(target: ModelConstructor<any>, type: RelationType) {
-  initializeMetadata(target);
+  initializeMetadata(target.constructor);
   
   if (!target.constructor.__metadata.relations) {
     target.constructor.__metadata.relations = new Map();

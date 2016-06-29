@@ -1,13 +1,13 @@
-import { registry, EntityType, RegistryEntity, EntityMetadata } from './entityRegistry';
+import { registry, EntityType, RegistryEntityConstructor, EntityMetadata } from './entityRegistry';
 import { ModelMetadata } from '../metadata/metadata';
 
-function entityRegistryFunction(type: EntityType, metadata?:EntityMetadata) {
+function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): ClassDecorator {
   return function <TFunction extends Function>(target: TFunction): void {
-    registry.register(type, (target as RegistryEntity), metadata);
+    registry.register(type, target.prototype.constructor, metadata);
   }
 }
 
-export function Model(metadata?:ModelMetadata): ClassDecorator {
+export function Model(metadata?: ModelMetadata): ClassDecorator {
 
   return entityRegistryFunction('model', metadata);
 }

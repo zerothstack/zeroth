@@ -1,6 +1,6 @@
 import { Collection } from './collection';
 
-import { RegistryEntity } from '../registry/entityRegistry';
+import { RegistryEntityConstructor } from '../registry/entityRegistry';
 import { RelationType, Relation } from './relations/index';
 import { ModelMetadata } from '../metadata/metadata';
 
@@ -23,7 +23,7 @@ export interface ModelConstructor<T extends BaseModel> extends Function {
   constructor: ModelStatic<T>;
 }
 
-export interface ModelStatic<T extends BaseModel> extends RegistryEntity {
+export interface ModelStatic<T extends BaseModel> extends RegistryEntityConstructor {
   new(data?: any, exists?: boolean): T;
   prototype: T;
 }
@@ -60,7 +60,7 @@ export abstract class BaseModel {
    * @returns {ModelMetadata}
    */
   public static getMetadata(): ModelMetadata {
-    return (this.constructor as ModelStatic<any>).__metadata;
+    return this.__metadata;
   }
 
   /**

@@ -1,7 +1,7 @@
 import { TableOptions } from 'typeorm/decorator/options/TableOptions';
 import { RelationType, Relation } from '../models/relations/index';
 import { ModelConstructor } from '../models/model';
-import { RegistryEntity } from '../registry/entityRegistry';
+import { RegistryEntityConstructor } from '../registry/entityRegistry';
 
 export interface ModelMetadata {
   storageKey?: string;
@@ -11,12 +11,8 @@ export interface ModelMetadata {
   identifierKey?:string;
 }
 
-export interface RegistryEntityConstructor extends Function {
-  constructor: RegistryEntity;
-}
-
 export function initializeMetadata(target: RegistryEntityConstructor) {
-  if (!target.constructor.__metadata) {
-    target.constructor.__metadata = {};
+  if (!target.__metadata) {
+    target.__metadata = {};
   }
 }

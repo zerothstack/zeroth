@@ -1,7 +1,7 @@
 // import { PrimaryColumn } from 'typeorm/columns';
 // import {ColumnType} from 'typeorm/metadata/types/ColumnTypes'
 // import {ColumnOptions} from 'typeorm/decorator/options/ColumnOptions';
-import { ModelConstructor } from '../model';
+import { ModelConstructor, ModelStatic } from '../model';
 import { initializeMetadata } from '../../metadata/metadata';
 export type ColumnType = any;
 export type ColumnOptions = any;
@@ -13,7 +13,7 @@ export function Primary(typeOrOptions?: ColumnType|ColumnOptions, options?: Colu
 
   return function primary(target: ModelConstructor<any>, propertyKey: string) {
 
-    initializeMetadata(target);
+    initializeMetadata(target.constructor);
     target.constructor.__metadata.identifierKey = propertyKey;
   };
 
