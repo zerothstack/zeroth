@@ -1,6 +1,7 @@
 import { it, expect, describe } from '@angular/core/testing';
 import { EntityRegistry, EntityType, registry } from './entityRegistry';
 import { Model, Controller, Seeder, Middleware, Migration, Store } from './decorators';
+import { BaseModel } from '../models/model';
 
 describe('Entity registry', () => {
 
@@ -209,12 +210,14 @@ describe('Entity registry', () => {
     });
 
     it('registers any passed metadata to the registry', () => {
-      @Model('example')
-      class BarModel {
+      @Model({
+        storageKey: 'example'
+      })
+      class BarModel extends BaseModel {
       }
 
       let foundClass = registry.findByType('model', BarModel.name);
-      expect(foundClass.metadata).toEqual({storageKey: 'example'});
+      expect(foundClass.getMetadata()).toEqual({storageKey: 'example'});
 
     });
 

@@ -1,5 +1,5 @@
 import { it, expect, describe} from '@angular/core/testing';
-import { ConsoleLogger } from './consoleLogger.service';
+import { ConsoleLogger, isBrowser } from './consoleLogger.service';
 import {stripColor, hasColor} from 'chalk';
 import Spy = jasmine.Spy;
 import { LogLevel } from './logger.service';
@@ -41,12 +41,19 @@ describe('Console Logger', () => {
 
   });
 
-  it('can syntax highlight passed objects', () => {
+  it('can syntax highlight passed objects when in node terminal', () => {
+
+    const nodeTerminal = !isBrowser();
 
     logger.debug({foo:1});
 
-    expect(hasColor(consoleLogSpy.calls.first().args[1])).toBe(true);
-    expect(stripColor(consoleLogSpy.calls.first().args[1])).toEqual("{ foo: 1 }");
+    if (nodeTerminal){
+      expect(hasColor(consoleLogSpy.calls.first().args[1])).toBe(true);
+      expect(stripColor(consoleLogSpy.calls.first().args[1])).toEqual("{ foo: 1 }");
+    } else {
+      expect(hasColor(consoleLogSpy.calls.first().args[1])).toBe(false);
+      expect(stripColor(consoleLogSpy.calls.first().args[1])).toEqual({ foo: 1 });
+    }
 
   });
 

@@ -4,11 +4,18 @@ import { inspect } from 'util';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 
+export const isBrowser = () => {
+  return typeof window !== 'undefined';
+};
+
 @Injectable()
 export class ConsoleLogger extends Logger {
 
+  private envBrowser:boolean;
+
   constructor() {
     super(ConsoleLogger);
+    this.envBrowser = isBrowser();
   }
 
   public format(logLevel: LogLevel, message: string) {
@@ -40,6 +47,11 @@ export class ConsoleLogger extends Logger {
   }
 
   private formatMessages(logLevel: LogLevel, messages: any[]): any[] {
+    // if in browser, defer to the browser for formatting
+    if (this.envBrowser) {
+      return messages;
+    }
+
     return messages.map((message) => {
       switch (typeof message) {
         case 'string' :
@@ -60,7 +72,8 @@ export class ConsoleLogger extends Logger {
       messages.unshift(gray('[' + this.format(logLevel, this.sourceName) + ']'));
     }
 
-    messages.unshift( gray('[' + this.format(logLevel, moment().format('HH:mm:ss')) + '] '));
+    messages.unshift(gray('[' + this.format(logLevel, moment()
+        .format('HH:mm:ss')) + '] '));
 
     switch (logLevel) {
       case 'emergency':

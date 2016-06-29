@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Logger, LogLevel } from '../../common/services/logger.service';
-import { createConnection, CreateConnectionOptions, Connection } from "@ubiquits/typeorm/backend";
+import { createConnection, CreateConnectionOptions, Connection } from 'typeorm';
 import { registry } from '../../common/registry/entityRegistry';
 
 export interface DatabaseLogFunction {
@@ -66,14 +66,7 @@ export class Database {
         }
       },
       entities: [...registry.getAllOfType('model').values()],
-      // entityDirectories: [
-      //   process.cwd() + '/lib/server/common/models' //@todo make configurable so bootstrap can
-      //                                               define relative values
-      // ],
-
     };
-
-    logFunction('info', 'reading directories', options.entityDirectories);
 
     return createConnection(options);
   }

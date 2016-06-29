@@ -1,31 +1,40 @@
+import * as _ from 'lodash';
+import { ModelMetadata, initializeMetadata } from '../metadata/metadata';
+
 export type EntityType = 'model' | 'controller' | 'seeder' | 'middleware' | 'migration' | 'store';
-export interface Entity extends Function {
-  metadata?:any[];
+export type EntityMetadata = ModelMetadata /* | <list other metadata types>*/;
+
+export interface RegistryEntityConstructor extends Function {
+  __metadata?:EntityMetadata;
+  getMetadata?():EntityMetadata;
 }
 
 export class EntityRegistry {
 
-  protected registry: Map<EntityType, Map<string, Entity>> = new Map();
+  protected registry: Map<EntityType, Map<string, RegistryEntityConstructor>> = new Map();
 
   constructor() {
   }
 
-  public register<T extends Entity>(type: EntityType, entity: T, metadata?:any): this {
+  public register(type: EntityType, entity: RegistryEntityConstructor, metadata?:any): this {
 
     if (!this.registry.get(type)) {
       this.registry.set(type, new Map());
     }
 
     let typeRegistry = this.registry.get(type);
-    
-    entity.metadata = metadata;
+
+    if (metadata){
+      initializeMetadata(entity);
+      _.merge((entity).__metadata, metadata);
+    }
 
     typeRegistry.set(entity.name, entity);
 
     return this;
   }
 
-  public getAllOfType(type: EntityType): Map<string, Entity> {
+  public getAllOfType(type: EntityType): Map<string, RegistryEntityConstructor> {
     if (!this.registry.has(type)) {
       return new Map();
     }
@@ -53,15 +62,15 @@ export class EntityRegistry {
     return !!this.findByType(type, name);
   }
 
-  public findByType(type: EntityType, name: string): Entity {
+  public findByType(type: EntityType, name: string): RegistryEntityConstructor {
     return this.getAllOfType(type)
       .get(name);
   }
 
-  public findAllWithName(name: string): Map<EntityType, Entity> | null {
+  public findAllWithName(name: string): Map<EntityType, RegistryEntityConstructor> | null {
 
-    let found: Map<EntityType, Entity> = new Map();
-    this.registry.forEach((entitySet: Map<string, Entity>, key: EntityType) => {
+    let found: Map<EntityType, RegistryEntityConstructor> = new Map();
+    this.registry.forEach((entitySet: Map<string, RegistryEntityConstructor>, key: EntityType) => {
       let search = entitySet.get(name);
       if (search) {
         found.set(key, search);

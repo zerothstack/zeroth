@@ -50,7 +50,7 @@
     "rxjs": "5.0.0-beta.6",
     "table": "^3.7.8",
     "timestamp": "0.0.1",
-    "@ubiquits/typeorm": "0.0.2-alpha.44",
+    "typeorm": "0.0.2-alpha.43",
     "vantage": "^1.7.0",
     "zone.js": "^0.6.12"
   },
