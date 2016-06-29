@@ -26,10 +26,7 @@ export class EntityRegistry {
 
     if (metadata){
       initializeMetadata(entity);
-
       _.merge((entity.constructor as RegistryEntity).__metadata, metadata);
-
-      console.log(entity.constructor, entity.getMetadata());
     }
 
     typeRegistry.set(entity.name, entity);

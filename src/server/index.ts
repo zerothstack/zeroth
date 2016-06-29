@@ -3,6 +3,7 @@ export * from './bootstrap';
 export * from './controllers';
 export * from './servers';
 export * from './services';
+export * from './seeders';
 export * from './stores';
 export * from './middleware';
 export * from './exeptions';

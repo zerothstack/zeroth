@@ -1,8 +1,7 @@
-// import { TableOptions } from 'typeorm/decorator/options/TableOptions';
+import { TableOptions } from 'typeorm/decorator/options/TableOptions';
 import { RelationType, Relation } from '../models/relations/index';
 import { ModelConstructor } from '../models/model';
 import { RegistryEntity } from '../registry/entityRegistry';
-export type TableOptions = any;
 
 export interface ModelMetadata {
   storageKey?: string;

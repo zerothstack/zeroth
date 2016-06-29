@@ -1,7 +1,6 @@
 import { ModelStatic } from '../model';
 import { initializeRelationMap } from './index';
-// import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';
-export type RelationOptions = any;
+import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';
 /**
  * Decorator for HasOne relationships
  */
