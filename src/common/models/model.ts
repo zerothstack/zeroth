@@ -1,12 +1,8 @@
 import { Collection } from './collection';
 
-import { RegistryEntityConstructor } from '../registry/entityRegistry';
+import { RegistryEntityStatic } from '../registry/entityRegistry';
 import { RelationType, Relation } from './relations/index';
 import { ModelMetadata } from '../metadata/metadata';
-
-export interface EntityNest extends Map<string, BaseModel|Collection<BaseModel>> {
-
-}
 
 export type identifier = string | number | symbol;
 
@@ -23,7 +19,7 @@ export interface ModelConstructor<T extends BaseModel> extends Function {
   constructor: ModelStatic<T>;
 }
 
-export interface ModelStatic<T extends BaseModel> extends RegistryEntityConstructor {
+export interface ModelStatic<T extends BaseModel> extends RegistryEntityStatic {
   new(data?: any, exists?: boolean): T;
   prototype: T;
 }

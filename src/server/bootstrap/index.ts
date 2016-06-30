@@ -75,7 +75,6 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
     deferredLog('info', registry);
     return (): Promise<BootstrapResponse> => {
 
-      console.log('!!!', 'actually bootstrapping server now');
       deferredLog('info', 'Bootstrapping server');
 
       return Promise.all(providers)

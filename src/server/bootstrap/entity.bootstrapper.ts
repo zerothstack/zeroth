@@ -2,7 +2,7 @@ import 'core-js';
 import 'reflect-metadata';
 import { ReflectiveInjector, ResolvedReflectiveProvider } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
-import { registry, EntityType, RegistryEntityConstructor } from '../../common/registry/entityRegistry';
+import { registry, EntityType, RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 export abstract class EntityBootstrapper {
 
@@ -20,7 +20,7 @@ export abstract class EntityBootstrapper {
 
   protected abstract bootstrap(): void | Promise<void>;
 
-  protected getFromRegistry(type: EntityType): RegistryEntityConstructor[] {
+  protected getFromRegistry(type: EntityType): RegistryEntityStatic[] {
     return [
       ...registry.getAllOfType(type)
         .values()
