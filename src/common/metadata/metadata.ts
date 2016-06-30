@@ -1,22 +1,27 @@
 import { TableOptions } from 'typeorm/decorator/options/TableOptions';
 import { RelationType, Relation } from '../models/relations/index';
-import { ModelConstructor } from '../models/model';
 import { RegistryEntityConstructor } from '../registry/entityRegistry';
+import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
+
+export interface PropertyDefinition {
+  type: any;
+  columnOptions?: ColumnOptions;
+}
 
 export interface ModelMetadata {
   storageKey?: string;
   tableOptions?: TableOptions; //@todo verify this import doesn't cause frontend import of typeorm
   relations?: Map<RelationType, Map<string, Relation>>;
-  storedProperties?: Map<string, any>
-  identifierKey?:string;
+  storedProperties?: Map<string, PropertyDefinition>
+  identifierKey?: string;
   timestamps?: {
-    created?:string
-    updated?:string
+    created?: string
+    updated?: string
   }
 }
 
 export function initializeMetadata(target: RegistryEntityConstructor) {
-  if (!target.__metadata) {
-    target.__metadata = {};
+  if (!target.constructor.__metadata) {
+    target.constructor.__metadata = {};
   }
 }

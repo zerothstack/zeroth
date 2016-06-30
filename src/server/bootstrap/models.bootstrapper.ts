@@ -19,10 +19,13 @@ export class ModelBootstrapper extends EntityBootstrapper {
         this.logger.info(`initializing ${model.name}`, meta);
 
         Table(meta.storageKey, meta.tableOptions)(model);
-        PrimaryColumn()(model.prototype, meta.identifierKey);
 
-        for (const [property, type] of meta.storedProperties) {
-          Column()(model.prototype, property)
+        for (const [property, definition] of meta.storedProperties) {
+          if (property === meta.identifierKey) {
+            PrimaryColumn(definition.columnOptions)(model.prototype, property);
+          } else {
+            Column(definition.columnOptions)(model.prototype, property);
+          }
         }
 
         if (meta.timestamps) {
