@@ -21,13 +21,13 @@ export class ConsoleLogger extends Logger {
   public format(logLevel: LogLevel, message: string) {
     switch (logLevel) {
       case 'emergency':
-        message = bgRed.underline(message);
+        message = bgRed(message);
         break;
       case 'alert':
         message = red.underline(message);
         break;
       case 'critical':
-        message = bgYellow(message);
+        message = yellow.underline(message);
         break;
       case 'warning':
         message = yellow(message);

@@ -75,6 +75,7 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
     deferredLog('info', registry);
     return (): Promise<BootstrapResponse> => {
 
+      console.log('!!!', 'actually bootstrapping server now');
       deferredLog('info', 'Bootstrapping server');
 
       return Promise.all(providers)
@@ -108,10 +109,13 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
           logger = injector.get(Logger)
             .source('bootstrap');
 
+          console.log('outputting deferred logs');
           // iterate over any logs that have been deferred
           deferredLogs.forEach((log: DeferredLog) => {
             logger[log.level](...log.messages);
           });
+          deferredLogs = []; //clear buffer
+          console.log('outputting deferred logs complete');
 
           // iterate over all of the resolved bootstrappers, invoking the bootstrap to initialize the entities.
           // iteration is completed in serial so that bootstrappers that depend on other entities won't invoke

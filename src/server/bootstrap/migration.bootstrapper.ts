@@ -15,7 +15,15 @@ export class MigrationBootstrapper extends EntityBootstrapper {
     const allMigrationPromises = this.resolvedEntityProviders.map((resolvedControllerProvider: ResolvedReflectiveProvider) => {
 
       this.logger.info(`migrating ${resolvedControllerProvider.key.displayName}`);
-      return (this.injector.instantiateResolved(resolvedControllerProvider) as BaseMigration).migrate();
+      return (this.injector.instantiateResolved(resolvedControllerProvider) as BaseMigration)
+        .migrate()
+        .catch((error) => {
+          if (error.code === 'ECONNREFUSED'){
+            this.logger.notice('Database not available, migration cannot run');
+            return;
+          }
+          throw error;
+        });
 
     }, []);
 

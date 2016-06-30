@@ -75,11 +75,11 @@ it can fail quietly if there is no registered injectable class.
 Make sure to return true in the `validate` function if the injector is not available:
 ```typescript
 import { Injectable, Optional } from '@angular/core';
-import { ValidatorConstraint, ValidatorInterface } from '@ubiquits/core/validation';
+import { ValidatorConstraint, ValidatorConstraintInterface } from '@ubiquits/core/validation';
 
 @Injectable()
 @ValidatorConstraint()
-class RequiresServerValidator implements ValidatorInterface {
+class RequiresServerValidator implements ValidatorConstraintInterface {
 
   constructor(@Optional private server: Server) {
   }
@@ -99,7 +99,28 @@ everything from the client side before sending data to the server. This makes fo
 as forms can show problems before they are submitted, not after.
 
 ## Async validators
-Currently async validators are not implemented. [This feature is planned](https://github.com/ubiquits/ubiquits/issues/86).
+Any custom validator can return a `Promise<boolean>` for asynchronous validation. Combined with dependency injection, 
+custom validators can perform complex checks on a model.
+
+Example:
+```typescript
+import { Injectable, Optional } from '@angular/core';
+import { UserStore } from '../path/to/stores';
+import { ValidatorConstraint, ValidatorConstraintInterface } from '@ubiquits/core/validation';
+
+@Injectable()
+@ValidatorConstraint()
+class UsernameExistsValidator implements ValidatorConstraintInterface {
+
+    constructor(private userStore: UserStore) {
+    }
+
+    public validate(value: any): Promise<boolean> {
+        return this.userStore.verifyUsernameExists(value);
+    }
+
+}
+```
 
 [@pleerock]: https://github.com/pleerock
 [class-validator]: https://github.com/pleerock/class-validator
