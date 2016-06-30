@@ -28,7 +28,7 @@ import {
   HttpException,
   ValidationException
 } from './exceptions';
-import { ValidationErrorInterface } from 'class-validator/ValidationErrorInterface';
+import { ValidationError} from 'class-validator';
 
 describe('Exceptions', () => {
 
@@ -86,14 +86,12 @@ describe('Exceptions', () => {
 
   it('retrieves data from exception with .data()', () => {
 
-    let errors:ValidationErrorInterface[] = [{
-      objectClass: null,
+    let errors:ValidationError[] = [{
+      target: null,
       property: 'name',
-      errorCode: 302,
-      errorName: 'max_length',
-      errorMessage: 'too long',
+      type: 'max_length',
+      message: 'too long',
       value: 10,
-      required: true,
     }];
 
     let exception = new ValidationException(null, errors);

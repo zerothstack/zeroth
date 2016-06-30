@@ -13,7 +13,7 @@ export abstract class EntityBootstrapper {
   public abstract getResolvedEntities(): ResolvedReflectiveProvider[];
 
   public invokeBootstrap(injector: ReflectiveInjector): void | Promise<void> {
-    this.logger   = injector.get(Logger);
+    this.logger   = injector.get(Logger).source(this.constructor.name);
     this.injector = injector;
     return this.bootstrap();
   }

@@ -5,7 +5,7 @@ import { BaseModel, identifier } from '../models/model';
 import { BaseStore } from './store';
 import { MinLength, Validate, ValidatorConstraint } from '../validation';
 import { ValidationException } from '../../server/exeptions/exceptions';
-import { ValidatorInterface } from 'class-validator';
+import { ValidatorConstraintInterface } from '../validation';
 import Spy = jasmine.Spy;
 import { Primary } from '../models/types/primary.decorator';
 
@@ -16,11 +16,15 @@ class StubService {
     return !!value;
   }
 
+  public isTruthyPromise(value: any): Promise<boolean> {
+    return Promise.resolve(!!value);
+  }
+
 }
 
 @Injectable()
 @ValidatorConstraint()
-class CustomValidator implements ValidatorInterface {
+class CustomValidator implements ValidatorConstraintInterface {
 
   constructor(protected service: StubService) {
   }
@@ -28,6 +32,20 @@ class CustomValidator implements ValidatorInterface {
   public validate(value: any): boolean {
 
     return this.service.isTruthy(value);
+  }
+
+}
+
+@Injectable()
+@ValidatorConstraint()
+class CustomValidatorAsync implements ValidatorConstraintInterface {
+
+  constructor(protected service: StubService) {
+  }
+
+  public validate(value: any): Promise<boolean> {
+
+    return this.service.isTruthyPromise(value);
   }
 
 }
@@ -44,6 +62,9 @@ class Ship extends BaseModel {
 
   @Validate(CustomValidator)
   public truthyValue: any;
+
+  @Validate(CustomValidatorAsync)
+  public truthyValueAsync: any;
 
 }
 
@@ -67,7 +88,8 @@ class ShipMockStore extends MockStore<Ship> {
         .guid(),
       idSeeded: this.chance(1)
         .guid(),
-      truthyValue: true
+      truthyValue: true,
+      truthyValueAsync: true,
     });
   }
 
@@ -89,6 +111,7 @@ const stubServiceSingleton = new StubService();
 const providers:any[] = [
   TestClass,
   CustomValidator,
+  CustomValidatorAsync,
   {provide: StubService, deps: [], useFactory: () => stubServiceSingleton},
   {provide: ShipStore, useClass: ShipMockStore},
 ];
@@ -195,7 +218,8 @@ describe('Mock Store', () => {
       .catch((e) => {
         expect(e instanceof ValidationException)
           .toBe(true);
-        expect(e.getData()[0].errorName)
+
+        expect(e.getData()[0].type)
           .toEqual('min_length');
       });
 
@@ -219,6 +243,33 @@ describe('Mock Store', () => {
         expect(customValidatorServiceSpy)
           .toHaveBeenCalledWith('truthy');
 
+      });
+
+  }));
+
+  it('validates model data, with custom async validator', inject([TestClass, StubService], (c: TestClass, s: StubService) => {
+
+    let customValidatorServiceSpy = spyOn(stubServiceSingleton, 'isTruthyPromise')
+      .and
+      .callThrough();
+
+    return c.shipStore.findOne(1234)
+      .then((ship: Ship) => {
+
+        ship.truthyValueAsync = false;
+
+        return c.shipStore.validate(ship);
+      })
+      .catch((e) => {
+
+        expect(customValidatorServiceSpy)
+          .toHaveBeenCalledWith(false);
+
+        expect(e instanceof ValidationException)
+          .toBe(true);
+
+        expect(e.getData()[0].type)
+          .toEqual('CustomValidatorAsync');
       });
 
   }));

@@ -1,11 +1,14 @@
 import { identifier, ModelStatic, BaseModel } from '../models/model';
-import {Injector} from '@angular/core';
+import { Injector } from '@angular/core';
 import { Collection } from '../models/collection';
-import { ValidationError} from 'class-validator/ValidationError';
 import { ValidationException } from '../../server/exeptions/exceptions';
-// we cant import from class-validator as it will get a new instance of MetadataStorage and validation
-// will always pass (!)
-import {validator, validateAsync, ValidatorOptions} from '../validation';
+import {
+  ValidatorOptions,
+  ValidationError,
+  validate,
+  getValidator,
+  Validator
+} from '../validation';
 
 export interface Query {
 }
@@ -13,7 +16,11 @@ export interface Query {
 
 export abstract class BaseStore<T extends BaseModel> {
 
-  constructor(protected modelStatic: ModelStatic<T>, protected injector:Injector) {
+  protected validator:Validator;
+
+  constructor(protected modelStatic: ModelStatic<T>, protected injector: Injector) {
+
+    this.validator = getValidator(injector);
   }
 
   /**
@@ -22,16 +29,18 @@ export abstract class BaseStore<T extends BaseModel> {
    * require a connection etc.
    * @returns {Promise<BaseStore>}
    */
-  public initialized():Promise<this> {
+  public initialized(): Promise<this> {
     return Promise.resolve(this);
   }
 
   public abstract findOne(id: identifier): Promise<T>;
 
-  public abstract saveOne(model:T): Promise<T>;
+  public abstract saveOne(model: T): Promise<T>;
+
   // public abstract deleteOne(id: identifier): Promise<void>;
 
   public abstract findMany(query?: Query): Promise<Collection<T>>;
+
   // public abstract saveMany(models:Collection<T>): Promise<Collection<T>>;
   // public abstract deleteMany(models:Collection<T>): Promise<void>;
 
@@ -41,17 +50,21 @@ export abstract class BaseStore<T extends BaseModel> {
    * @param validatorOptions
    * @returns {Promise<T>}
    */
-  public validate(model:T, validatorOptions?:ValidatorOptions):Promise<T> {
+  public validate(model: T, validatorOptions?: ValidatorOptions): Promise<T> {
 
-    validator.container = this.injector;
-
-    return validator.validateAsync(model, validatorOptions)
-      .catch(e => {
-        if (e instanceof ValidationError){
-          e = new ValidationException(null, e.errors);
+    return this.validator.validate(model, validatorOptions)
+      .then((errors: ValidationError[]) => {
+        if (errors.length) {
+          throw new ValidationException(null, errors)
         }
-        throw e;
+        return model;
       });
+    // .catch(e => {
+    //   if (e instanceof ValidationError){
+    //     e = new ValidationException(null, e.errors);
+    //   }
+    //   throw e;
+    // });
   }
 
   /**
@@ -59,7 +72,7 @@ export abstract class BaseStore<T extends BaseModel> {
    * @param modelData
    * @returns {Promise<T>}
    */
-  public hydrate(modelData:any):Promise<T> {
+  public hydrate(modelData: any): Promise<T> {
     return Promise.resolve(new this.modelStatic(modelData));
   }
 

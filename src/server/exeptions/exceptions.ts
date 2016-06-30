@@ -1,4 +1,4 @@
-import {ValidationErrorInterface} from 'class-validator/ValidationErrorInterface';
+import {ValidationError} from 'class-validator';
 
 export abstract class HttpException extends Error {
 
@@ -277,7 +277,7 @@ export class InsufficientStorageException extends HttpException {
 
 
 export class ValidationException extends UnprocessableEntityException {
-  constructor(message: string = 'Validation error', errors:ValidationErrorInterface[]) {
+  constructor(message: string = 'Validation error', errors:ValidationError[]) {
     super(message);
     this.name = 'UnprocessableEntityException';
     this.data = errors;
