@@ -9,6 +9,10 @@ export interface ModelMetadata {
   relations?: Map<RelationType, Map<string, Relation>>;
   storedProperties?: Map<string, any>
   identifierKey?:string;
+  timestamps?: {
+    created?:string
+    updated?:string
+  }
 }
 
 export function initializeMetadata(target: RegistryEntityConstructor) {

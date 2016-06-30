@@ -4,10 +4,6 @@ import { RegistryEntityConstructor } from '../registry/entityRegistry';
 import { RelationType, Relation } from './relations/index';
 import { ModelMetadata } from '../metadata/metadata';
 
-export interface EntityNest extends Map<string, BaseModel|Collection<BaseModel>> {
-
-}
-
 export type identifier = string | number | symbol;
 
 /**
