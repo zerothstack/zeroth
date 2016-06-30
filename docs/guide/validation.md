@@ -33,7 +33,7 @@ For example:
 ```typescript
 import { Injectable } from '@angular/core';
 import { Model } from '../models/model';
-import { Validate, ValidatorConstraint, ValidatorInterface } from '@ubiquits/core/validation';
+import { Validate, ValidatorConstraint, ValidatorConstraintInterface } from '@ubiquits/core/validation';
 
 @Injectable()
 class TruthyService {
@@ -46,7 +46,7 @@ class TruthyService {
 
 @Injectable()
 @ValidatorConstraint()
-class CustomTruthyValidator implements ValidatorInterface {
+class CustomTruthyValidator implements ValidatorConstraintInterface {
 
   constructor(private validationService: TruthyService) {
   }
@@ -66,7 +66,7 @@ class Thing extends Model {
 }
 ```
 In this *(overly complex)* example the `Thing` model has a custom validator `CustomTruthyValidator` assigned to it.
-This validator implements the `ValidatorInterface` class-validator needs, which uses the injected `TruthyService`.
+This validator implements the `ValidatorConstraintInterface` class-validator needs, which uses the injected `TruthyService`.
 
 ### Optional dependencies
 Sometimes you will want to register a custom validator that uses a dependency that is not available in all environments.
