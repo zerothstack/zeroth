@@ -131,6 +131,15 @@ describe('Mock Store', () => {
 
   }));
 
+  it('is provides a dummy initialized method', inject([TestClass], (c: TestClass) => {
+
+    c.shipStore.initialized().then((instance) => {
+      expect(instance)
+        .toEqual(c.shipStore);
+    });
+
+  }));
+
   it('retrieves a promise of a mock entity', inject([TestClass], (c: TestClass) => {
 
     return c.shipStore.findOne(1234)
