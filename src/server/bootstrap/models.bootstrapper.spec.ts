@@ -8,16 +8,12 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import { AbstractController } from '../controllers/abstract.controller';
-import { Route } from '../controllers/route.decorator';
-import { Request } from '../controllers/request';
-import { Response } from '../controllers/response';
 import { BaseModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
 import * as typeormColumns from 'typeorm/columns';
-import Spy = jasmine.Spy;
 import { CreatedDate, UpdatedDate } from '../../common/models/types/timestamp.decorator';
+import Spy = jasmine.Spy;
 
 const providers: any[] = [
   {provide: Logger, useClass: LoggerMock},

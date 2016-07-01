@@ -86,19 +86,12 @@ export class Database {
   }
 
   /**
-   * Create a new schema in the database (not implemented yet as postgres is pending)
-   * @param schemaName
-   * @returns {Promise<TResult>}
-   */
-  // public createSchema(schemaName: string): Promise<void> {}
-
-  /**
    * Execute a raw query
    * @param sql
    * @returns {Promise<any>}
    */
   public query(sql: string): Promise<any> {
-    return this.connection.driver.query(sql);
+    return this.initialized.then(() => this.connection.driver.query(sql));
   }
 
 }
