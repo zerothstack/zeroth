@@ -5,6 +5,7 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
+import { IncomingMessage } from 'http';
 
 @Injectable()
 export class HapiServer extends Server {
@@ -58,27 +59,52 @@ export class HapiServer extends Server {
       method: routeConfig.method,
       handler: (req: HapiRequest, reply: IReply): Promise<HapiResponse> => {
 
-        let request  = new Request(<any>req.raw.req, //typings are incorrect, type should be IncomingMessage
+        let request  = new Request((req.raw.req as any), //typings are incorrect, type should be IncomingMessage
           Request.extractMapFromDictionary<string, string>(req.params),
           Request.extractMapFromDictionary<string, string>(req.headers));
         let response = this.getDefaultResponse();
 
         return routeConfig.callStackHandler(request, response)
-          .then((response: Response) => {
-            const res = <HapiResponse>reply(response.body);
-
-            res.code(response.statusCode);
-            for (var [key, value] of response.headers.entries()) {
-              res.header(key, value);
-            }
-            return res;
-          })
-          .catch((err) => reply(err));
+          .then((response: Response) => this.send(response, reply))
+          .catch((err:Error) => this.sendErr(err, reply));
       }
     };
 
     this.engine.route(config);
     return this;
+  }
+
+  /**
+   * Send the response
+   * @param response
+   * @param reply
+   * @return {HapiResponse}
+   */
+  protected send(response: Response, reply: IReply): HapiResponse {
+    const res = <HapiResponse>reply(response.body);
+
+    res.code(response.statusCode);
+    for (var [key, value] of response.headers.entries()) {
+      res.header(key, value);
+    }
+
+    return res;
+  }
+
+  /**
+   * Send the error response
+   * @param err
+   * @param reply
+   * @return {HapiResponse}
+   */
+  protected sendErr(err: Error, reply: IReply): HapiResponse {
+    const errorResponse = new Response().data(err);
+    const res = this.send(errorResponse, reply);
+    //make sure the status is of error type
+    if (res.statusCode < 400) {
+      res.code(500);
+    }
+    return res;
   }
 
   /**

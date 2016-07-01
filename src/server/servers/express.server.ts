@@ -55,7 +55,7 @@ export class ExpressServer extends Server {
         .then((response: Response) => {
           return this.send(response, res);
         })
-        .catch((err) => this.sendErr(err, res));
+        .catch((err:Error) => this.sendErr(err, res));
 
     });
 
@@ -93,7 +93,7 @@ export class ExpressServer extends Server {
    * @param err
    * @param res
    */
-  protected sendErr(err: any, res: ExpressResponse): void {
+  protected sendErr(err: Error, res: ExpressResponse): void {
     //make sure the status is of error type
     if (res.statusCode < 400) {
       res.status(500);
