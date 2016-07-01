@@ -82,8 +82,7 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
         // extract all of the resolved entities from the bootstrappers for registration with the
         // injector
         const bootrapperProviders = resolvedBootstrappers.reduce((result: ResolvedReflectiveProvider[], bootstrapper: EntityBootstrapper) => {
-          result.concat(bootstrapper.getResolvedEntities());
-          return result;
+          return result.concat(bootstrapper.getResolvedEntities());
         }, []);
 
         // resolve all other user classes
