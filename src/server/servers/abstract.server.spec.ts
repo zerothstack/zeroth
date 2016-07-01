@@ -1,11 +1,10 @@
 import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
-import { Injectable, provide } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { RemoteCliMock } from '../services/remoteCli.service.spec';
-import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import Spy = jasmine.Spy;
 
@@ -54,8 +53,6 @@ describe('Server', () => {
   });
 
   it('initializes the server with port and host', inject([Server], (server: Server) => {
-
-    console.log((<any>server).initialize.calls.count());
 
     expect((<any>server).initialize)
       .toHaveBeenCalled();

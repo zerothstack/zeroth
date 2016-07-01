@@ -11,7 +11,7 @@ import * as http from 'http';
 @Injectable()
 export class ExpressServer extends Server {
 
-  private engine: Application;
+  protected engine: Application;
 
   constructor(logger: Logger, remoteCli: RemoteCli) {
     super(logger, remoteCli);
@@ -78,8 +78,7 @@ export class ExpressServer extends Server {
    * @param response
    * @param res
    */
-  private send(response: Response, res: ExpressResponse): void {
-
+  protected send(response: Response, res: ExpressResponse): void {
     res.status(response.statusCode);
 
     for (var [key, value] of response.headers.entries()) {
@@ -94,7 +93,7 @@ export class ExpressServer extends Server {
    * @param err
    * @param res
    */
-  private sendErr(err: any, res: ExpressResponse): void {
+  protected sendErr(err: any, res: ExpressResponse): void {
     //make sure the status is of error type
     if (res.statusCode < 400) {
       res.status(500);
