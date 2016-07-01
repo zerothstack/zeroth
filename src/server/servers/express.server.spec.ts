@@ -3,10 +3,10 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { beforeEachProviders, describe, inject, it } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { RemoteCliMock } from '../services/remoteCli.service.spec';
 import * as proxyquire from 'proxyquire';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
+import { RemoteCliMock } from '../services/remoteCli.service.mock';
 
 describe('Express Server', () => {
 
@@ -30,9 +30,11 @@ describe('Express Server', () => {
 
   const providers = [
     {
-      provide: Server, deps: [Logger, RemoteCli], useFactory: (logger: Logger, cli: RemoteCli) => {
-      return new mockedModule.ExpressServer(logger, cli);
-    }
+      provide: Server,
+      deps: [Logger, RemoteCli],
+      useFactory: (logger: Logger, cli: RemoteCli) => {
+        return new mockedModule.ExpressServer(logger, cli);
+      }
     },
     {provide: Logger, useClass: LoggerMock},
     {provide: RemoteCli, useClass: RemoteCliMock},

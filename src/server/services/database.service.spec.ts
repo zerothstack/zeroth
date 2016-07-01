@@ -6,7 +6,7 @@ import * as typeorm from 'typeorm';
 import { Connection } from 'typeorm';
 import { RemoteCli } from './remoteCli.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { RemoteCliMock } from './remoteCli.service.spec';
+import { RemoteCliMock } from './remoteCli.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import Spy = jasmine.Spy;
 

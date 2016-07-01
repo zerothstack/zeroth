@@ -1,28 +1,153 @@
-import { Injectable, Injector } from '@angular/core';
-import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
+import * as proxyquire from 'proxyquire';
+import { Injector } from '@angular/core';
+import { RemoteCli } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
+import { it, beforeEachProviders, expect, inject } from '@angular/core/testing';
+import { LoggerMock } from '../../common/services/logger.service.spec';
+import { registry } from '../../common/registry/entityRegistry';
+import { Server, RouteConfig } from '../servers/abstract.server';
+import { ServerMock } from '../servers/abstract.server.spec';
+import { RemoteCliMock } from './remoteCli.service.mock';
 
-@Injectable()
-export class RemoteCliMock extends RemoteCli {
+import Spy = jasmine.Spy;
 
-  constructor(loggerBase: Logger, injector: Injector) {
-    super(loggerBase, injector)
-  }
+describe('Remote Commands', () => {
 
-  protected registerCommands(): this {
-    return this;
-  }
+  const vantageSpy = jasmine.createSpyObj('vantage', [
+    'delimiter', 'banner', 'command', 'description', 'action', 'listen'
+  ]);
 
-  public start(port: number, callback?: ConnectedSocketCallback): this {
-    return this;
-  }
+  //support chaining
+  vantageSpy.command.and.returnValue(vantageSpy);
+  vantageSpy.description.and.returnValue(vantageSpy);
+  vantageSpy.action.and.returnValue(vantageSpy);
 
-  /**
-   * This overrides the parent method so that vantage is not initialised in tests
-   * @returns {RemoteCliMock}
-   */
-  protected initializeVantage(): this{
-    return this;
-  }
+  const vantageConstructorSpy = jasmine.createSpy('vantageConstructor')
+    .and
+    .returnValue(vantageSpy);
+  const tableSpy              = jasmine.createSpy('table');
 
-}
+  const mockedModule = proxyquire('./remoteCli.service', {
+    vantage: vantageConstructorSpy,
+    table: tableSpy,
+  });
+
+  const providers = [
+    {
+      provide: RemoteCli,
+      deps: [Logger, Injector],
+      useFactory: (logger: Logger, injector: Injector) => {
+        return new mockedModule.RemoteCli(logger, injector);
+      }
+    },
+    {provide: Logger, useClass: LoggerMock},
+    {provide: Server, useClass: ServerMock},
+  ];
+
+  beforeEachProviders(() => providers);
+
+  beforeEach(() => {
+    registry.clearAll();
+    (process.stdout as any).columns = 90;
+  });
+
+  it('initializes cli with vantage', inject([RemoteCli], (cli: RemoteCli) => {
+
+    expect(vantageConstructorSpy)
+      .toHaveBeenCalled();
+    expect(vantageSpy.delimiter)
+      .toHaveBeenCalledWith('ubiquits-runtime~$');
+    expect(vantageSpy.banner)
+      .toHaveBeenCalledWith(jasmine.stringMatching('Welcome to Ubiquits runtime cli'));
+
+  }));
+
+  it('starts a vantage server', inject([RemoteCli], (cli: RemoteCli) => {
+
+    cli.start(1234);
+
+    expect(vantageSpy.listen)
+      .toHaveBeenCalledWith(1234, jasmine.any(Function));
+
+    const callbackLogFunction = vantageSpy.listen.calls.mostRecent().args[1];
+
+    const loggerSpy = spyOn((cli as any).logger, 'persistLog');
+    callbackLogFunction({conn: {remoteAddress: '127.0.0.1'}});
+
+    expect(loggerSpy)
+      .toHaveBeenCalledWith('info', [`Accepted a connection from [127.0.0.1]`]);
+
+  }));
+
+  it('registers route table output action on startup', inject([RemoteCli, Server], (cli: RemoteCli, server: Server) => {
+
+    expect(vantageSpy.action)
+      .toHaveBeenCalledWith(jasmine.any(Function));
+
+    const mockRoute: RouteConfig = {
+      path: '/test',
+      methodName: 'test',
+      method: 'GET',
+      callStack: [
+        function beforeMiddleware(): any {
+        },
+        function test(): any {
+        },
+        function afterMiddleware(): any {
+        },
+      ],
+      callStackHandler: null
+    };
+
+    spyOn(server, 'getRoutes')
+      .and
+      .returnValue([mockRoute]);
+
+    const actionFunction = vantageSpy.action.calls.mostRecent().args[0];
+    const actionLogSpy   = jasmine.createSpy('action_logger');
+
+    const boundAction = actionFunction.bind({
+      log: actionLogSpy
+    });
+
+    const makeTableSpy = spyOn(cli, 'makeTable')
+      .and
+      .callThrough();
+
+    boundAction(null, (): void => null);
+
+    expect(makeTableSpy)
+      .toHaveBeenCalled();
+
+    const tableArg = makeTableSpy.calls.mostRecent().args[0];
+    expect(tableArg[0].toString())
+      .toContain('Method');
+    expect(tableArg[1])
+      .toEqual(['GET', '/test', ['beforeMiddleware', 'test', 'afterMiddleware']]);
+
+    expect(actionLogSpy)
+      .toHaveBeenCalled();
+
+  }));
+
+});
+
+describe('Remote Command Mock', () => {
+
+  const providers = [
+    RemoteCliMock,
+    {provide: Logger, useClass: LoggerMock},
+    {provide: Server, useClass: ServerMock},
+  ];
+
+  beforeEachProviders(() => providers);
+
+  it('mocks the interfaces of RemoteCli', inject([RemoteCliMock], (cli: RemoteCliMock) => {
+
+    const start = cli.start(1234);
+
+    expect(start)
+      .toEqual(cli);
+  }));
+
+});

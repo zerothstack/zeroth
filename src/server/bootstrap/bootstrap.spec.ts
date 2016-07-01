@@ -1,5 +1,5 @@
 import { it, beforeEachProviders, expect, describe } from '@angular/core/testing';
-import { RemoteCliMock } from '../services/remoteCli.service.spec';
+import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { Logger } from '../../common/services/logger.service';

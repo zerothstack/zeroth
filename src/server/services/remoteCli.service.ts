@@ -5,10 +5,11 @@ import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
 import { Response } from '../controllers/response';
 import { PromiseFactory } from '../../common/util/serialPromise';
-import Socket = SocketIO.Socket;
-const Vantage = require('vantage');
-
+import * as Vantage from 'vantage';
 const tableModule  = require('table');
+
+import Socket = SocketIO.Socket;
+
 const table: Table = tableModule.default;
 
 
@@ -115,15 +116,6 @@ export class RemoteCli {
   protected registerCommands(): this {
 
     let remoteCli = this;
-
-    this.vantage
-      .command('foo')
-      .description("Outputs 'bar'.")
-      .action(function (args: any, callback: Function) {
-        remoteCli.logger.info('bar');
-        this.log('hey there foo');
-        callback();
-      });
 
     this.vantage.command('routes')
       .description('outputs route table')

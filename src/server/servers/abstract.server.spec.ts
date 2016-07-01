@@ -4,7 +4,7 @@ import { Logger } from '../../common/services/logger.service';
 import { Injectable } from '@angular/core';
 import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { RemoteCliMock } from '../services/remoteCli.service.spec';
+import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Response } from '../controllers/response';
 import Spy = jasmine.Spy;
 
