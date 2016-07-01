@@ -51,6 +51,11 @@ describe('Model', () => {
       .toEqual(undefined);
   });
 
+  it('creates a model without properties if none are passed', () => {
+    const model = new BasicModel;
+    expect(Object.assign({}, model)).toEqual({stringWithDefault:'foo'});
+  });
+
 });
 
 describe('UUID', () => {
