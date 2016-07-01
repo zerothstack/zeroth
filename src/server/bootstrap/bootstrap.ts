@@ -5,12 +5,12 @@ import { Server } from '../servers/abstract.server';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Logger, LogLevel } from '../../common/services/logger.service';
 import { coreInjector } from '../main';
-import { registry, EntityType } from '../../common/registry/entityRegistry';
+import { registry } from '../../common/registry/entityRegistry';
 import { ControllerBootstrapper } from './controllers.bootstrapper';
 import { ModelBootstrapper } from './models.bootstrapper';
 import { SeederBootstrapper } from './seeders.bootstrapper';
 import { EntityBootstrapper } from './entity.bootstrapper';
-import { MigrationBootstrapper } from './migration.bootstrapper';
+import { MigrationBootstrapper } from './migrations.bootstrapper';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;

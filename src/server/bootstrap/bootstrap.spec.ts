@@ -13,12 +13,14 @@ let loggerInstance: Logger;
 
 const providers: any[] = [
   {
-    provide: Logger, useFactory: () => {
-    if (!loggerInstance) {
-      loggerInstance = new LoggerMock();
+    provide: Logger,
+    deps: [],
+    useFactory: () => {
+      if (!loggerInstance) {
+        loggerInstance = new LoggerMock();
+      }
+      return loggerInstance;
     }
-    return loggerInstance;
-  }, deps: []
   },
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
@@ -123,7 +125,7 @@ describe('Bootstrap', () => {
     });
   });
 
-  fit('aborts startup when an error is before providers resolve, and logs with fallback console', (done: Function) => {
+  it('aborts startup when an error is before providers resolve, and logs with fallback console', (done: Function) => {
 
     deferredLog('debug', 'this is a debug message');
 
