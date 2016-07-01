@@ -1,5 +1,4 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
-import { Injectable, ReflectiveInjector } from '@angular/core';
+import { it, beforeEachProviders, expect, describe } from '@angular/core/testing';
 import { RemoteCliMock } from '../services/remoteCli.service.spec';
 import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
@@ -124,7 +123,7 @@ describe('Bootstrap', () => {
     });
   });
 
-  it('aborts startup when an error is before providers resolve, and logs with fallback console', (done: Function) => {
+  fit('aborts startup when an error is before providers resolve, and logs with fallback console', (done: Function) => {
 
     deferredLog('debug', 'this is a debug message');
 
@@ -133,7 +132,9 @@ describe('Bootstrap', () => {
     const consoleErrorSpy = spyOn(console, 'error');
     const consoleLogSpy   = spyOn(console, 'log');
 
-    const result = bootstrap(null, (new Error() as any))();
+    const providersWithError = providers.concat([new Error]);
+
+    const result = bootstrap(null, providersWithError)();
 
     return result.then((res: BootstrapResponse) => {
 
