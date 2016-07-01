@@ -13,6 +13,7 @@ import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.spec';
 import { PromiseFactory } from '../../common/util/serialPromise';
+import { debugLog } from './debugLog.middleware';
 
 let middlewareCalls: string[] = [];
 

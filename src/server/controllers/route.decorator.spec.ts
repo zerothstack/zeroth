@@ -21,9 +21,7 @@ class TestController extends AbstractController {
   }
 
   @Route('PUT', '/test/:id')
-  public testMethod(request: Request, response: Response): Response {
-    return response;
-  }
+  public testMethod(request: Request, response: Response): any {}
 
 }
 
