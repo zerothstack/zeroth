@@ -8,6 +8,8 @@ export class Response extends EventEmitter {
 
   public data(data: any): this {
     this.body = data;
+    this.emit('data', data);
+    this.emit('end');
     return this;
   }
 

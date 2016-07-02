@@ -1,5 +1,6 @@
 import { IncomingMessage } from 'http';
 import { UnprocessableEntityException, PayloadTooLargeException } from '../exeptions/exceptions';
+import EventEmitter = NodeJS.EventEmitter;
 
 export class Request {
 
@@ -39,12 +40,11 @@ export class Request {
 
       this.raw.on('data', (d:string) => {
         data += d;
-
         if(data.length > 1e6) {
           data = "";
           let e = new PayloadTooLargeException();
-          (this.raw as any).destroy(e);
-          throw e;
+          this.raw.socket.destroy();
+          reject(e);
         }
       });
 
@@ -52,7 +52,7 @@ export class Request {
         try {
           resolve(JSON.parse(data));
         } catch (e){
-          throw new UnprocessableEntityException();
+          reject(new UnprocessableEntityException());
         }
 
       });

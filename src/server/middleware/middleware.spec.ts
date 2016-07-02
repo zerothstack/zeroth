@@ -11,8 +11,9 @@ import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCli } from '../services/remoteCli.service';
-import { RemoteCliMock } from '../services/remoteCli.service.spec';
+import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { PromiseFactory } from '../../common/util/serialPromise';
+import { debugLog } from './debugLog.middleware';
 
 let middlewareCalls: string[] = [];
 

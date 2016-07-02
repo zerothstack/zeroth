@@ -1,0 +1,157 @@
+import { it, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { RemoteCliMock } from '../services/remoteCli.service.mock';
+import { RemoteCli } from '../services/remoteCli.service';
+import { ServerMock } from '../servers/abstract.server.spec';
+import { Logger } from '../../common/services/logger.service';
+import { LoggerMock } from '../../common/services/logger.service.spec';
+import { Server } from '../servers/abstract.server';
+import { bootstrap, BootstrapResponse, deferredLog } from './index';
+import { registry } from '../../common/registry/entityRegistry';
+import Spy = jasmine.Spy;
+
+let loggerInstance: Logger;
+
+const providers: any[] = [
+  {
+    provide: Logger,
+    deps: [],
+    useFactory: () => {
+      if (!loggerInstance) {
+        loggerInstance = new LoggerMock();
+      }
+      return loggerInstance;
+    }
+  },
+  {provide: Server, useClass: ServerMock},
+  {provide: RemoteCli, useClass: RemoteCliMock},
+];
+
+describe('Bootstrap', () => {
+
+  beforeEachProviders(() => providers);
+
+  beforeEach(() => {
+    registry.clearAll();
+  });
+
+  it('resolves server, logger and injector from providers', (done: Function) => {
+
+    const result = bootstrap(null, providers)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(res.logger instanceof Logger)
+        .toBe(true, "bootstrap response logger is not instanceof Logger");
+      expect(res.server instanceof Server)
+        .toBe(true, "bootstrap response server is not instanceof Server");
+
+      // Cannot check instanceof Injector for some reason, instead test that the injector works
+      expect(res.injector.get(Server))
+        .toEqual(res.server);
+      done();
+    });
+
+  });
+
+  it('calls an afterBootstrap function when provided', (done: Function) => {
+
+    const afterBootstrapFn = jasmine.createSpy('afterBootstrapFn');
+
+    const result = bootstrap(null, providers, afterBootstrapFn)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(afterBootstrapFn)
+        .toHaveBeenCalledWith(res);
+      done();
+
+    });
+
+  });
+
+  it('can buffer logs created before the logger is instantiated, then invoke the logger with the buffer', (done: Function) => {
+
+    deferredLog('debug', 'this is a debug message');
+
+    const loggerSpy = spyOn(loggerInstance, 'persistLog')
+      .and
+      .callThrough();
+    spyOn(loggerInstance, 'source')
+      .and
+      .callFake(() => loggerInstance);
+
+    const result = bootstrap(null, providers)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(loggerSpy)
+        .toHaveBeenCalledWith('debug', ['this is a debug message']);
+      done();
+    });
+
+  });
+
+  it('aborts startup when an error is encountered after bootstrappers ran, and logs error', (done: Function) => {
+
+    const afterBootstrapFn = () => {
+      deferredLog('debug', 'this is a debug message');
+      throw new Error('Something is not right!');
+    };
+
+    const processExitSpy = spyOn(process, 'exit');
+
+    const loggerSpy = spyOn(loggerInstance, 'persistLog')
+      .and
+      .callThrough();
+    spyOn(loggerInstance, 'source')
+      .and
+      .callFake(() => loggerInstance);
+
+    const result = bootstrap(null, providers, afterBootstrapFn)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(processExitSpy)
+        .toHaveBeenCalledWith(1);
+
+      expect(loggerSpy)
+        .toHaveBeenCalledWith('critical', ['Error', 'Something is not right!']);
+
+      expect(loggerSpy)
+        .toHaveBeenCalledWith('debug', ['this is a debug message']);
+
+      done();
+
+    });
+  });
+
+  it('aborts startup when an error is before providers resolve, and logs with fallback console', (done: Function) => {
+
+    deferredLog('debug', 'this is a debug message');
+
+    const processExitSpy = spyOn(process, 'exit');
+
+    const consoleErrorSpy = spyOn(console, 'error');
+    const consoleLogSpy   = spyOn(console, 'log');
+
+    const providersWithError = providers.concat([new Error]);
+
+    const result = bootstrap(null, providersWithError)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(processExitSpy)
+        .toHaveBeenCalledWith(1);
+
+      expect(consoleErrorSpy)
+        .toHaveBeenCalled();
+      expect(consoleLogSpy)
+        .toHaveBeenCalledWith('debug', 'this is a debug message');
+
+      done();
+
+    });
+
+  });
+
+});

@@ -9,7 +9,7 @@ import { ServerMock } from '../servers/abstract.server.spec';
 import { MockStore } from '../../common/stores/mock.store';
 import { BaseStore } from '../../common/stores/store';
 import { RemoteCli } from '../services/remoteCli.service';
-import { RemoteCliMock } from '../services/remoteCli.service.spec';
+import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Request } from './request';
 import { Response } from './response';
 import { Collection } from '../../common/models/collection';

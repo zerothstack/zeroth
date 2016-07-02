@@ -78,26 +78,22 @@ export abstract class AbstractController {
     this.actionMethods.set(methodSignature, methodDefinition);
   }
 
-  public registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature?: string): this {
+  public registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature: string): this {
 
     initializeMiddlewareRegister(this);
 
-    if (methodSignature) {
-      let current: MiddlewareRegistry = this.registeredMiddleware.methods.get(methodSignature);
+    let current: MiddlewareRegistry = this.registeredMiddleware.methods.get(methodSignature);
 
-      if (!current) {
-        current = {
-          before: [],
-          after: []
-        };
+    if (!current) {
+      current = {
+        before: [],
+        after: []
+      };
 
-        this.registeredMiddleware.methods.set(methodSignature, current);
-      }
-
-      current[location].push(...middlewareFactories);
-    } else { // not method signature, apply to all
-      this.registeredMiddleware.all[location].push(...middlewareFactories);
+      this.registeredMiddleware.methods.set(methodSignature, current);
     }
+
+    current[location].push(...middlewareFactories);
 
     return this;
   }
@@ -142,8 +138,6 @@ export abstract class AbstractController {
 
             }, Promise.resolve(response)) //initial value
             .catch((e) => {
-
-              this.logger.debug('Error encountered', e, 'is HttpException: ', (e instanceof HttpException), e.stack);
 
               if (!(e instanceof HttpException)) {
                 e = new InternalServerErrorException(e.message);

@@ -33,7 +33,11 @@ export class Database {
 
     this.logger = loggerBase.source('database');
 
-    this.initialized = Database.connect((level: LogLevel, message: any) => this.logger[level](message))
+    this.initialized = this.initialize();
+  }
+
+  public initialize(): Promise<Connection> {
+    return Database.connect((level: LogLevel, message: any) => this.logger[level](message))
       .then((c) => this.connection = c)
       .catch((e) => {
         this.logger.critical(e);
@@ -54,10 +58,10 @@ export class Database {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
         autoSchemaCreate: false, // if set to true, then database schema will be automatically
-                                // created on each application start
+        // created on each application start
         logging: {
-          logger: (message: any, level: 'log'|'debug'|'info'|'error'):void => {
-            if (level == 'log'){
+          logger: (message: any, level: 'log'|'debug'|'info'|'error'): void => {
+            if (level == 'log') {
               level = 'info';
             }
             logFunction((level as LogLevel), message)
@@ -65,7 +69,10 @@ export class Database {
           logQueries: true,
         }
       },
-      entities: [...registry.getAllOfType('model').values()],
+      entities: [
+        ...registry.getAllOfType('model')
+          .values()
+      ],
     };
 
     return createConnection(options);
@@ -79,19 +86,12 @@ export class Database {
   }
 
   /**
-   * Create a new schema in the database (not implemented yet as postgres is pending)
-   * @param schemaName
-   * @returns {Promise<TResult>}
-   */
-  // public createSchema(schemaName: string): Promise<void> {}
-
-  /**
    * Execute a raw query
    * @param sql
    * @returns {Promise<any>}
    */
   public query(sql: string): Promise<any> {
-    return this.connection.driver.query(sql);
+    return this.initialized.then(() => this.connection.driver.query(sql));
   }
 
 }

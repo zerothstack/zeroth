@@ -1,6 +1,6 @@
 ---
 title: Application Lifecycle
-description: What happens when
+description: What happens when everything starts happening
 date: 2016-06-30
 collection: guide
 collectionSort: 1
