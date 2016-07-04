@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { it, expect, describe } from '@angular/core/testing';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
@@ -8,6 +8,7 @@ import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse, deferredLog } from './index';
 import { registry } from '../../common/registry/entityRegistry';
 import Spy = jasmine.Spy;
+import { ClassDictionary } from './bootstrap';
 
 let loggerInstance: Logger;
 
@@ -28,15 +29,13 @@ const providers: any[] = [
 
 describe('Bootstrap', () => {
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
     registry.clearAll();
   });
 
   it('resolves server, logger and injector from providers', (done: Function) => {
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -57,7 +56,7 @@ describe('Bootstrap', () => {
 
     const afterBootstrapFn = jasmine.createSpy('afterBootstrapFn');
 
-    const result = bootstrap(null, providers, afterBootstrapFn)();
+    const result = bootstrap(undefined, providers, afterBootstrapFn)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -80,7 +79,7 @@ describe('Bootstrap', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -93,9 +92,16 @@ describe('Bootstrap', () => {
 
   it('aborts startup when an error is encountered after bootstrappers ran, and logs error', (done: Function) => {
 
+    //as there is a fallback to output to log when a fatal bootstrap happens even when mocked,
+    //here we spy on the console to suppress the log output
+    const consoleErrorSpy = spyOn(console, 'error');
+    spyOn(console, 'log');
+
+    const error = new Error('Something is not right!');
+
     const afterBootstrapFn = () => {
       deferredLog('debug', 'this is a debug message');
-      throw new Error('Something is not right!');
+      throw error;
     };
 
     const processExitSpy = spyOn(process, 'exit');
@@ -107,7 +113,7 @@ describe('Bootstrap', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers, afterBootstrapFn)();
+    const result = bootstrap(undefined, providers, afterBootstrapFn)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -119,6 +125,9 @@ describe('Bootstrap', () => {
 
       expect(loggerSpy)
         .toHaveBeenCalledWith('debug', ['this is a debug message']);
+
+      expect(consoleErrorSpy)
+        .toHaveBeenCalledWith(error);
 
       done();
 
@@ -136,7 +145,7 @@ describe('Bootstrap', () => {
 
     const providersWithError = providers.concat([new Error]);
 
-    const result = bootstrap(null, providersWithError)();
+    const result = bootstrap(undefined, providersWithError)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -152,6 +161,29 @@ describe('Bootstrap', () => {
 
     });
 
+  });
+
+  it('logs the classes that were loaded', (done: Function) => {
+
+    const loggerSpy = spyOn(loggerInstance, 'persistLog')
+      .and
+      .callThrough();
+    spyOn(loggerInstance, 'source')
+      .and
+      .callFake(() => loggerInstance);
+
+    const classMap:ClassDictionary<any>[] = [{FooController:null}];
+
+    const result = bootstrap(classMap, providers)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(loggerSpy)
+        .toHaveBeenCalledWith('debug', ['Classes loaded from app', [ 'FooController' ]]);
+
+      done();
+
+    });
   });
 
 });

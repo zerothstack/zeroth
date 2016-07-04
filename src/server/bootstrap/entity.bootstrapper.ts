@@ -1,21 +1,34 @@
 import 'core-js';
 import 'reflect-metadata';
-import { ReflectiveInjector, ResolvedReflectiveProvider } from '@angular/core';
+import { ReflectiveInjector, ResolvedReflectiveProvider, NoProviderError } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { registry, EntityType, RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 export abstract class EntityBootstrapper {
 
-  protected resolvedEntityProviders: ResolvedReflectiveProvider[];
+  protected entities: RegistryEntityStatic[];
   protected injector: ReflectiveInjector;
   protected logger: Logger;
 
-  public abstract getResolvedEntities(): ResolvedReflectiveProvider[];
+  public abstract getInjectableEntities(): RegistryEntityStatic[];
 
-  public invokeBootstrap(injector: ReflectiveInjector): void | Promise<void> {
-    this.logger   = injector.get(Logger).source(this.constructor.name);
-    this.injector = injector;
+  public invokeBootstrap(): void | Promise<void> {
+    this.logger = this.injector.get(Logger)
+      .source(this.constructor.name);
     return this.bootstrap();
+  }
+
+  public setInjector(injector: ReflectiveInjector): this {
+    this.injector = injector;
+    return this;
+  }
+
+  protected getInstance<T extends Object>(entity: RegistryEntityStatic): T {
+    const instance: T = this.injector.get(entity);
+
+    this.logger.info(`Resolved ${instance.constructor.name}`);
+
+    return instance;
   }
 
   protected abstract bootstrap(): void | Promise<void>;
@@ -27,9 +40,9 @@ export abstract class EntityBootstrapper {
     ];
   }
 
-  protected getResolvedFromRegistry(type: EntityType): ResolvedReflectiveProvider[] {
-    this.resolvedEntityProviders = ReflectiveInjector.resolve(this.getFromRegistry(type));
-    return this.resolvedEntityProviders;
+  protected getEntitiesFromRegistry(type: EntityType): RegistryEntityStatic[] {
+    this.entities = this.getFromRegistry(type);
+    return this.entities;
   }
 
 }

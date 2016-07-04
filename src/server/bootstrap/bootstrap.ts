@@ -4,13 +4,15 @@ import { ReflectiveInjector, Provider, Type, ResolvedReflectiveProvider } from '
 import { Server } from '../servers/abstract.server';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Logger, LogLevel } from '../../common/services/logger.service';
-import { coreInjector } from '../main';
-import { registry } from '../../common/registry/entityRegistry';
+import { CORE_PROVIDERS } from '../main';
 import { ControllerBootstrapper } from './controllers.bootstrapper';
 import { ModelBootstrapper } from './models.bootstrapper';
 import { SeederBootstrapper } from './seeders.bootstrapper';
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
+import { ServiceBootstrapper } from './services.bootstrapper';
+import { LoggerMock } from '../../common/services/logger.service.spec';
+import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;
@@ -47,6 +49,11 @@ function handleBootstrapError(e: Error, logger: Logger) {
     logger.critical(e.constructor.name, e.message)
       .debug(e.stack);
 
+    if (logger instanceof LoggerMock){
+      console.log('Logger is mock but a critical error occurred, outputting to console');
+      console.error(e);
+    }
+
   } else {
     console.error('Failed to initialize Logger, falling back to console');
 
@@ -59,42 +66,39 @@ function handleBootstrapError(e: Error, logger: Logger) {
   process.exit(1);
 }
 
-export function bootstrap(loadClasses: ClassDictionary<any>[], providers: ProviderDefinition[] = [], afterBootstrap?: (bootstrap: BootstrapResponse)=>void): () => Promise<BootstrapResponse> {
+export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: ProviderDefinition[] = [], afterBootstrap?: (bootstrap: BootstrapResponse)=>void): () => Promise<BootstrapResponse> {
 
   let logger: Logger;
 
-  deferredLog('debug', registry);
+
+  deferredLog('debug', 'Classes loaded from app', loadClasses.reduce((all: string[], classDict: ClassDictionary<any>) => {
+    return all.concat(Object.keys(classDict));
+  }, []));
+
   return (): Promise<BootstrapResponse> => {
 
     deferredLog('info', 'Bootstrapping server');
-
-    return Promise.all(providers)
+    return Promise.all(CORE_PROVIDERS.concat(providers))
       .then((providers: ProviderType[]) => {
 
         //initialize all bootstrappers (in order they need to be created)
         const resolvedBootstrappers: EntityBootstrapper[] = [
           new ModelBootstrapper,
+          new ServiceBootstrapper,
           new MigrationBootstrapper,
           new SeederBootstrapper,
           new ControllerBootstrapper,
         ];
 
-        // extract all of the resolved entities from the bootstrappers for registration with the
-        // injector
-        const bootrapperProviders = resolvedBootstrappers.reduce((result: ResolvedReflectiveProvider[], bootstrapper: EntityBootstrapper) => {
-          return result.concat(bootstrapper.getResolvedEntities());
+        const bootrapperProviders:any[] = resolvedBootstrappers.reduce((result: any[], bootstrapper: EntityBootstrapper) => {
+          return result.concat(bootstrapper.getInjectableEntities());
         }, []);
 
-        // resolve all other user classes
-        const resolvedProviders: ResolvedReflectiveProvider[] = ReflectiveInjector
-          .resolve(providers)
-          .concat(bootrapperProviders)
-          ;
 
-        // get an injector from the resolutions, using the core injector as parent
-        const injector = ReflectiveInjector.fromResolvedProviders(resolvedProviders, coreInjector);
+        const mergedProviders = ReflectiveInjector.resolve(bootrapperProviders.concat(providers));
 
-        // assign logger instance as soon as possible so the error handler might use it
+        const injector = ReflectiveInjector.fromResolvedProviders(mergedProviders);
+
         logger = injector.get(Logger)
           .source('bootstrap');
 
@@ -110,7 +114,9 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
         return resolvedBootstrappers.reduce((current: Promise<void>, next: EntityBootstrapper): Promise<void> => {
 
             return current.then((): Promise<void> => {
-              return Promise.resolve(next.invokeBootstrap(injector));
+
+              return Promise.resolve(next.setInjector(injector)
+                .invokeBootstrap());
             });
 
           }, Promise.resolve()) //initial value

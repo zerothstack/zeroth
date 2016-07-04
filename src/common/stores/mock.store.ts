@@ -1,13 +1,13 @@
-import { identifier, ModelStatic, BaseModel } from '../models/model';
+import { identifier, ModelStatic, AbstractModel } from '../models/model';
 import { Collection } from '../models/collection';
-import { BaseStore, Query } from './store';
+import { AbstractStore, Query } from './store';
 import {Injector} from '@angular/core';
 import {Chance} from 'chance';
 import * as _ from 'lodash';
 
 export type ChanceInstance = Chance.Chance;
 
-export abstract class MockStore<T extends BaseModel> extends BaseStore<T> {
+export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T> {
 
   protected chanceInstance: ChanceInstance;
 

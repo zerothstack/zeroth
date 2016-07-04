@@ -1,6 +1,6 @@
 import { Database } from '../services/database.service';
 import { Logger } from '../../common/services/logger.service';
-export abstract class BaseMigration {
+export abstract class AbstractMigration {
 
   protected logger:Logger;
   constructor(loggerBase:Logger, protected database:Database){

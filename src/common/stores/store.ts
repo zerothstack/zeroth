@@ -1,4 +1,4 @@
-import { identifier, ModelStatic, BaseModel } from '../models/model';
+import { identifier, ModelStatic, AbstractModel } from '../models/model';
 import { Injector } from '@angular/core';
 import { Collection } from '../models/collection';
 import { ValidationException } from '../../server/exeptions/exceptions';
@@ -14,7 +14,7 @@ export interface Query {
 }
 
 
-export abstract class BaseStore<T extends BaseModel> {
+export abstract class AbstractStore<T extends AbstractModel> {
 
   protected validator:Validator;
 
@@ -27,7 +27,7 @@ export abstract class BaseStore<T extends BaseModel> {
    * Promise that store is initialized.
    * Override this function for stores that have async initialization like Database stores that
    * require a connection etc.
-   * @returns {Promise<BaseStore>}
+   * @returns {Promise<AbstractStore>}
    */
   public initialized(): Promise<this> {
     return Promise.resolve(this);

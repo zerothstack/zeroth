@@ -1,14 +1,14 @@
 import { Injectable, Injector } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { BaseStore } from '../../common/stores/store';
-import { identifier, ModelStatic, BaseModel } from '../../common/models/model';
+import { AbstractStore } from '../../common/stores/store';
+import { identifier, ModelStatic, AbstractModel } from '../../common/models/model';
 import { Logger } from '../../common/services/logger.service';
 import { Collection } from '../../common/models/collection';
 import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
-export abstract class HttpStore<T extends BaseModel> extends BaseStore<T> {
+export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T> {
 
   protected logger: Logger;
 

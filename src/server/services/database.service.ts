@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Logger, LogLevel } from '../../common/services/logger.service';
 import { createConnection, CreateConnectionOptions, Connection } from 'typeorm';
 import { registry } from '../../common/registry/entityRegistry';
+import { Service } from '../../common/registry/decorators';
+import { AbstractService } from '../../common/services/service';
 
 export interface DatabaseLogFunction {
   (level: LogLevel, ...messages: any[]): void;
@@ -11,7 +13,8 @@ export interface DatabaseLogFunction {
  * Core database service for connecting to the SQL db
  */
 @Injectable()
-export class Database {
+@Service()
+export class Database extends AbstractService {
 
   /**
    * The underlying driver that handles the database connection.
@@ -24,21 +27,23 @@ export class Database {
   private logger: Logger;
 
   /**
-   * Promise that the database has initialised. Useful for deferring startup database processes like
-   * migrations or schema creations
+   * Promise that the database has initialised.
    */
-  public initialized: Promise<Connection>;
+  private initialized: Promise<this>;
 
   constructor(loggerBase: Logger) {
-
+    super();
     this.logger = loggerBase.source('database');
 
     this.initialized = this.initialize();
   }
 
-  public initialize(): Promise<Connection> {
+  public initialize(): Promise<this> {
     return Database.connect((level: LogLevel, message: any) => this.logger[level](message))
-      .then((c) => this.connection = c)
+      .then((c) => {
+        this.connection = c;
+        return this;
+      })
       .catch((e) => {
         this.logger.critical(e);
         throw e;

@@ -8,10 +8,10 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import { BaseMigration } from '../migrations/index';
+import { AbstractMigration } from '../migrations/index';
 import { Database } from '../services/database.service';
-import { DatabaseMock } from '../services/database.service.spec';
 import Spy = jasmine.Spy;
+import { DatabaseMock } from '../services/database.service.mock';
 
 let loggerInstance: Logger = new LoggerMock();
 let databaseInstance: Database;
@@ -37,7 +37,7 @@ const providers: any[] = [
 ];
 
 @Injectable()
-export class TestMigration extends BaseMigration {
+export class TestMigration extends AbstractMigration {
 
   constructor(logger: Logger, database: Database) {
     super(logger, database);
@@ -77,7 +77,7 @@ describe('Migration Bootstrapper', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -105,7 +105,7 @@ describe('Migration Bootstrapper', () => {
       return Promise.reject(err);
     });
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -119,7 +119,12 @@ describe('Migration Bootstrapper', () => {
 
   });
 
-  it('continues aborts bootstrap when a fatal error occurs', (done: Function) => {
+  it('aborts bootstrap when a fatal error occurs', (done: Function) => {
+
+    //as there is a fallback to output to log when a fatal bootstrap happens even when mocked,
+    //here we spy on the console to suppress the log output
+    spyOn(console, 'error');
+    spyOn(console, 'log');
 
     const processExitSpy = spyOn(process, 'exit');
 
@@ -135,7 +140,7 @@ describe('Migration Bootstrapper', () => {
       return Promise.reject(err);
     });
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 

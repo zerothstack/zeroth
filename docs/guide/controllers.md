@@ -35,7 +35,7 @@ const resolvedControllerProviders = ReflectiveInjector.resolve(controllers);
 
 // iterate over the controller providers
 resolvedControllerProviders
-  .forEach((resolvedControllerProvider: ResolvedReflectiveProvider) => {
+  .forEach((resolvedController: RegistryEntityStatic) => {
     // instantiate provider to register routes
     injector.instantiateResolved(resolvedControllerProvider);
   });

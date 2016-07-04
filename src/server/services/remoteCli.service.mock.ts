@@ -3,8 +3,10 @@ import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 
 import Spy = jasmine.Spy;
+import { Service } from '../../common/registry/decorators';
 
 @Injectable()
+@Service()
 export class RemoteCliMock extends RemoteCli {
 
   constructor(loggerBase: Logger, injector: Injector) {
@@ -23,7 +25,7 @@ export class RemoteCliMock extends RemoteCli {
    * This overrides the parent method so that vantage is not initialised in tests
    * @returns {RemoteCliMock}
    */
-  protected initializeVantage(): this {
+  public initialize(): this {
     return this.registerCommands();
   }
 

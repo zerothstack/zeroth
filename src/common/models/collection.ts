@@ -1,13 +1,13 @@
-import { BaseModel, identifier } from './model';
+import { AbstractModel, identifier } from './model';
 
-export class Collection<T extends BaseModel> extends Array<T> {
+export class Collection<T extends AbstractModel> extends Array<T> {
 
   constructor(initialItems?: T[]) {
     super();
     this.push.apply(this, initialItems);
   }
 
-  public findById(id: identifier): BaseModel {
+  public findById(id: identifier): AbstractModel {
 
     const found = this.find((model) => model.getIdentifier() === id);
 

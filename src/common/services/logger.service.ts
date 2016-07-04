@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Service } from '../registry/decorators';
+import { AbstractService } from './service';
 
 /**
  * Syslog Levels
@@ -19,12 +21,12 @@ export interface LoggerConstructor<T extends Logger> {
 
 
 @Injectable()
-export abstract class Logger {
+export abstract class Logger extends AbstractService {
 
   protected sourceName: string;
 
   constructor(protected impl: LoggerConstructor<any>) {
-
+    super();
   }
 
   public emergency(...args: any[]): this {

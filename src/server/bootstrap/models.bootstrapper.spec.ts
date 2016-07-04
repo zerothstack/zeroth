@@ -8,7 +8,7 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import { BaseModel } from '../../common/models/model';
+import { AbstractModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
 import * as typeormColumns from 'typeorm/columns';
@@ -22,7 +22,7 @@ const providers: any[] = [
 ];
 
 @Injectable()
-class TestModel extends BaseModel {
+class TestModel extends AbstractModel {
 
   @Primary({type: 'integer'})
   public id: number;
@@ -50,7 +50,7 @@ describe('Model Bootstrapper', () => {
 
   it('resolves and initializes model with Typeorm decorators', (done: Function) => {
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     const decoratorSpy = (lib:Object, decorator:string):{invoked:Spy, registered:Spy} => {
       const invoked = jasmine.createSpy(decorator);

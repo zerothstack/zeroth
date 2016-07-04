@@ -1,21 +1,22 @@
 import { ResolvedReflectiveProvider } from '@angular/core';
 import { EntityBootstrapper } from './entity.bootstrapper';
-import { BaseMigration } from '../migrations/index';
+import { AbstractMigration } from '../migrations/index';
+import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 export class MigrationBootstrapper extends EntityBootstrapper {
 
-  public getResolvedEntities(): ResolvedReflectiveProvider[] {
-    return this.getResolvedFromRegistry('migration');
+  public getInjectableEntities(): RegistryEntityStatic[] {
+    return this.getEntitiesFromRegistry('migration');
   }
 
   public bootstrap(): Promise<void> {
 
-    this.logger.debug(`Running [${this.resolvedEntityProviders.length}] migrations`);
+    this.logger.debug(`Running [${this.entities.length}] migrations`);
 
-    const allMigrationPromises = this.resolvedEntityProviders.map((resolvedControllerProvider: ResolvedReflectiveProvider) => {
+    const allMigrationPromises = this.entities.map((resolvedMigration: RegistryEntityStatic) => {
 
-      this.logger.info(`migrating ${resolvedControllerProvider.key.displayName}`);
-      return (this.injector.instantiateResolved(resolvedControllerProvider) as BaseMigration)
+      this.logger.info(`migrating ${resolvedMigration.constructor.name}`);
+      return this.getInstance<AbstractMigration>(resolvedMigration)
         .migrate()
         .catch((error) => {
           if (error.code === 'ECONNREFUSED'){

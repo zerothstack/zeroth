@@ -37,7 +37,7 @@ describe('Remote Commands', () => {
       provide: RemoteCli,
       deps: [Logger, Injector],
       useFactory: (logger: Logger, injector: Injector) => {
-        return new mockedModule.RemoteCli(logger, injector);
+        return new mockedModule.RemoteCli(logger, injector).initialize();
       }
     },
     {provide: Logger, useClass: LoggerMock},
@@ -144,10 +144,15 @@ describe('Remote Command Mock', () => {
 
   it('mocks the interfaces of RemoteCli', inject([RemoteCliMock], (cli: RemoteCliMock) => {
 
-    const start = cli.start(1234);
+    const spy = spyOn(cli, 'registerCommands').and.callThrough();
+
+    const start = cli.initialize().start(1234);
 
     expect(start)
       .toEqual(cli);
+
+    expect(spy).toHaveBeenCalled();
+
   }));
 
 });

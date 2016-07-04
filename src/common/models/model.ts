@@ -15,16 +15,16 @@ export class UUID extends String {
   }
 }
 
-export interface ModelConstructor<T extends BaseModel> extends Function {
+export interface ModelConstructor<T extends AbstractModel> extends Function {
   constructor: ModelStatic<T>;
 }
 
-export interface ModelStatic<T extends BaseModel> extends RegistryEntityStatic {
+export interface ModelStatic<T extends AbstractModel> extends RegistryEntityStatic {
   new(data?: any, exists?: boolean): T;
   prototype: T;
 }
 
-export abstract class BaseModel {
+export abstract class AbstractModel {
 
   public static __metadata: ModelMetadata;
 
@@ -35,7 +35,7 @@ export abstract class BaseModel {
   /**
    * Hydrates the model from given data
    * @param data
-   * @returns {BaseModel}
+   * @returns {AbstractModel}
    */
   protected hydrate(data: Object) {
 

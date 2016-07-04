@@ -4,10 +4,10 @@ import { ResourceController } from './resource.controller';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { BaseModel, identifier } from '../../common/models/model';
+import { AbstractModel, identifier } from '../../common/models/model';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { MockStore } from '../../common/stores/mock.store';
-import { BaseStore } from '../../common/stores/store';
+import { AbstractStore } from '../../common/stores/store';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Request } from './request';
@@ -17,7 +17,7 @@ import { EventEmitter } from 'events';
 import { IncomingMessage } from 'http';
 import { Primary } from '../../common/models/types/primary.decorator';
 
-class Fruit extends BaseModel {
+class Fruit extends AbstractModel {
   @Primary()
   public fruitId: number;
 
@@ -25,7 +25,7 @@ class Fruit extends BaseModel {
 
 }
 
-abstract class FruitStore extends BaseStore<Fruit> {
+abstract class FruitStore extends AbstractStore<Fruit> {
 
 }
 

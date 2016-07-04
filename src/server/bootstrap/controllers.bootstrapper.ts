@@ -1,18 +1,20 @@
 import { ResolvedReflectiveProvider } from '@angular/core';
 import { EntityBootstrapper } from './entity.bootstrapper';
+import { AbstractController } from '../controllers/abstract.controller';
+import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 export class ControllerBootstrapper extends EntityBootstrapper {
 
-  public getResolvedEntities(): ResolvedReflectiveProvider[] {
-    return this.getResolvedFromRegistry('controller');
+  public getInjectableEntities(): RegistryEntityStatic[] {
+    return this.getEntitiesFromRegistry('controller');
   }
 
   public bootstrap(): void {
-    this.resolvedEntityProviders.forEach((resolvedControllerProvider: ResolvedReflectiveProvider) => {
-      this.logger.info(`initializing ${resolvedControllerProvider.key.displayName}`);
+    this.entities.forEach((resolvedController: RegistryEntityStatic) => {
 
-      this.injector.instantiateResolved(resolvedControllerProvider)
-        .registerInjector(this.injector)
+      let controller = this.getInstance<AbstractController>(resolvedController);
+
+      controller.registerInjector(this.injector)
         .registerRoutes();
 
     });
