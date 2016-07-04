@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect } from '@angular/core/testing';
+import { addProviders } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -39,9 +39,8 @@ export class TestSeeder extends AbstractSeeder {
 
 describe('Seeder Bootstrapper', () => {
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
+    addProviders(providers);
     registry.clearAll();
 
     registry.register('seeder', TestSeeder);

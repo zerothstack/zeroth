@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Service } from '../registry/decorators';
 import { AbstractService } from './service';
 
 /**

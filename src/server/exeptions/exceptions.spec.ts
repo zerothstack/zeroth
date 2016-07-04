@@ -1,4 +1,3 @@
-import { it, expect, describe } from '@angular/core/testing';
 import {
   InsufficientStorageException,
   ServiceUnavailableException,
@@ -28,7 +27,7 @@ import {
   HttpException,
   ValidationException
 } from './exceptions';
-import { ValidationError} from 'class-validator';
+import { ValidationError } from 'class-validator';
 
 describe('Exceptions', () => {
 

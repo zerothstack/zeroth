@@ -1,8 +1,3 @@
-import {
-  it,
-  describe,
-  expect
-} from '@angular/core/testing';
 import { serialPromise } from './serialPromise';
 
 describe('Process promises sequentially', () => {

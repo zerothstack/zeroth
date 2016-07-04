@@ -5,7 +5,6 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
-import { IncomingMessage } from 'http';
 
 @Injectable()
 export class HapiServer extends Server {

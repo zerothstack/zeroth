@@ -1,7 +1,4 @@
-import { Collection } from './collection';
-
 import { RegistryEntityStatic } from '../registry/entityRegistry';
-import { RelationType, Relation } from './relations/index';
 import { ModelMetadata } from '../metadata/metadata';
 
 export type identifier = string | number | symbol;

@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect } from '@angular/core/testing';
+import { addProviders } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -27,21 +27,20 @@ class TestController extends AbstractController {
   }
 
   @Route('GET', '/test')
-  public test(request: Request, response: Response): any {}
+  public test(request: Request, response: Response): any {
+  }
 
 }
 
 describe('Controller Bootstrapper', () => {
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
+    addProviders(providers);
     registry.clearAll();
 
     registry.register('controller', TestController);
 
   });
-
 
   it('resolves and initializes controller with injector and registers routes with server', (done: Function) => {
 
@@ -53,9 +52,12 @@ describe('Controller Bootstrapper', () => {
 
       const controller = res.injector.get(TestController);
 
-      expect(controller).toBeDefined();
-      expect(controller instanceof TestController).toBe(true, 'Instance is not a TestController');
-      expect(routes[0].methodName).toEqual('test');
+      expect(controller)
+        .toBeDefined();
+      expect(controller instanceof TestController)
+        .toBe(true, 'Instance is not a TestController');
+      expect(routes[0].methodName)
+        .toEqual('test');
 
       done();
 

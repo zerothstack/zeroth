@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { addProviders } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
@@ -44,9 +44,8 @@ export class TestService extends AbstractService {
 
 describe('Service Bootstrapper', () => {
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
+    addProviders(providers);
     registry.clearAll();
 
     registry.register('service', TestService);
@@ -126,20 +125,22 @@ describe('Service Bootstrapper', () => {
         return this.enhancedInit();
       }
 
-      public enhancedInit():Promise<this> {
+      public enhancedInit(): Promise<this> {
         return Promise.resolve(this);
       }
 
     }
 
-    let enhanceSpy:Spy;
+    let enhanceSpy: Spy;
 
     providers.push({
       provide: TestService,
       deps: [Logger],
-      useFactory: (logger:Logger) => {
+      useFactory: (logger: Logger) => {
         const service = new EnhancedTestService(logger);
-        enhanceSpy = spyOn(service, 'enhancedInit').and.callThrough();
+        enhanceSpy    = spyOn(service, 'enhancedInit')
+          .and
+          .callThrough();
         return service;
       },
     });
@@ -150,9 +151,11 @@ describe('Service Bootstrapper', () => {
 
       const service = res.injector.get(TestService);
 
-      expect(service instanceof EnhancedTestService).toBe(true);
+      expect(service instanceof EnhancedTestService)
+        .toBe(true);
 
-      expect(enhanceSpy).toHaveBeenCalled();
+      expect(enhanceSpy)
+        .toHaveBeenCalled();
 
       done();
 
@@ -163,19 +166,21 @@ describe('Service Bootstrapper', () => {
   it('instantiates a service that has no explicit initialize method', (done: Function) => {
 
     class BasicTestService extends AbstractService {
-      public test():boolean {
+      public test(): boolean {
         return true;
       }
     }
 
-    let initSpy:Spy;
+    let initSpy: Spy;
 
     providers.push({
       provide: TestService,
       deps: [],
       useFactory: () => {
         const service = new BasicTestService();
-        initSpy = spyOn(service, 'initialize').and.callThrough();
+        initSpy       = spyOn(service, 'initialize')
+          .and
+          .callThrough();
         return service;
       },
     });
@@ -186,10 +191,13 @@ describe('Service Bootstrapper', () => {
 
       const service = res.injector.get(TestService);
 
-      expect(service instanceof BasicTestService).toBe(true);
-      expect(service.test()).toEqual(true);
+      expect(service instanceof BasicTestService)
+        .toBe(true);
+      expect(service.test())
+        .toEqual(true);
 
-      expect(initSpy).toHaveBeenCalled();
+      expect(initSpy)
+        .toHaveBeenCalled();
 
       done();
 

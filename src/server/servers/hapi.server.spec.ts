@@ -1,7 +1,7 @@
 import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
-import { beforeEachProviders, inject, it } from '@angular/core/testing';
+import { addProviders, inject, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import * as proxyquire from 'proxyquire';
@@ -31,7 +31,9 @@ describe('Hapi Server', () => {
     {provide: RemoteCli, useClass: RemoteCliMock},
   ];
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('initialized http server with new hapi instance', inject([Server], (server: Server) => {
 
@@ -45,7 +47,7 @@ describe('Hapi Server', () => {
 
   }));
 
-  it('kicks off an http server when started', inject([Server], (server: Server) => {
+  it('kicks off an http server when started', async(inject([Server], (server: Server) => {
 
     const startPromise = server.start()
       .then((res) => {
@@ -61,9 +63,9 @@ describe('Hapi Server', () => {
     startCallback();
 
     return startPromise;
-  }));
+  })));
 
-  it('rejects promise when server start fails', inject([Server], (server: Server) => {
+  it('rejects promise when server start fails', async(inject([Server], (server: Server) => {
 
     const startPromise = server.start();
 
@@ -78,9 +80,9 @@ describe('Hapi Server', () => {
       expect(e)
         .toEqual(errorFixture);
     });
-  }));
+  })));
 
-  it('throws error when invalid route is set', inject([Server], (server: Server) => {
+  it('throws error when invalid route is set', async(inject([Server], (server: Server) => {
 
     const routeConfig: RouteConfig = {
       path: '/test/optional?',
@@ -98,9 +100,9 @@ describe('Hapi Server', () => {
     expect(hapiSpy.route)
       .not
       .toHaveBeenCalled();
-  }));
+  })));
 
-  it('registers routes with the engine, and dispatches calls to the hapi engine', inject([Server], (server: Server) => {
+  it('registers routes with the engine, and dispatches calls to the hapi engine', async(inject([Server], (server: Server) => {
 
     const callStackHandlerSpy = jasmine.createSpy('callStackHandler');
     const responseFixture     = new Response().data('Hello World')
@@ -160,9 +162,9 @@ describe('Hapi Server', () => {
 
       });
 
-  }));
+  })));
 
-  it('registers routes with the engine, and dispatches errors to the hapi engine', inject([Server], (server: Server) => {
+  it('registers routes with the engine, and dispatches errors to the hapi engine', async(inject([Server], (server: Server) => {
 
     const callStackHandlerSpy = jasmine.createSpy('callStackHandler');
     const responseFixture     = new Error('Internal error');
@@ -213,7 +215,7 @@ describe('Hapi Server', () => {
 
       });
 
-  }));
+  })));
 
 });
 

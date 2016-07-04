@@ -2,13 +2,7 @@ import { identifier, ModelStatic, AbstractModel } from '../models/model';
 import { Injector } from '@angular/core';
 import { Collection } from '../models/collection';
 import { ValidationException } from '../../server/exeptions/exceptions';
-import {
-  ValidatorOptions,
-  ValidationError,
-  validate,
-  getValidator,
-  Validator
-} from '../validation';
+import { ValidatorOptions, ValidationError, getValidator, Validator } from '../validation';
 
 export interface Query {
 }

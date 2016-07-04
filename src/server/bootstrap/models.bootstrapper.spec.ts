@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect } from '@angular/core/testing';
+import { addProviders } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -39,9 +39,8 @@ class TestModel extends AbstractModel {
 
 describe('Model Bootstrapper', () => {
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
+    addProviders(providers);
     registry.clearAll();
 
     registry.register('model', TestModel);
@@ -52,16 +51,18 @@ describe('Model Bootstrapper', () => {
 
     const result = bootstrap(undefined, providers)();
 
-    const decoratorSpy = (lib:Object, decorator:string):{invoked:Spy, registered:Spy} => {
-      const invoked = jasmine.createSpy(decorator);
-      const registered = spyOn(lib, decorator).and.callFake(() => invoked);
+    const decoratorSpy = (lib: Object, decorator: string): {invoked: Spy, registered: Spy} => {
+      const invoked    = jasmine.createSpy(decorator);
+      const registered = spyOn(lib, decorator)
+        .and
+        .callFake(() => invoked);
       return {invoked, registered};
     };
 
     const primaryColumnSpy = decoratorSpy(typeormColumns, 'PrimaryColumn');
-    const columnSpy = decoratorSpy(typeormColumns, 'Column');
-    const createDateSpy = decoratorSpy(typeormColumns, 'CreateDateColumn');
-    const updateDateSpy = decoratorSpy(typeormColumns, 'UpdateDateColumn');
+    const columnSpy        = decoratorSpy(typeormColumns, 'Column');
+    const createDateSpy    = decoratorSpy(typeormColumns, 'CreateDateColumn');
+    const updateDateSpy    = decoratorSpy(typeormColumns, 'UpdateDateColumn');
 
     return result.then((res: BootstrapResponse) => {
 

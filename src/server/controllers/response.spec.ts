@@ -1,4 +1,3 @@
-import { it, expect } from '@angular/core/testing';
 import { Response } from './response';
 
 describe('Response', () => {

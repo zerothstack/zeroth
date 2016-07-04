@@ -2,7 +2,7 @@ import * as proxyquire from 'proxyquire';
 import { Injector } from '@angular/core';
 import { RemoteCli } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
-import { it, beforeEachProviders, expect, inject } from '@angular/core/testing';
+import { addProviders, inject } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { registry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
@@ -44,7 +44,9 @@ describe('Remote Commands', () => {
     {provide: Server, useClass: ServerMock},
   ];
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   beforeEach(() => {
     registry.clearAll();
@@ -140,18 +142,24 @@ describe('Remote Command Mock', () => {
     {provide: Server, useClass: ServerMock},
   ];
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('mocks the interfaces of RemoteCli', inject([RemoteCliMock], (cli: RemoteCliMock) => {
 
-    const spy = spyOn(cli, 'registerCommands').and.callThrough();
+    const spy = spyOn(cli, 'registerCommands')
+      .and
+      .callThrough();
 
-    const start = cli.initialize().start(1234);
+    const start = cli.initialize()
+      .start(1234);
 
     expect(start)
       .toEqual(cli);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy)
+      .toHaveBeenCalled();
 
   }));
 

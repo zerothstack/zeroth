@@ -6,7 +6,6 @@ import { Logger } from '../../common/services/logger.service';
 import { Collection } from '../../common/models/collection';
 import 'rxjs/add/operator/toPromise';
 
-
 @Injectable()
 export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T> {
 

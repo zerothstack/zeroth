@@ -1,13 +1,17 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
 import { AbstractModel, identifier } from '../models/model';
 import { AbstractStore } from './store';
-import { MinLength, Validate, ValidatorConstraint } from '../validation';
+import {
+  MinLength,
+  Validate,
+  ValidatorConstraint,
+  ValidatorConstraintInterface
+} from '../validation';
 import { ValidationException } from '../../server/exeptions/exceptions';
-import { ValidatorConstraintInterface } from '../validation';
-import Spy = jasmine.Spy;
 import { Primary } from '../models/types/primary.decorator';
+import Spy = jasmine.Spy;
 
 @Injectable()
 class StubService {
@@ -108,7 +112,7 @@ class TestClass {
 // of the custom validator
 const stubServiceSingleton = new StubService();
 
-const providers:any[] = [
+const providers: any[] = [
   TestClass,
   CustomValidator,
   CustomValidatorAsync,
@@ -118,7 +122,9 @@ const providers:any[] = [
 
 describe('Mock Store', () => {
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('is injected with the store instance token', inject([TestClass], (c: TestClass) => {
 
@@ -133,14 +139,15 @@ describe('Mock Store', () => {
 
   it('is provides a dummy initialized method', inject([TestClass], (c: TestClass) => {
 
-    c.shipStore.initialized().then((instance) => {
-      expect(instance)
-        .toEqual(c.shipStore);
-    });
+    c.shipStore.initialized()
+      .then((instance) => {
+        expect(instance)
+          .toEqual(c.shipStore);
+      });
 
   }));
 
-  it('retrieves a promise of a mock entity', inject([TestClass], (c: TestClass) => {
+  it('retrieves a promise of a mock entity', async(inject([TestClass], (c: TestClass) => {
 
     return c.shipStore.findOne(1234)
       .then((entity) => {
@@ -151,9 +158,9 @@ describe('Mock Store', () => {
           .toBe(1234);
       });
 
-  }));
+  })));
 
-  it('mocks random and seeded random data', inject([TestClass], (c: TestClass) => {
+  it('mocks random and seeded random data', async(inject([TestClass], (c: TestClass) => {
 
     return c.shipStore.findMany(1234)
       .then((ships: Ship[]) => {
@@ -166,9 +173,9 @@ describe('Mock Store', () => {
 
       });
 
-  }));
+  })));
 
-  it('mocks save action', inject([TestClass], (c: TestClass) => {
+  it('mocks save action', async(inject([TestClass], (c: TestClass) => {
 
     let shipRef: Ship = null;
 
@@ -182,9 +189,9 @@ describe('Mock Store', () => {
           .toEqual(ship);
       });
 
-  }));
+  })));
 
-  it('explicitly hydrates from raw data', inject([TestClass], (c: TestClass) => {
+  it('explicitly hydrates from raw data', async(inject([TestClass], (c: TestClass) => {
 
     let data: any = {
       shipId: 321,
@@ -201,9 +208,9 @@ describe('Mock Store', () => {
           .toEqual(data.name);
       })
 
-  }));
+  })));
 
-  it('validates model data, returning instance on pass', inject([TestClass], (c: TestClass) => {
+  it('validates model data, returning instance on pass', async(inject([TestClass], (c: TestClass) => {
     let shipRef: Ship = null;
 
     return c.shipStore.findOne(1234)
@@ -216,9 +223,9 @@ describe('Mock Store', () => {
           .toEqual(ship);
       });
 
-  }));
+  })));
 
-  it('validates model data, returning ValidationException with data on failure', inject([TestClass], (c: TestClass) => {
+  it('validates model data, returning ValidationException with data on failure', async(inject([TestClass], (c: TestClass) => {
     return c.shipStore.findOne(1234)
       .then((ship: Ship) => {
         ship.name = 'a'; //too short
@@ -232,9 +239,9 @@ describe('Mock Store', () => {
           .toEqual('min_length');
       });
 
-  }));
+  })));
 
-  it('validates model data, with custom validation with injected service dependency', inject([TestClass, StubService], (c: TestClass, s: StubService) => {
+  it('validates model data, with custom validation with injected service dependency', async(inject([TestClass, StubService], (c: TestClass, s: StubService) => {
 
     let customValidatorServiceSpy = spyOn(stubServiceSingleton, 'isTruthy')
       .and
@@ -254,9 +261,9 @@ describe('Mock Store', () => {
 
       });
 
-  }));
+  })));
 
-  it('validates model data, with custom async validator', inject([TestClass, StubService], (c: TestClass, s: StubService) => {
+  it('validates model data, with custom async validator', async(inject([TestClass, StubService], (c: TestClass, s: StubService) => {
 
     let customValidatorServiceSpy = spyOn(stubServiceSingleton, 'isTruthyPromise')
       .and
@@ -281,6 +288,6 @@ describe('Mock Store', () => {
           .toEqual('CustomValidatorAsync');
       });
 
-  }));
+  })));
 
 });

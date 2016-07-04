@@ -1,4 +1,4 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { IsolatedMiddlewareFactory } from './index';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
@@ -13,7 +13,6 @@ import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { PromiseFactory } from '../../common/util/serialPromise';
-import { debugLog } from './debugLog.middleware';
 
 let middlewareCalls: string[] = [];
 
@@ -54,13 +53,16 @@ describe('Middleware Decorators', () => {
 
   let controller: MiddlewareController;
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('defines registeredMiddleware on the controller',
     inject([MiddlewareController, ReflectiveInjector],
-      (c:MiddlewareController, i:ReflectiveInjector) => {
+      (c: MiddlewareController, i: ReflectiveInjector) => {
 
-        controller = c.registerRoutes().registerInjector(i);
+        controller = c.registerRoutes()
+          .registerInjector(i);
 
         expect(controller.registeredMiddleware)
           .not
@@ -71,53 +73,58 @@ describe('Middleware Decorators', () => {
           .toEqual(1);
       }));
 
-
   it('adds middleware to the call stack',
     inject([MiddlewareController, ReflectiveInjector, Server],
-      (c:MiddlewareController, i:ReflectiveInjector, s:Server) => {
+      (c: MiddlewareController, i: ReflectiveInjector, s: Server) => {
 
-        controller = c.registerRoutes().registerInjector(i);
+        controller = c.registerRoutes()
+          .registerInjector(i);
 
-        const callStack:any = s.getRoutes().reduce((middlewareStackMap:Object, route:RouteConfig) => {
-          middlewareStackMap[route.methodName] = route.callStack.map((handler: PromiseFactory<Response>) => handler.name);
-          return middlewareStackMap;
-        }, {});
+        const callStack: any = s.getRoutes()
+          .reduce((middlewareStackMap: Object, route: RouteConfig) => {
+            middlewareStackMap[route.methodName] = route.callStack.map((handler: PromiseFactory<Response>) => handler.name);
+            return middlewareStackMap;
+          }, {});
 
-        expect(callStack.testMethod).toEqual([
-          'mockMiddleware',
-          'mockMiddleware',
-          'mockMiddleware',
-          'testMethod',
-          'mockMiddleware',
-          'mockMiddleware'
-        ]);
+        expect(callStack.testMethod)
+          .toEqual([
+            'mockMiddleware',
+            'mockMiddleware',
+            'mockMiddleware',
+            'testMethod',
+            'mockMiddleware',
+            'mockMiddleware'
+          ]);
 
       }));
 
-
   it('calls the stack in the correct order defined by middleware',
-    inject([MiddlewareController, ReflectiveInjector, Server],
-      (c:MiddlewareController, i:ReflectiveInjector, s:Server) => {
+    async(inject([MiddlewareController, ReflectiveInjector, Server],
+      (c: MiddlewareController, i: ReflectiveInjector, s: Server) => {
 
-        controller = c.registerRoutes().registerInjector(i);
+        controller = c.registerRoutes()
+          .registerInjector(i);
 
-        const callStackHandler:any = s.getRoutes().find((route:RouteConfig) => route.methodName == 'testMethod').callStackHandler;
+        const callStackHandler: any = s.getRoutes()
+          .find((route: RouteConfig) => route.methodName == 'testMethod').callStackHandler;
 
         let request  = new Request();
         let response = new Response();
 
-        return callStackHandler(request, response).then(() => {
+        return callStackHandler(request, response)
+          .then(() => {
 
-          expect(middlewareCalls).toEqual([
-            'one',
-            'two',
-            'three',
-            'four',
-            'five',
-          ]);
+            expect(middlewareCalls)
+              .toEqual([
+                'one',
+                'two',
+                'three',
+                'four',
+                'five',
+              ]);
 
-        });
+          });
 
-      }));
+      })));
 
 });

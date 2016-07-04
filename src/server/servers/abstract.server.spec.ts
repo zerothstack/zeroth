@@ -2,7 +2,7 @@ import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Injectable } from '@angular/core';
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Response } from '../controllers/response';
@@ -41,11 +41,10 @@ describe('Server', () => {
     {provide: RemoteCli, useClass: RemoteCliMock},
   ];
 
-  beforeEachProviders(() => providers);
-
   let cliSpy: Spy;
 
   beforeEach(() => {
+    addProviders(providers);
     spyOn(ServerMock.prototype, 'initialize')
       .and
       .callThrough();
@@ -99,7 +98,7 @@ describe('Server', () => {
       .toEqual([routeConfig]);
   }));
 
-  it('starts the server running and returns promise', inject([Server], (server: Server) => {
+  it('starts the server running and returns promise', async(inject([Server], (server: Server) => {
 
     let spy = spyOn(server, 'start')
       .and
@@ -115,7 +114,7 @@ describe('Server', () => {
         .toEqual(server);
     });
 
-  }));
+  })));
 
   it('starts the server running and returns promise', inject([Server], (server: Server) => {
     const response: Response = (<any>server).getDefaultResponse();
