@@ -11,6 +11,7 @@ import { SeederBootstrapper } from './seeders.bootstrapper';
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
 import { ServiceBootstrapper } from './services.bootstrapper';
+import { LoggerMock } from '../../common/services/logger.service.spec';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;
@@ -47,6 +48,11 @@ function handleBootstrapError(e: Error, logger: Logger) {
     logger.critical(e.constructor.name, e.message)
       .debug(e.stack);
 
+    if (logger instanceof LoggerMock){
+      console.log('Logger is mock but a critical error occurred, outputting to console');
+      console.error(e);
+    }
+
   } else {
     console.error('Failed to initialize Logger, falling back to console');
 
@@ -63,6 +69,7 @@ export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: P
 
   let logger: Logger;
 
+
   deferredLog('debug', 'Classes loaded from app', loadClasses.reduce((all: string[], classDict: ClassDictionary<any>) => {
     return all.concat(Object.keys(classDict));
   }, []));
@@ -70,7 +77,6 @@ export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: P
   return (): Promise<BootstrapResponse> => {
 
     deferredLog('info', 'Bootstrapping server');
-
     return Promise.all(CORE_PROVIDERS.concat(providers))
       .then((providers: ProviderType[]) => {
 

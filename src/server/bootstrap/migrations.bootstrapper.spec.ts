@@ -119,7 +119,12 @@ describe('Migration Bootstrapper', () => {
 
   });
 
-  it('continues aborts bootstrap when a fatal error occurs', (done: Function) => {
+  it('aborts bootstrap when a fatal error occurs', (done: Function) => {
+
+    //as there is a fallback to output to log when a fatal bootstrap happens even when mocked,
+    //here we spy on the console to suppress the log output
+    spyOn(console, 'error');
+    spyOn(console, 'log');
 
     const processExitSpy = spyOn(process, 'exit');
 

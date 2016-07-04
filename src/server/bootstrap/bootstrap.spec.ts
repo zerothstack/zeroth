@@ -91,9 +91,16 @@ describe('Bootstrap', () => {
 
   it('aborts startup when an error is encountered after bootstrappers ran, and logs error', (done: Function) => {
 
+    //as there is a fallback to output to log when a fatal bootstrap happens even when mocked,
+    //here we spy on the console to suppress the log output
+    const consoleErrorSpy = spyOn(console, 'error');
+    spyOn(console, 'log');
+
+    const error = new Error('Something is not right!');
+
     const afterBootstrapFn = () => {
       deferredLog('debug', 'this is a debug message');
-      throw new Error('Something is not right!');
+      throw error;
     };
 
     const processExitSpy = spyOn(process, 'exit');
@@ -117,6 +124,9 @@ describe('Bootstrap', () => {
 
       expect(loggerSpy)
         .toHaveBeenCalledWith('debug', ['this is a debug message']);
+
+      expect(consoleErrorSpy)
+        .toHaveBeenCalledWith(error);
 
       done();
 
@@ -150,6 +160,29 @@ describe('Bootstrap', () => {
 
     });
 
+  });
+
+  it('logs the classes that were loaded', (done: Function) => {
+
+    const loggerSpy = spyOn(loggerInstance, 'persistLog')
+      .and
+      .callThrough();
+    spyOn(loggerInstance, 'source')
+      .and
+      .callFake(() => loggerInstance);
+
+    const classMap = [{FooController:null}];
+
+    const result = bootstrap(classMap, providers)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      expect(loggerSpy)
+        .toHaveBeenCalledWith('debug', ['Classes loaded from app', [ 'FooController' ]]);
+
+      done();
+
+    });
   });
 
 });
