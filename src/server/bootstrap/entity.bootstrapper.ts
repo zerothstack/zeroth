@@ -6,11 +6,11 @@ import { registry, EntityType, RegistryEntityStatic } from '../../common/registr
 
 export abstract class EntityBootstrapper {
 
-  protected resolvedEntityProviders: ResolvedReflectiveProvider[];
+  protected entities: RegistryEntityStatic[];
   protected injector: ReflectiveInjector;
   protected logger: Logger;
 
-  public abstract getResolvedProviders(): ResolvedReflectiveProvider[];
+  public abstract getInjectableEntities(): RegistryEntityStatic[];
 
   public invokeBootstrap(): void | Promise<void> {
     this.logger = this.injector.get(Logger)
@@ -18,30 +18,15 @@ export abstract class EntityBootstrapper {
     return this.bootstrap();
   }
 
-  public setInjector(injector: ReflectiveInjector):this {
+  public setInjector(injector: ReflectiveInjector): this {
     this.injector = injector;
     return this;
   }
 
-  protected getInstance<T extends Object>(resolvedInstanceProvider: ResolvedReflectiveProvider): T {
-    let instance: T;
-    try {
-      instance = this.injector.get(resolvedInstanceProvider.key.token);
-    } catch (e) {
-      if (!(e instanceof NoProviderError)) {
-        console.log('ERROR!', resolvedInstanceProvider.key.displayName, e);
-        throw e;
-      }
-      instance = this.injector.instantiateResolved(resolvedInstanceProvider);
-    }
+  protected getInstance<T extends Object>(entity: RegistryEntityStatic): T {
+    const instance: T = this.injector.get(entity);
 
-    let logMessage = `Resolved ${instance.constructor.name}`;
-
-    if (instance.constructor.name !== resolvedInstanceProvider.key.displayName) {
-      logMessage += ` as ${resolvedInstanceProvider.key.displayName}`;
-    }
-
-    this.logger.info(logMessage);
+    this.logger.info(`Resolved ${instance.constructor.name}`);
 
     return instance;
   }
@@ -55,9 +40,9 @@ export abstract class EntityBootstrapper {
     ];
   }
 
-  protected getResolvedFromRegistry(type: EntityType): ResolvedReflectiveProvider[] {
-    this.resolvedEntityProviders = ReflectiveInjector.resolve(this.getFromRegistry(type));
-    return this.resolvedEntityProviders;
+  protected getEntitiesFromRegistry(type: EntityType): RegistryEntityStatic[] {
+    this.entities = this.getFromRegistry(type);
+    return this.entities;
   }
 
 }

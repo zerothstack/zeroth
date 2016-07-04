@@ -144,10 +144,15 @@ describe('Remote Command Mock', () => {
 
   it('mocks the interfaces of RemoteCli', inject([RemoteCliMock], (cli: RemoteCliMock) => {
 
-    const start = cli.start(1234);
+    const spy = spyOn(cli, 'registerCommands').and.callThrough();
+
+    const start = cli.initialize().start(1234);
 
     expect(start)
       .toEqual(cli);
+
+    expect(spy).toHaveBeenCalled();
+
   }));
 
 });

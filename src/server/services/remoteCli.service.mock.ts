@@ -25,7 +25,7 @@ export class RemoteCliMock extends RemoteCli {
    * This overrides the parent method so that vantage is not initialised in tests
    * @returns {RemoteCliMock}
    */
-  protected initializeVantage(): this {
+  public initialize(): this {
     return this.registerCommands();
   }
 

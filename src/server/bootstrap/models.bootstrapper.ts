@@ -7,7 +7,7 @@ import { ModelMetadata } from '../../common/metadata/metadata';
 
 export class ModelBootstrapper extends EntityBootstrapper {
 
-  public getResolvedProviders(): ResolvedReflectiveProvider[] {
+  public getInjectableEntities(): any[] {
     return [];
   }
 

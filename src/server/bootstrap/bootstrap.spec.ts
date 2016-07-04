@@ -8,6 +8,7 @@ import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse, deferredLog } from './index';
 import { registry } from '../../common/registry/entityRegistry';
 import Spy = jasmine.Spy;
+import { ClassDictionary } from './bootstrap';
 
 let loggerInstance: Logger;
 
@@ -171,7 +172,7 @@ describe('Bootstrap', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const classMap = [{FooController:null}];
+    const classMap:ClassDictionary<any>[] = [{FooController:null}];
 
     const result = bootstrap(classMap, providers)();
 

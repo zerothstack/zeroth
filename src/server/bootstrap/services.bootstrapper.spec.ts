@@ -51,6 +51,8 @@ describe('Service Bootstrapper', () => {
 
     registry.register('service', TestService);
 
+    INIT_SUCCESS = true;
+
   });
 
   it('resolves and initializes service', (done: Function) => {
@@ -109,6 +111,85 @@ describe('Service Bootstrapper', () => {
 
       expect(loggerSpy)
         .toHaveBeenCalledWith('critical', ['Error', 'Service init failed']);
+
+      done();
+
+    });
+
+  });
+
+  it('can provide a new value for a registry instantiated service', (done: Function) => {
+
+    class EnhancedTestService extends TestService {
+
+      public initialize(): Promise<this> {
+        return this.enhancedInit();
+      }
+
+      public enhancedInit():Promise<this> {
+        return Promise.resolve(this);
+      }
+
+    }
+
+    let enhanceSpy:Spy;
+
+    providers.push({
+      provide: TestService,
+      deps: [Logger],
+      useFactory: (logger:Logger) => {
+        const service = new EnhancedTestService(logger);
+        enhanceSpy = spyOn(service, 'enhancedInit').and.callThrough();
+        return service;
+      },
+    });
+
+    const result = bootstrap(undefined, providers)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      const service = res.injector.get(TestService);
+
+      expect(service instanceof EnhancedTestService).toBe(true);
+
+      expect(enhanceSpy).toHaveBeenCalled();
+
+      done();
+
+    });
+
+  });
+
+  it('instantiates a service that has no explicit initialize method', (done: Function) => {
+
+    class BasicTestService extends AbstractService {
+      public test():boolean {
+        return true;
+      }
+    }
+
+    let initSpy:Spy;
+
+    providers.push({
+      provide: TestService,
+      deps: [],
+      useFactory: () => {
+        const service = new BasicTestService();
+        initSpy = spyOn(service, 'initialize').and.callThrough();
+        return service;
+      },
+    });
+
+    const result = bootstrap(undefined, providers)();
+
+    return result.then((res: BootstrapResponse) => {
+
+      const service = res.injector.get(TestService);
+
+      expect(service instanceof BasicTestService).toBe(true);
+      expect(service.test()).toEqual(true);
+
+      expect(initSpy).toHaveBeenCalled();
 
       done();
 

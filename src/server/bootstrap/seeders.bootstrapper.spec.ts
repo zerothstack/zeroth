@@ -62,8 +62,6 @@ describe('Seeder Bootstrapper', () => {
     return result.then((res: BootstrapResponse) => {
 
       expect(loggerSpy)
-        .toHaveBeenCalledWith('info', ['seeding TestSeeder']);
-      expect(loggerSpy)
         .toHaveBeenCalledWith('debug', ['Test seeder running']);
       done();
 

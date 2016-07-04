@@ -12,6 +12,7 @@ import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
 import { ServiceBootstrapper } from './services.bootstrapper';
 import { LoggerMock } from '../../common/services/logger.service.spec';
+import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;
@@ -80,8 +81,6 @@ export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: P
     return Promise.all(CORE_PROVIDERS.concat(providers))
       .then((providers: ProviderType[]) => {
 
-        const resolvedProviders = ReflectiveInjector.resolve(providers);
-
         //initialize all bootstrappers (in order they need to be created)
         const resolvedBootstrappers: EntityBootstrapper[] = [
           new ModelBootstrapper,
@@ -91,11 +90,12 @@ export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: P
           new ControllerBootstrapper,
         ];
 
-        const bootrapperProviders = resolvedBootstrappers.reduce((result: ResolvedReflectiveProvider[], bootstrapper: EntityBootstrapper) => {
-          return result.concat(bootstrapper.getResolvedProviders());
+        const bootrapperProviders:any[] = resolvedBootstrappers.reduce((result: any[], bootstrapper: EntityBootstrapper) => {
+          return result.concat(bootstrapper.getInjectableEntities());
         }, []);
 
-        const mergedProviders = resolvedProviders.concat(bootrapperProviders);
+
+        const mergedProviders = ReflectiveInjector.resolve(bootrapperProviders.concat(providers));
 
         const injector = ReflectiveInjector.fromResolvedProviders(mergedProviders);
 
