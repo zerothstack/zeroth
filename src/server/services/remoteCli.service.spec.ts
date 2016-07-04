@@ -3,7 +3,7 @@ import { Injector } from '@angular/core';
 import { RemoteCli } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { addProviders, inject } from '@angular/core/testing';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { ServerMock } from '../servers/abstract.server.spec';

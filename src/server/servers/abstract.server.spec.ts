@@ -3,7 +3,7 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Injectable } from '@angular/core';
 import { inject, addProviders, async } from '@angular/core/testing';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Response } from '../controllers/response';
 import Spy = jasmine.Spy;

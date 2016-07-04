@@ -2,7 +2,7 @@ import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { addProviders, inject, async } from '@angular/core/testing';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import * as proxyquire from 'proxyquire';
 import { Response } from '../controllers/response';
