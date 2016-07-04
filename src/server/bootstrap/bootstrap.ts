@@ -11,7 +11,7 @@ import { SeederBootstrapper } from './seeders.bootstrapper';
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
 import { ServiceBootstrapper } from './services.bootstrapper';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 
 export type ProviderType = Type | {
   [k: string]: any;

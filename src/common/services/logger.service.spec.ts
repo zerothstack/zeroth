@@ -1,21 +1,7 @@
-import { Logger, LogLevel } from './logger.service';
+import { Logger } from './logger.service';
 import { Injectable } from '@angular/core';
 import { inject, addProviders } from '@angular/core/testing';
-import { Service } from '../registry/decorators';
-
-@Injectable()
-@Service()
-export class LoggerMock extends Logger {
-
-  constructor() {
-    super(LoggerMock);
-  }
-
-  public persistLog(logLevel: LogLevel, messages: any[]): this {
-    return this;
-  }
-
-}
+import { LoggerMock } from './logger.service.mock';
 
 @Injectable()
 class TestClass {

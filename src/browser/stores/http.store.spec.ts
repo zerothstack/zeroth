@@ -3,7 +3,7 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http, BaseRequestOptions, Response } from '@angular/http';
 import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 import { HttpStore } from './http.store';
 import { AbstractModel } from '../../common/models/model';
 import { Collection } from '../../common/models/collection';

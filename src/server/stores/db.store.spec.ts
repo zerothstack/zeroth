@@ -1,7 +1,7 @@
 import { Logger } from '../../common/services/logger.service';
 import { Injectable, Injector } from '@angular/core';
 import { inject, addProviders, async } from '@angular/core/testing';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Database } from '../services/database.service';
 import { DatabaseStore } from './db.store';
 import { AbstractModel } from '../../common/models/model';

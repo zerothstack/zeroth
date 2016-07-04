@@ -2,7 +2,7 @@ import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { Logger } from '../../common/services/logger.service';
-import { LoggerMock } from '../../common/services/logger.service.spec';
+import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse, deferredLog } from './index';
 import { registry } from '../../common/registry/entityRegistry';
