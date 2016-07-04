@@ -1,9 +1,10 @@
 import { ResolvedReflectiveProvider } from '@angular/core';
 import { EntityBootstrapper } from './entity.bootstrapper';
+import { AbstractController } from '../controllers/abstract.controller';
 
 export class ControllerBootstrapper extends EntityBootstrapper {
 
-  public getResolvedEntities(): ResolvedReflectiveProvider[] {
+  public getResolvedProviders(): ResolvedReflectiveProvider[] {
     return this.getResolvedFromRegistry('controller');
   }
 
@@ -11,8 +12,9 @@ export class ControllerBootstrapper extends EntityBootstrapper {
     this.resolvedEntityProviders.forEach((resolvedControllerProvider: ResolvedReflectiveProvider) => {
       this.logger.info(`initializing ${resolvedControllerProvider.key.displayName}`);
 
-      this.injector.instantiateResolved(resolvedControllerProvider)
-        .registerInjector(this.injector)
+      let controller = this.getInstance<AbstractController>(resolvedControllerProvider);
+
+      controller.registerInjector(this.injector)
         .registerRoutes();
 
     });

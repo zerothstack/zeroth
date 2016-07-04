@@ -4,7 +4,7 @@ import { ReflectiveInjector, Provider, Type, ResolvedReflectiveProvider } from '
 import { Server } from '../servers/abstract.server';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Logger, LogLevel } from '../../common/services/logger.service';
-import { coreInjector } from '../main';
+import { mainProviders, mainLoadClasses } from '../main';
 import { registry } from '../../common/registry/entityRegistry';
 import { ControllerBootstrapper } from './controllers.bootstrapper';
 import { ModelBootstrapper } from './models.bootstrapper';
@@ -12,6 +12,7 @@ import { SeederBootstrapper } from './seeders.bootstrapper';
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
 import { ServiceBootstrapper } from './services.bootstrapper';
+import { Database } from '../services/database.service';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;
@@ -62,6 +63,8 @@ function handleBootstrapError(e: Error, logger: Logger) {
 
 export function bootstrap(loadClasses: ClassDictionary<any>[], providers: ProviderDefinition[] = [], afterBootstrap?: (bootstrap: BootstrapResponse)=>void): () => Promise<BootstrapResponse> {
 
+  mainLoadClasses.concat(loadClasses);
+
   let logger: Logger;
 
   deferredLog('debug', registry);
@@ -69,8 +72,10 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
 
     deferredLog('info', 'Bootstrapping server');
 
-    return Promise.all(providers)
+    return Promise.all(providers.concat(mainProviders))
       .then((providers: ProviderType[]) => {
+
+        const resolvedProviders = ReflectiveInjector.resolve(providers);
 
         //initialize all bootstrappers (in order they need to be created)
         const resolvedBootstrappers: EntityBootstrapper[] = [
@@ -81,22 +86,15 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
           new ControllerBootstrapper,
         ];
 
-        // extract all of the resolved entities from the bootstrappers for registration with the
-        // injector
         const bootrapperProviders = resolvedBootstrappers.reduce((result: ResolvedReflectiveProvider[], bootstrapper: EntityBootstrapper) => {
-          return result.concat(bootstrapper.getResolvedEntities());
+          return result.concat(bootstrapper.getResolvedProviders());
         }, []);
 
-        // resolve all other user classes
-        const resolvedProviders: ResolvedReflectiveProvider[] = ReflectiveInjector
-          .resolve(providers)
-          .concat(bootrapperProviders)
-          ;
+        const mergedProviders = resolvedProviders.concat(bootrapperProviders);
 
-        // get an injector from the resolutions, using the core injector as parent
-        const injector = ReflectiveInjector.fromResolvedProviders(resolvedProviders, coreInjector);
+        // const registryInjector = ReflectiveInjector.fromResolvedProviders(bootrapperProviders);
+        const injector = ReflectiveInjector.fromResolvedProviders(mergedProviders);
 
-        // assign logger instance as soon as possible so the error handler might use it
         logger = injector.get(Logger)
           .source('bootstrap');
 
@@ -112,7 +110,8 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
         return resolvedBootstrappers.reduce((current: Promise<void>, next: EntityBootstrapper): Promise<void> => {
 
             return current.then((): Promise<void> => {
-              return Promise.resolve(next.invokeBootstrap(injector));
+
+              return Promise.resolve(next.setInjector(injector).invokeBootstrap());
             });
 
           }, Promise.resolve()) //initial value

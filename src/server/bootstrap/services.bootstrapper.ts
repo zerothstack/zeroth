@@ -4,7 +4,7 @@ import { AbstractService } from '../../common/services/service';
 
 export class ServiceBootstrapper extends EntityBootstrapper {
 
-  public getResolvedEntities(): ResolvedReflectiveProvider[] {
+  public getResolvedProviders(): ResolvedReflectiveProvider[] {
     return this.getResolvedFromRegistry('service');
   }
 
@@ -12,11 +12,11 @@ export class ServiceBootstrapper extends EntityBootstrapper {
 
     this.logger.debug(`Initializing [${this.resolvedEntityProviders.length}] services`);
 
-    const allServicePromises = this.resolvedEntityProviders.map((resolvedControllerProvider: ResolvedReflectiveProvider) => {
+    const allServicePromises = this.resolvedEntityProviders.map((resolvedServiceProvider: ResolvedReflectiveProvider) => {
 
-      this.logger.info(`Initializing ${resolvedControllerProvider.key.displayName}`);
-      const service = (this.injector.instantiateResolved(resolvedControllerProvider) as AbstractService).initialize();
-      return Promise.resolve(service);
+      let service =  this.getInstance<AbstractService>(resolvedServiceProvider);
+
+      return Promise.resolve(service.initialize());
     }, []);
 
     return Promise.all(allServicePromises);

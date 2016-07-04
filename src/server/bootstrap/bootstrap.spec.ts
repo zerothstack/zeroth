@@ -26,7 +26,7 @@ const providers: any[] = [
   {provide: RemoteCli, useClass: RemoteCliMock},
 ];
 
-describe('Bootstrap', () => {
+fdescribe('Bootstrap', () => {
 
   beforeEachProviders(() => providers);
 

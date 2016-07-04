@@ -108,6 +108,8 @@ export class RemoteCli extends AbstractService {
 
     this.vantage.banner(displayBanner);
 
+    this.logger.debug('Remote cli initialized');
+
     return this.registerCommands();
   }
 

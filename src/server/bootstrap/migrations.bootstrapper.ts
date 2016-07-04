@@ -4,7 +4,7 @@ import { AbstractMigration } from '../migrations/index';
 
 export class MigrationBootstrapper extends EntityBootstrapper {
 
-  public getResolvedEntities(): ResolvedReflectiveProvider[] {
+  public getResolvedProviders(): ResolvedReflectiveProvider[] {
     return this.getResolvedFromRegistry('migration');
   }
 
@@ -12,10 +12,10 @@ export class MigrationBootstrapper extends EntityBootstrapper {
 
     this.logger.debug(`Running [${this.resolvedEntityProviders.length}] migrations`);
 
-    const allMigrationPromises = this.resolvedEntityProviders.map((resolvedControllerProvider: ResolvedReflectiveProvider) => {
+    const allMigrationPromises = this.resolvedEntityProviders.map((resolvedMigrationProvider: ResolvedReflectiveProvider) => {
 
-      this.logger.info(`migrating ${resolvedControllerProvider.key.displayName}`);
-      return (this.injector.instantiateResolved(resolvedControllerProvider) as AbstractMigration)
+      this.logger.info(`migrating ${resolvedMigrationProvider.key.displayName}`);
+      return this.getInstance<AbstractMigration>(resolvedMigrationProvider)
         .migrate()
         .catch((error) => {
           if (error.code === 'ECONNREFUSED'){
