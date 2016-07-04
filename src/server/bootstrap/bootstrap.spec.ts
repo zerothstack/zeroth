@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { it, expect, describe } from '@angular/core/testing';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
@@ -26,9 +26,7 @@ const providers: any[] = [
   {provide: RemoteCli, useClass: RemoteCliMock},
 ];
 
-fdescribe('Bootstrap', () => {
-
-  beforeEachProviders(() => providers);
+describe('Bootstrap', () => {
 
   beforeEach(() => {
     registry.clearAll();
@@ -36,7 +34,7 @@ fdescribe('Bootstrap', () => {
 
   it('resolves server, logger and injector from providers', (done: Function) => {
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -57,7 +55,7 @@ fdescribe('Bootstrap', () => {
 
     const afterBootstrapFn = jasmine.createSpy('afterBootstrapFn');
 
-    const result = bootstrap(null, providers, afterBootstrapFn)();
+    const result = bootstrap(undefined, providers, afterBootstrapFn)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -80,7 +78,7 @@ fdescribe('Bootstrap', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -107,7 +105,7 @@ fdescribe('Bootstrap', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers, afterBootstrapFn)();
+    const result = bootstrap(undefined, providers, afterBootstrapFn)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -136,7 +134,7 @@ fdescribe('Bootstrap', () => {
 
     const providersWithError = providers.concat([new Error]);
 
-    const result = bootstrap(null, providersWithError)();
+    const result = bootstrap(undefined, providersWithError)();
 
     return result.then((res: BootstrapResponse) => {
 

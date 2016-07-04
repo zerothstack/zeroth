@@ -50,7 +50,7 @@ describe('Model Bootstrapper', () => {
 
   it('resolves and initializes model with Typeorm decorators', (done: Function) => {
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     const decoratorSpy = (lib:Object, decorator:string):{invoked:Spy, registered:Spy} => {
       const invoked = jasmine.createSpy(decorator);

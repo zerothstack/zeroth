@@ -22,31 +22,8 @@ dotenv.config({
 
 process.env = _.mapKeys(process.env, (value: any, key: string) => key.replace(/^PUBLIC_/, ''));
 
-export const mainLoadClasses:any[] = [
+export const CORE_PROVIDERS: ProviderDefinition[] = [
   Database,
-  RemoteCli
-];
-// /**
-//  * The core injector is exported so implementations can pick up already registered injectables
-//  * without having to register them themselves.
-//  * @type {ReflectiveInjector}
-//  */
-// export const coreInjector: ReflectiveInjector = ReflectiveInjector.resolveAndCreate([
-//   // Database,
-//   RemoteCli,
-//   DebugLogMiddleware,
-//   // {provide: Server, useClass: HapiServer},
-//   {provide: Server, useClass: ExpressServer},
-//   {provide: Logger, useClass: ConsoleLogger},
-// ]);
-
-/**
- * The core injector is exported so implementations can pick up already registered injectables
- * without having to register them themselves.
- * @type {ReflectiveInjector}
- */
-export const mainProviders: ProviderDefinition[] = [
-  // Database,
   RemoteCli,
   DebugLogMiddleware,
   // {provide: Server, useClass: HapiServer},

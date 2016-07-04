@@ -57,7 +57,7 @@ describe('Seeder Bootstrapper', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 

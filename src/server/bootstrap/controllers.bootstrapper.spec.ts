@@ -45,7 +45,7 @@ describe('Controller Bootstrapper', () => {
 
   it('resolves and initializes controller with injector and registers routes with server', (done: Function) => {
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 

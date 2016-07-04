@@ -77,7 +77,7 @@ describe('Migration Bootstrapper', () => {
       .and
       .callFake(() => loggerInstance);
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -105,7 +105,7 @@ describe('Migration Bootstrapper', () => {
       return Promise.reject(err);
     });
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
@@ -135,7 +135,7 @@ describe('Migration Bootstrapper', () => {
       return Promise.reject(err);
     });
 
-    const result = bootstrap(null, providers)();
+    const result = bootstrap(undefined, providers)();
 
     return result.then((res: BootstrapResponse) => {
 
