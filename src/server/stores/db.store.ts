@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
-import { BaseModel, ModelStatic, identifier } from '../../common/models/model';
+import { AbstractModel, ModelStatic, identifier } from '../../common/models/model';
 import { Database } from '../services/database.service';
 import { Logger } from '../../common/services/logger.service';
-import { BaseStore } from '../../common/stores/store';
+import { AbstractStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
 import { Repository, Connection } from 'typeorm';
@@ -10,7 +10,7 @@ import { Repository, Connection } from 'typeorm';
  * This store is for saving and retrieving models from the database using Sequelize
  */
 @Injectable()
-export abstract class DatabaseStore<T extends BaseModel> extends BaseStore<T> {
+export abstract class DatabaseStore<T extends AbstractModel> extends AbstractStore<T> {
 
   /**
    * The TypeORM repository instance
@@ -30,7 +30,7 @@ export abstract class DatabaseStore<T extends BaseModel> extends BaseStore<T> {
 
   public getRepository(): Promise<Repository<T>> {
     if (!this.repositoryPromise) {
-      this.repositoryPromise = this.database.initialized.then((connection: Connection) => connection.getRepository(this.modelStatic))
+      this.repositoryPromise = this.database.getConnection().then((connection: Connection) => connection.getRepository(this.modelStatic))
     }
 
     return this.repositoryPromise;

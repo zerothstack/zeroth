@@ -9,6 +9,8 @@ import * as Vantage from 'vantage';
 const tableModule  = require('table');
 
 import Socket = SocketIO.Socket;
+import { Service } from '../../common/registry/decorators';
+import { AbstractService } from '../../common/services/service';
 
 const table: Table = tableModule.default;
 
@@ -73,7 +75,8 @@ export interface ConnectedSocketCallback {
  * shell environment. Useful for things like migrations and debugging.
  */
 @Injectable()
-export class RemoteCli {
+@Service()
+export class RemoteCli extends AbstractService {
 
   /**
    * The instance of Vantage
@@ -85,17 +88,15 @@ export class RemoteCli {
   private logger: Logger;
 
   constructor(loggerBase: Logger, private injector: Injector) {
-
+    super();
     this.logger = loggerBase.source('remote-cli');
-
-    this.initializeVantage();
   }
 
   /**
    * Initialize the vantage client
    * @returns {RemoteCli}
    */
-  protected initializeVantage(): this {
+  public initialize(): this {
     this.vantage = new Vantage();
 
     this.vantage.delimiter('ubiquits-runtime~$');

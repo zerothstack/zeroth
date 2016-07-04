@@ -3,11 +3,13 @@ import { yellow, red, bgRed, magenta, gray, blue, bgYellow } from 'chalk';
 import { inspect } from 'util';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { Service } from '../registry/decorators';
 
 export const isBrowser = () => {
   return typeof window !== 'undefined';
 };
 
+@Service()
 @Injectable()
 export class ConsoleLogger extends Logger {
 

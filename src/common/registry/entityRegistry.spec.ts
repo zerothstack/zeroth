@@ -1,7 +1,7 @@
 import { it, expect, describe } from '@angular/core/testing';
 import { EntityRegistry, EntityType, registry } from './entityRegistry';
-import { Model, Controller, Seeder, Middleware, Migration, Store } from './decorators';
-import { BaseModel } from '../models/model';
+import { Model, Controller, Seeder, Middleware, Migration, Store, Service } from './decorators';
+import { AbstractModel } from '../models/model';
 
 describe('Entity registry', () => {
 
@@ -182,6 +182,9 @@ describe('Entity registry', () => {
     @Store()
     class FooStore {
     }
+    @Service()
+    class FooService {
+    }
 
     [
       'Model',
@@ -189,7 +192,8 @@ describe('Entity registry', () => {
       'Seeder',
       'Middleware',
       'Migration',
-      'Store'
+      'Store',
+      'Service',
     ].forEach((decorator) => {
 
       let type = (decorator.toLowerCase() as EntityType);
@@ -213,7 +217,7 @@ describe('Entity registry', () => {
       @Model({
         storageKey: 'example'
       })
-      class BarModel extends BaseModel {
+      class BarModel extends AbstractModel {
       }
 
       let foundClass = registry.findByType('model', BarModel.name);

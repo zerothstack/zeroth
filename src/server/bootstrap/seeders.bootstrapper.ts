@@ -1,6 +1,6 @@
 import { ResolvedReflectiveProvider } from '@angular/core';
 import { EntityBootstrapper } from './entity.bootstrapper';
-import { BaseSeeder } from '../seeders/index';
+import { AbstractSeeder } from '../seeders/index';
 
 export class SeederBootstrapper extends EntityBootstrapper {
 
@@ -14,7 +14,7 @@ export class SeederBootstrapper extends EntityBootstrapper {
     const allSeederPromises = this.resolvedEntityProviders.map((resolvedControllerProvider: ResolvedReflectiveProvider) => {
 
       this.logger.info(`seeding ${resolvedControllerProvider.key.displayName}`);
-      return (this.injector.instantiateResolved(resolvedControllerProvider) as BaseSeeder).seed();
+      return (this.injector.instantiateResolved(resolvedControllerProvider) as AbstractSeeder).seed();
 
     }, []);
     

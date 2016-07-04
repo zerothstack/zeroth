@@ -31,3 +31,6 @@ export function Migration(): ClassDecorator {
 export function Store(): ClassDecorator {
   return entityRegistryFunction('store');
 }
+export function Service(): ClassDecorator {
+  return entityRegistryFunction('service');
+}

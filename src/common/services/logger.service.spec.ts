@@ -1,8 +1,10 @@
 import { Logger, LogLevel } from './logger.service';
 import { Injectable } from '@angular/core';
 import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { Service } from '../registry/decorators';
 
 @Injectable()
+@Service()
 export class LoggerMock extends Logger {
 
   constructor() {

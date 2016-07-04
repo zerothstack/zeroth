@@ -5,12 +5,12 @@ import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { HttpStore } from './http.store';
-import { BaseModel } from '../../common/models/model';
+import { AbstractModel } from '../../common/models/model';
 import { Collection } from '../../common/models/collection';
 import { Model } from '../../common/registry/decorators';
 
 @Model('tests')
-class TestModel extends BaseModel {
+class TestModel extends AbstractModel {
   id: number;
   name: string;
 }

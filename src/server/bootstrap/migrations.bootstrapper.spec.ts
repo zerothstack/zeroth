@@ -8,10 +8,10 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import { BaseMigration } from '../migrations/index';
+import { AbstractMigration } from '../migrations/index';
 import { Database } from '../services/database.service';
-import { DatabaseMock } from '../services/database.service.spec';
 import Spy = jasmine.Spy;
+import { DatabaseMock } from '../services/database.service.mock';
 
 let loggerInstance: Logger = new LoggerMock();
 let databaseInstance: Database;
@@ -37,7 +37,7 @@ const providers: any[] = [
 ];
 
 @Injectable()
-export class TestMigration extends BaseMigration {
+export class TestMigration extends AbstractMigration {
 
   constructor(logger: Logger, database: Database) {
     super(logger, database);

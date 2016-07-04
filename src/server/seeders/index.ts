@@ -1,5 +1,5 @@
 import { Logger } from '../../common/services/logger.service';
-export abstract class BaseSeeder {
+export abstract class AbstractSeeder {
 
   protected logger:Logger;
   constructor(loggerBase:Logger){

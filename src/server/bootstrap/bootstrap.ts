@@ -11,6 +11,7 @@ import { ModelBootstrapper } from './models.bootstrapper';
 import { SeederBootstrapper } from './seeders.bootstrapper';
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
+import { ServiceBootstrapper } from './services.bootstrapper';
 
 export type ProviderType = Type | Provider | {
   [k: string]: any;
@@ -74,6 +75,7 @@ export function bootstrap(loadClasses: ClassDictionary<any>[], providers: Provid
         //initialize all bootstrappers (in order they need to be created)
         const resolvedBootstrappers: EntityBootstrapper[] = [
           new ModelBootstrapper,
+          new ServiceBootstrapper,
           new MigrationBootstrapper,
           new SeederBootstrapper,
           new ControllerBootstrapper,

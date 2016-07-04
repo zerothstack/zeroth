@@ -2,17 +2,17 @@ import { Logger } from '../../common/services/logger.service';
 import { Injectable, Injector } from '@angular/core';
 import { it, inject, beforeEachProviders, expect } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { DatabaseMock } from '../services/database.service.spec';
 import { Database } from '../services/database.service';
 import { DatabaseStore } from './db.store';
-import { BaseModel } from '../../common/models/model';
+import { AbstractModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
-import Spy = jasmine.Spy;
 import { NotFoundException } from '../exeptions/exceptions';
 import { Collection } from '../../common/models/collection';
+import Spy = jasmine.Spy;
+import { DatabaseMock } from '../services/database.service.mock';
 
-class TestModel extends BaseModel {
+class TestModel extends AbstractModel {
 
   @Primary()
   id: number;
@@ -52,7 +52,7 @@ describe('Database Store', () => {
 
   it('retrieves a reference to the orm repository', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     return store.getRepository()
       .then((repo) => {
@@ -76,7 +76,7 @@ describe('Database Store', () => {
 
   it('provides initialized method so callees can defer actions', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     return store.initialized()
       .then((res) => {
@@ -88,7 +88,7 @@ describe('Database Store', () => {
 
   it('retrieves a single entity from the orm', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     const testModelFixture = new TestModel({id: 10});
 
@@ -106,7 +106,7 @@ describe('Database Store', () => {
 
   it('rejects retrieval with not found exception when there is no model', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     repositorySpy.findOneById.and.returnValue(Promise.resolve(null));
 
@@ -122,7 +122,7 @@ describe('Database Store', () => {
 
   it('retrieves collection of entities from the orm', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     const testModelsFixture = [new TestModel({id: 12})];
 
@@ -142,7 +142,7 @@ describe('Database Store', () => {
 
   it('rejects retrieval with not found exception when there is no models', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     repositorySpy.find.and.returnValue(Promise.resolve([]));
 
@@ -159,11 +159,9 @@ describe('Database Store', () => {
 
   }));
 
-
-
   it('persists a single entity to the orm', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    db.initialized = Promise.resolve(dbConnectionSpy);
+    (db as any).connection = dbConnectionSpy;
 
     const testModelFixture = new TestModel({id: 10});
 

@@ -3,8 +3,10 @@ import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 
 import Spy = jasmine.Spy;
+import { Service } from '../../common/registry/decorators';
 
 @Injectable()
+@Service()
 export class RemoteCliMock extends RemoteCli {
 
   constructor(loggerBase: Logger, injector: Injector) {

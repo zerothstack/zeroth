@@ -1,10 +1,10 @@
 import { it, describe, expect, beforeEach } from '@angular/core/testing';
 import Moment = moment.Moment;
 import { HasOne } from './hasOne.decorator';
-import { BaseModel } from '../model';
+import { AbstractModel } from '../model';
 import { Primary } from '../types/primary.decorator';
 
-class ChildModel extends BaseModel {
+class ChildModel extends AbstractModel {
 
   @Primary()
   public id: string;//UUID;
@@ -13,7 +13,7 @@ class ChildModel extends BaseModel {
 
 }
 
-class BasicModel extends BaseModel {
+class BasicModel extends AbstractModel {
 
   @Primary()
   public id: string;//UUID;

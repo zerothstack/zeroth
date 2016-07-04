@@ -37,7 +37,7 @@ describe('Remote Commands', () => {
       provide: RemoteCli,
       deps: [Logger, Injector],
       useFactory: (logger: Logger, injector: Injector) => {
-        return new mockedModule.RemoteCli(logger, injector);
+        return new mockedModule.RemoteCli(logger, injector).initialize();
       }
     },
     {provide: Logger, useClass: LoggerMock},

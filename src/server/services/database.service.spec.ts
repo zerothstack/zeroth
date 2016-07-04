@@ -1,27 +1,12 @@
-import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Database } from './database.service';
 import { it, beforeEachProviders, expect, inject } from '@angular/core/testing';
 import * as typeorm from 'typeorm';
-import { Connection } from 'typeorm';
 import { RemoteCli } from './remoteCli.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { RemoteCliMock } from './remoteCli.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import Spy = jasmine.Spy;
-
-@Injectable()
-export class DatabaseMock extends Database {
-
-  constructor(loggerBase: Logger) {
-    super(loggerBase);
-  }
-
-  public initialize(): Promise<Connection> {
-    return Promise.resolve(null);
-  }
-
-}
 
 describe('Database', () => {
 
@@ -79,7 +64,7 @@ describe('Database', () => {
     expect(createConnectionSpy)
       .toHaveBeenCalledWith(connectionConfigFixture);
 
-    return database.initialized.then((conn) => {
+    return database.getConnection().then((conn) => {
       expect(conn)
         .toEqual(connectionSpy);
     });
@@ -132,7 +117,7 @@ describe('Database', () => {
       expect(createConnectionSpy)
         .toHaveBeenCalledWith(connectionConfigFixture);
 
-      return database.initialized.catch((error: Error) => {
+      return database.getConnection().catch((error: Error) => {
         expect(error.message)
           .toEqual('Connection error');
       });

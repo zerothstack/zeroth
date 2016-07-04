@@ -8,7 +8,7 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import { BaseSeeder } from '../seeders/index';
+import { AbstractSeeder } from '../seeders/index';
 import Spy = jasmine.Spy;
 
 let loggerInstance: Logger = new LoggerMock();
@@ -24,7 +24,7 @@ const providers: any[] = [
 ];
 
 @Injectable()
-export class TestSeeder extends BaseSeeder {
+export class TestSeeder extends AbstractSeeder {
 
   constructor(logger: Logger) {
     super(logger);

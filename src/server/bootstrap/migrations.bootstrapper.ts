@@ -1,6 +1,6 @@
 import { ResolvedReflectiveProvider } from '@angular/core';
 import { EntityBootstrapper } from './entity.bootstrapper';
-import { BaseMigration } from '../migrations/index';
+import { AbstractMigration } from '../migrations/index';
 
 export class MigrationBootstrapper extends EntityBootstrapper {
 
@@ -15,7 +15,7 @@ export class MigrationBootstrapper extends EntityBootstrapper {
     const allMigrationPromises = this.resolvedEntityProviders.map((resolvedControllerProvider: ResolvedReflectiveProvider) => {
 
       this.logger.info(`migrating ${resolvedControllerProvider.key.displayName}`);
-      return (this.injector.instantiateResolved(resolvedControllerProvider) as BaseMigration)
+      return (this.injector.instantiateResolved(resolvedControllerProvider) as AbstractMigration)
         .migrate()
         .catch((error) => {
           if (error.code === 'ECONNREFUSED'){
