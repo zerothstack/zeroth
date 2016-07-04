@@ -1,6 +1,6 @@
 import { Logger } from '../../common/services/logger.service';
 import { Injectable, Injector } from '@angular/core';
-import { it, inject, beforeEachProviders, expect } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Database } from '../services/database.service';
 import { DatabaseStore } from './db.store';
@@ -9,8 +9,8 @@ import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
 import { NotFoundException } from '../exeptions/exceptions';
 import { Collection } from '../../common/models/collection';
-import Spy = jasmine.Spy;
 import { DatabaseMock } from '../services/database.service.mock';
+import Spy = jasmine.Spy;
 
 class TestModel extends AbstractModel {
 
@@ -41,7 +41,9 @@ describe('Database Store', () => {
     {provide: Database, useClass: DatabaseMock},
   ];
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('initializes the store with a reference to the static model', inject([TestDatabaseStore], (store: TestDatabaseStore) => {
 
@@ -50,7 +52,7 @@ describe('Database Store', () => {
 
   }));
 
-  it('retrieves a reference to the orm repository', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('retrieves a reference to the orm repository', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -72,9 +74,9 @@ describe('Database Store', () => {
 
       });
 
-  }));
+  })));
 
-  it('provides initialized method so callees can defer actions', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('provides initialized method so callees can defer actions', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -84,9 +86,9 @@ describe('Database Store', () => {
           .toEqual(store);
       });
 
-  }));
+  })));
 
-  it('retrieves a single entity from the orm', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('retrieves a single entity from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -102,9 +104,9 @@ describe('Database Store', () => {
           .toEqual(testModelFixture);
       });
 
-  }));
+  })));
 
-  it('rejects retrieval with not found exception when there is no model', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('rejects retrieval with not found exception when there is no model', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -118,9 +120,9 @@ describe('Database Store', () => {
           .toEqual('TestModel not found with id [123]');
       });
 
-  }));
+  })));
 
-  it('retrieves collection of entities from the orm', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('retrieves collection of entities from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -138,9 +140,9 @@ describe('Database Store', () => {
           .toEqual(testModelsFixture[0]);
       });
 
-  }));
+  })));
 
-  it('rejects retrieval with not found exception when there is no models', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('rejects retrieval with not found exception when there is no models', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -157,9 +159,9 @@ describe('Database Store', () => {
           .toEqual('No TestModel found with query params [undefined]');
       });
 
-  }));
+  })));
 
-  it('persists a single entity to the orm', inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+  it('persists a single entity to the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
 
@@ -175,7 +177,7 @@ describe('Database Store', () => {
           .toEqual(testModelFixture);
       });
 
-  }));
+  })));
 
 });
 

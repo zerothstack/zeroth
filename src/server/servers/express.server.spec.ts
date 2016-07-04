@@ -1,7 +1,7 @@
 import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
-import { beforeEachProviders, describe, inject, it } from '@angular/core/testing';
+import { addProviders, inject, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.spec';
 import * as proxyquire from 'proxyquire';
 import { Response } from '../controllers/response';
@@ -40,7 +40,9 @@ describe('Express Server', () => {
     {provide: RemoteCli, useClass: RemoteCliMock},
   ];
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('initialized http server with new express instance', inject([Server], (server: Server) => {
 
@@ -54,7 +56,7 @@ describe('Express Server', () => {
 
   }));
 
-  it('kicks off an http server when started', inject([Server], (server: Server) => {
+  it('kicks off an http server when started', async(inject([Server], (server: Server) => {
 
     const startPromise = server.start()
       .then((res) => {
@@ -70,9 +72,9 @@ describe('Express Server', () => {
     startedCallback(); //resolve the promise
     return startPromise;
 
-  }));
+  })));
 
-  it('registers routes with the engine, and dispatches calls to the express engine', inject([Server], (server: Server) => {
+  it('registers routes with the engine, and dispatches calls to the express engine', async(inject([Server], (server: Server) => {
 
     const callStackHandlerSpy = jasmine.createSpy('callStackHandler');
     const responseFixture     = new Response().data('Hello World')
@@ -122,9 +124,9 @@ describe('Express Server', () => {
           .toHaveBeenCalledWith('Content-Length', '11');
       });
 
-  }));
+  })));
 
-  it('registers routes with the engine, and dispatches errors to the express engine', inject([Server], (server: Server) => {
+  it('registers routes with the engine, and dispatches errors to the express engine', async(inject([Server], (server: Server) => {
 
     const callStackHandlerSpy = jasmine.createSpy('callStackHandler');
     const responseFixture     = new Error('Internal error');
@@ -168,7 +170,7 @@ describe('Express Server', () => {
           .toHaveBeenCalledWith(responseFixture);
       });
 
-  }));
+  })));
 
 });
 

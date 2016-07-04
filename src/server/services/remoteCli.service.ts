@@ -6,11 +6,11 @@ import * as chalk from 'chalk';
 import { Response } from '../controllers/response';
 import { PromiseFactory } from '../../common/util/serialPromise';
 import * as Vantage from 'vantage';
+import { Service } from '../../common/registry/decorators';
+import { AbstractService } from '../../common/services/service';
 const tableModule  = require('table');
 
 import Socket = SocketIO.Socket;
-import { Service } from '../../common/registry/decorators';
-import { AbstractService } from '../../common/services/service';
 
 const table: Table = tableModule.default;
 

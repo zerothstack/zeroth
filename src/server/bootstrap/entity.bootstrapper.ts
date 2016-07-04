@@ -1,6 +1,6 @@
 import 'core-js';
 import 'reflect-metadata';
-import { ReflectiveInjector, ResolvedReflectiveProvider, NoProviderError } from '@angular/core';
+import { ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { registry, EntityType, RegistryEntityStatic } from '../../common/registry/entityRegistry';
 

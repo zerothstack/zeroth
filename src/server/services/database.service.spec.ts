@@ -1,6 +1,6 @@
 import { Logger } from '../../common/services/logger.service';
 import { Database } from './database.service';
-import { it, beforeEachProviders, expect, inject } from '@angular/core/testing';
+import { addProviders, inject, async } from '@angular/core/testing';
 import * as typeorm from 'typeorm';
 import { RemoteCli } from './remoteCli.service';
 import { LoggerMock } from '../../common/services/logger.service.spec';
@@ -45,9 +45,8 @@ describe('Database', () => {
     entities: [],
   };
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
+    addProviders(providers);
 
     registry.clearAll();
     Object.assign(process.env, envMap);
@@ -59,19 +58,10 @@ describe('Database', () => {
 
   });
 
-  it('initializes database with connection', inject([Database], (database: Database) => {
+  it('initializes database with connection', async(inject([Database], (database: Database) => {
 
     expect(createConnectionSpy)
       .toHaveBeenCalledWith(connectionConfigFixture);
-
-    return database.getConnection().then((conn) => {
-      expect(conn)
-        .toEqual(connectionSpy);
-    });
-
-  }));
-
-  it('retrieves an instance of the connection', inject([Database], (database: Database) => {
 
     return database.getConnection()
       .then((conn) => {
@@ -79,7 +69,17 @@ describe('Database', () => {
           .toEqual(connectionSpy);
       });
 
-  }));
+  })));
+
+  it('retrieves an instance of the connection', async(inject([Database], (database: Database) => {
+
+    return database.getConnection()
+      .then((conn) => {
+        expect(conn)
+          .toEqual(connectionSpy);
+      });
+
+  })));
 
   it('interfaces the typeorm logger function with the logger function', inject([Database, Logger], (database: Database, logger: Logger) => {
 
@@ -112,21 +112,22 @@ describe('Database', () => {
 
     });
 
-    it('rejects initialization promise if connection fails', inject([Database], (database: Database) => {
+    it('rejects initialization promise if connection fails', async(inject([Database], (database: Database) => {
 
       expect(createConnectionSpy)
         .toHaveBeenCalledWith(connectionConfigFixture);
 
-      return database.getConnection().catch((error: Error) => {
-        expect(error.message)
-          .toEqual('Connection error');
-      });
+      return database.getConnection()
+        .catch((error: Error) => {
+          expect(error.message)
+            .toEqual('Connection error');
+        });
 
-    }));
+    })));
 
   });
 
-  it('executes a raw query on the database', inject([Database], (database: Database) => {
+  it('executes a raw query on the database', async(inject([Database], (database: Database) => {
 
     const resultMock     = [{foo: 'bar'}];
     connectionSpy.driver = {
@@ -146,6 +147,6 @@ describe('Database', () => {
           .toEqual(resultMock);
       });
 
-  }));
+  })));
 
 });

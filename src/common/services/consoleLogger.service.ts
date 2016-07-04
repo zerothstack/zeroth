@@ -1,5 +1,5 @@
 import { Logger, LogLevel } from './logger.service';
-import { yellow, red, bgRed, magenta, gray, blue, bgYellow } from 'chalk';
+import { yellow, red, bgRed, magenta, gray, blue } from 'chalk';
 import { inspect } from 'util';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';

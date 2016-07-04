@@ -1,4 +1,4 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { ResourceController } from './resource.controller';
 import { Logger } from '../../common/services/logger.service';
@@ -64,9 +64,11 @@ const providers = [
 
 describe('Resource Controller', () => {
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
-  it('Registers a route to retrieve an entity', inject([TestController, Server],
+  it('Registers a route to retrieve an entity', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
       c.registerRoutes();
@@ -89,9 +91,9 @@ describe('Resource Controller', () => {
 
         });
 
-    }));
+    })));
 
-  it('Registers a route to retrieve many entities', inject([TestController, Server],
+  it('Registers a route to retrieve many entities', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
       c.registerRoutes();
@@ -113,9 +115,9 @@ describe('Resource Controller', () => {
 
         });
 
-    }));
+    })));
 
-  it('Registers a route put one entity', inject([TestController, Server],
+  it('Registers a route put one entity', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
       c.registerRoutes();
@@ -148,6 +150,6 @@ describe('Resource Controller', () => {
 
         });
 
-    }));
+    })));
 
 });

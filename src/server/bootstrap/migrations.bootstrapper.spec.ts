@@ -1,4 +1,4 @@
-import { it, beforeEachProviders, expect } from '@angular/core/testing';
+import { addProviders } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -10,8 +10,8 @@ import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
 import { AbstractMigration } from '../migrations/index';
 import { Database } from '../services/database.service';
-import Spy = jasmine.Spy;
 import { DatabaseMock } from '../services/database.service.mock';
+import Spy = jasmine.Spy;
 
 let loggerInstance: Logger = new LoggerMock();
 let databaseInstance: Database;
@@ -45,10 +45,11 @@ export class TestMigration extends AbstractMigration {
 
   public migrate(): Promise<void> {
 
-    return this.database.initialize().then(() => {
-      this.logger.debug('Test migration running');
-      return Promise.resolve();
-    });
+    return this.database.initialize()
+      .then(() => {
+        this.logger.debug('Test migration running');
+        return Promise.resolve();
+      });
 
   }
 
@@ -59,9 +60,8 @@ export class TestMigration extends AbstractMigration {
 
 describe('Migration Bootstrapper', () => {
 
-  beforeEachProviders(() => providers);
-
   beforeEach(() => {
+    addProviders(providers);
     registry.clearAll();
 
     registry.register('migration', TestMigration);
@@ -98,12 +98,13 @@ describe('Migration Bootstrapper', () => {
       .and
       .callFake(() => loggerInstance);
 
-
-    spyOn(databaseInstance, 'initialize').and.callFake(() => {
-      const err = new Error();
-      (err as any).code = 'ECONNREFUSED';
-      return Promise.reject(err);
-    });
+    spyOn(databaseInstance, 'initialize')
+      .and
+      .callFake(() => {
+        const err         = new Error();
+        (err as any).code = 'ECONNREFUSED';
+        return Promise.reject(err);
+      });
 
     const result = bootstrap(undefined, providers)();
 
@@ -111,7 +112,6 @@ describe('Migration Bootstrapper', () => {
 
       expect(loggerSpy)
         .toHaveBeenCalledWith('notice', ['Database not available, migration cannot run']);
-
 
       done();
 
@@ -135,10 +135,12 @@ describe('Migration Bootstrapper', () => {
       .and
       .callFake(() => loggerInstance);
 
-    spyOn(databaseInstance, 'initialize').and.callFake(() => {
-      const err = new Error('Something else went wrong');
-      return Promise.reject(err);
-    });
+    spyOn(databaseInstance, 'initialize')
+      .and
+      .callFake(() => {
+        const err = new Error('Something else went wrong');
+        return Promise.reject(err);
+      });
 
     const result = bootstrap(undefined, providers)();
 

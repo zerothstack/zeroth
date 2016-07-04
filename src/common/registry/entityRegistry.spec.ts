@@ -1,4 +1,3 @@
-import { it, expect, describe } from '@angular/core/testing';
 import { EntityRegistry, EntityType, registry } from './entityRegistry';
 import { Model, Controller, Seeder, Middleware, Migration, Store, Service } from './decorators';
 import { AbstractModel } from '../models/model';

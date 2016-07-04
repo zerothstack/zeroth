@@ -1,8 +1,8 @@
-import { it, expect, describe} from '@angular/core/testing';
+import { it, expect, describe } from '@angular/core/testing';
 import { ConsoleLogger, isBrowser } from './consoleLogger.service';
-import {stripColor, hasColor} from 'chalk';
-import Spy = jasmine.Spy;
+import { stripColor, hasColor } from 'chalk';
 import { LogLevel } from './logger.service';
+import Spy = jasmine.Spy;
 
 describe('Console Logger', () => {
 

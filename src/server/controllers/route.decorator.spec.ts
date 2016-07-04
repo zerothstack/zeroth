@@ -1,4 +1,4 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { inject, addProviders } from '@angular/core/testing';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { AbstractController } from '../controllers/abstract.controller';
@@ -21,7 +21,8 @@ class TestController extends AbstractController {
   }
 
   @Route('PUT', '/test/:id')
-  public testMethod(request: Request, response: Response): any {}
+  public testMethod(request: Request, response: Response): any {
+  }
 
 }
 
@@ -34,7 +35,9 @@ const providers = [
 
 describe('@Route & @RouteBase decorators', () => {
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('Registers a route definition with the server ',
     inject([TestController, Injector, Server],

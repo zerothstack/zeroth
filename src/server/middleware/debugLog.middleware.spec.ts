@@ -1,4 +1,4 @@
-import { it, inject, beforeEachProviders, expect, describe } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { Route } from '../controllers/route.decorator';
@@ -40,7 +40,7 @@ let mockLogger = {
   }
 };
 
-const providers:any[] = [
+const providers: any[] = [
         MiddlewareController,
         {provide: Server, useClass: ServerMock},
         {provide: Logger, useClass: LoggerMock},
@@ -59,10 +59,12 @@ describe('debugLog middleware', () => {
 
   let controller: MiddlewareController;
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
   it('Calls debug.log on the passed value to the middleware decorator',
-    inject([MiddlewareController, Injector, Server],
+    async(inject([MiddlewareController, Injector, Server],
       (c: MiddlewareController, i: Injector, s: Server) => {
 
         controller = c.registerInjector(i)
@@ -84,6 +86,6 @@ describe('debugLog middleware', () => {
 
           });
 
-      }));
+      })));
 
 });

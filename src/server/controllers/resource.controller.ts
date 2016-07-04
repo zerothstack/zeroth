@@ -1,6 +1,6 @@
 import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
-import { AbstractController} from './abstract.controller';
+import { AbstractController } from './abstract.controller';
 import { Logger } from '../../common/services/logger.service';
 import { Route } from './route.decorator';
 import { AbstractModel } from '../../common/models/model';

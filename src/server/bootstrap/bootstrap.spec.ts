@@ -1,4 +1,3 @@
-import { it, expect, describe } from '@angular/core/testing';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
@@ -7,8 +6,8 @@ import { LoggerMock } from '../../common/services/logger.service.spec';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse, deferredLog } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import Spy = jasmine.Spy;
 import { ClassDictionary } from './bootstrap';
+import Spy = jasmine.Spy;
 
 let loggerInstance: Logger;
 

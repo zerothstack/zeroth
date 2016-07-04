@@ -1,6 +1,5 @@
 import 'core-js';
 import 'reflect-metadata';
-import { ReflectiveInjector } from '@angular/core';
 import { Server } from './servers/abstract.server';
 import { Database } from './services/database.service';
 import { RemoteCli } from './services/remoteCli.service';

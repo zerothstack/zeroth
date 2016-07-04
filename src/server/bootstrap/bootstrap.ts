@@ -1,6 +1,6 @@
 import 'core-js';
 import 'reflect-metadata';
-import { ReflectiveInjector, Provider, Type, ResolvedReflectiveProvider } from '@angular/core';
+import { ReflectiveInjector, Type } from '@angular/core';
 import { Server } from '../servers/abstract.server';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Logger, LogLevel } from '../../common/services/logger.service';
@@ -12,9 +12,8 @@ import { EntityBootstrapper } from './entity.bootstrapper';
 import { MigrationBootstrapper } from './migrations.bootstrapper';
 import { ServiceBootstrapper } from './services.bootstrapper';
 import { LoggerMock } from '../../common/services/logger.service.spec';
-import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
-export type ProviderType = Type | Provider | {
+export type ProviderType = Type | {
   [k: string]: any;
 } | any[];
 

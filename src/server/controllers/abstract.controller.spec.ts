@@ -1,4 +1,4 @@
-import { it, inject, beforeEachProviders, expect } from '@angular/core/testing';
+import { inject, addProviders, async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
@@ -13,7 +13,7 @@ import { Route } from './route.decorator';
 import { UnavailableForLegalReasonsException } from '../exeptions/exceptions';
 
 @Injectable()
-class TestController extends AbstractController{
+class TestController extends AbstractController {
 
   constructor(server: Server, logger: Logger) {
     super(server, logger);
@@ -45,9 +45,11 @@ const providers = [
 
 describe('Controller', () => {
 
-  beforeEachProviders(() => providers);
+  beforeEach(() => {
+    addProviders(providers);
+  });
 
-  it('Registers a route that returns a response', inject([TestController, Server],
+  it('Registers a route that returns a response', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
       c.registerRoutes();
@@ -65,9 +67,9 @@ describe('Controller', () => {
 
         });
 
-    }));
+    })));
 
-  it('Registers a route that returns an http error response', inject([TestController, Server],
+  it('Registers a route that returns an http error response', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
       c.registerRoutes();
@@ -78,18 +80,19 @@ describe('Controller', () => {
       let response = new Response();
 
       return callStackHandler(request, response)
-        .then((finalResponse:Response) => {
+        .then((finalResponse: Response) => {
 
-          expect(finalResponse.statusCode).toEqual(451);
+          expect(finalResponse.statusCode)
+            .toEqual(451);
 
           expect(finalResponse.body)
             .toEqual({message: "UnavailableForLegalReasonsException: You can't see that"});
 
         });
 
-    }));
+    })));
 
-  it('Registers a route that falls back to an http error respnse', inject([TestController, Server],
+  it('Registers a route that falls back to an http error respnse', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
       c.registerRoutes();
@@ -100,15 +103,16 @@ describe('Controller', () => {
       let response = new Response();
 
       return callStackHandler(request, response)
-        .then((finalResponse:Response) => {
+        .then((finalResponse: Response) => {
 
-          expect(finalResponse.statusCode).toEqual(500);
+          expect(finalResponse.statusCode)
+            .toEqual(500);
 
           expect(finalResponse.body)
             .toEqual({message: 'InternalServerErrorException: Something went terribly wrong'});
 
         });
 
-    }));
+    })));
 
 });

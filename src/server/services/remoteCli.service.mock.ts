@@ -1,9 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
 import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
+import { Service } from '../../common/registry/decorators';
 
 import Spy = jasmine.Spy;
-import { Service } from '../../common/registry/decorators';
 
 @Injectable()
 @Service()

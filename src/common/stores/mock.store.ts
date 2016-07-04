@@ -1,8 +1,8 @@
 import { identifier, ModelStatic, AbstractModel } from '../models/model';
 import { Collection } from '../models/collection';
-import { AbstractStore, Query } from './store';
-import {Injector} from '@angular/core';
-import {Chance} from 'chance';
+import { AbstractStore } from './store';
+import { Injector } from '@angular/core';
+import { Chance } from 'chance';
 import * as _ from 'lodash';
 
 export type ChanceInstance = Chance.Chance;

@@ -1,4 +1,3 @@
-import { ResolvedReflectiveProvider } from '@angular/core';
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { AbstractSeeder } from '../seeders/index';
 import { RegistryEntityStatic } from '../../common/registry/entityRegistry';

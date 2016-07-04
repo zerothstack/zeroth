@@ -1,4 +1,4 @@
-import { registry, EntityType, RegistryEntityStatic, EntityMetadata } from './entityRegistry';
+import { registry, EntityType, EntityMetadata } from './entityRegistry';
 import { ModelMetadata } from '../metadata/metadata';
 
 function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): ClassDecorator {
