@@ -16,7 +16,7 @@ export class HapiServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {Hapi}
    */
   public getEngine(): Hapi {
@@ -24,7 +24,7 @@ export class HapiServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {HapiServer}
    */
   protected initialize() {
@@ -41,7 +41,7 @@ export class HapiServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {any}
    * @param routeConfig
    */
@@ -107,7 +107,7 @@ export class HapiServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {Promise<HapiServer>}
    */
   public start(): Promise<this> {

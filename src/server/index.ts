@@ -1,3 +1,6 @@
+/**
+ * This barrel exports all of the indexes for the server modules
+ */
 export * from './main';
 export * from './bootstrap';
 export * from './controllers';

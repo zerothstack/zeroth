@@ -15,8 +15,7 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * The TypeORM repository instance
    */
-  protected repositoryPromise: Promise<Repository<T>>; //@todo change to reactive repository for
-                                                       // RxJS goodness
+  protected repositoryPromise: Promise<Repository<T>>;
 
   /**
    * Logger for the class, initialized with source
@@ -28,6 +27,11 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
     this.logger = loggerBase.source('DB Store');
   }
 
+  /**
+   * Retrieve the TypeORM repository for this store's modelStatic.
+   * This promise is cached so the same repository instance is always returned
+   * @returns {Promise<Repository<T>>}
+   */
   public getRepository(): Promise<Repository<T>> {
     if (!this.repositoryPromise) {
       this.repositoryPromise = this.database.getConnection().then((connection: Connection) => connection.getRepository(this.modelStatic))
@@ -37,17 +41,14 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   }
 
   /**
-   * @inherit
-   * @returns {Promise<DatabaseStore>}
+   * @inheritdoc
    */
   public initialized():Promise<this> {
     return this.getRepository().then(() => this);
   }
 
   /**
-   * Retrieve a record
-   * @param id
-   * @return {Promise<TResult>}
+   * @inheritdoc
    */
   public findOne(id: identifier): Promise<T> {
     return this.getRepository()
@@ -61,9 +62,7 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   }
 
   /**
-   * Retrieve a set of records
-   * @returns {Promise<Collection<any>>}
-   * @param query
+   * @inheritdoc
    */
   public findMany(query?: any): Promise<Collection<T>> {
     return this.getRepository()
@@ -83,7 +82,10 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
         throw e;
       });
   }
-
+  
+  /**
+   * @inheritdoc
+   */
   public saveOne(model: T): Promise<T> {
     return this.getRepository()
       .then((repo) => repo.persist(model));
