@@ -18,7 +18,12 @@ export interface LoggerConstructor<T extends Logger> {
   new (): T;
 }
 
-
+/**
+ * Abstract Logger class that should be used as the DI token for any logging.
+ * 
+ * Example
+ * 
+ */
 @Injectable()
 export abstract class Logger extends AbstractService {
 

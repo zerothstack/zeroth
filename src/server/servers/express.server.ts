@@ -18,7 +18,7 @@ export class ExpressServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {Application}
    */
   public getEngine(): Application {
@@ -26,7 +26,7 @@ export class ExpressServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {Express}
    */
   protected initialize() {
@@ -37,7 +37,7 @@ export class ExpressServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {any}
    * @param routeConfig
    */
@@ -63,7 +63,7 @@ export class ExpressServer extends Server {
   }
 
   /**
-   * @inherit
+   * @inheritdoc
    * @returns {Promise<ExpressServer>}
    */
   public start(): Promise<this> {

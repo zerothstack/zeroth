@@ -7,9 +7,16 @@ import { ValidatorOptions, ValidationError, getValidator, Validator } from '../v
 export interface Query {
 }
 
-
+/**
+ * The abstract store should be the root calls for *all* stores, it provides common methods
+ * for entity validation and storage.
+ */
 export abstract class AbstractStore<T extends AbstractModel> {
 
+  /**
+   * class-validator Validator instance
+   * @see https://github.com/pleerock/class-validator
+   */
   protected validator:Validator;
 
   constructor(protected modelStatic: ModelStatic<T>, protected injector: Injector) {
@@ -27,12 +34,28 @@ export abstract class AbstractStore<T extends AbstractModel> {
     return Promise.resolve(this);
   }
 
+  /**
+   * Find one instance by id
+   * @param id
+   * @returns {Promise<T>}
+   */
   public abstract findOne(id: identifier): Promise<T>;
 
+  /**
+   * Save the model. Depending on the implementation, this may be a partial save when the model
+   * is known to exist in the store destination and only an update is needed
+   * @param model
+   * @returns {Promise<T>}
+   */
   public abstract saveOne(model: T): Promise<T>;
 
   // public abstract deleteOne(id: identifier): Promise<void>;
 
+  /**
+   * Find multiple entities using a query for constraints
+   * @param query
+   * @returns {Promise<Collection<T>>}
+   */
   public abstract findMany(query?: Query): Promise<Collection<T>>;
 
   // public abstract saveMany(models:Collection<T>): Promise<Collection<T>>;
@@ -53,12 +76,6 @@ export abstract class AbstractStore<T extends AbstractModel> {
         }
         return model;
       });
-    // .catch(e => {
-    //   if (e instanceof ValidationError){
-    //     e = new ValidationException(null, e.errors);
-    //   }
-    //   throw e;
-    // });
   }
 
   /**
