@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { RegistryEntityStatic } from '../registry/entityRegistry';
 import { ModelMetadata } from '../metadata/metadata';
 

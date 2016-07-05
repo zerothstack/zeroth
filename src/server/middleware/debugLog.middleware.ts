@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { InjectableMiddleware, Middleware, InjectableMiddlewareFactory } from './index';

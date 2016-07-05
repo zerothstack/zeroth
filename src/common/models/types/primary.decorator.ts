@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
 import { ModelConstructor } from '../model';
 import { StoredProperty } from './storedProperty.decorator';

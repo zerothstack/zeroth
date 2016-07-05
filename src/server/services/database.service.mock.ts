@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Database } from './database.service';

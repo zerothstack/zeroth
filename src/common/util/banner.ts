@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 export const banner = `
     /|       |\\      _
    / /       \\ \\    | |

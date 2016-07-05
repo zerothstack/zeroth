@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { identifier, ModelStatic, AbstractModel } from '../models/model';
 import { Injector } from '@angular/core';
 import { Collection } from '../models/collection';

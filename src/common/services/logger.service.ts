@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { AbstractService } from './service';
 

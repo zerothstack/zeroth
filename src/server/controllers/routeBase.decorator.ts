@@ -1,4 +1,7 @@
 /**
+ * @module server
+ */
+/**
  * Decorator for controller classes to define their route base for namespacing
  * @param base
  * @returns {function(Function): void}

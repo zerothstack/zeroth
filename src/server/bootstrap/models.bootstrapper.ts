@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { ModelStatic } from '../../common/models/model';
 import { Table } from 'typeorm/tables';

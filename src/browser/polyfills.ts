@@ -1,3 +1,7 @@
+/**
+ * @module browser
+ */
+/** End Typedoc Module Declaration */
 import 'core-js';
 import 'reflect-metadata';
 require('zone.js/dist/zone');

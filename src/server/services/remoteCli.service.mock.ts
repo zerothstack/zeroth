@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
 import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';

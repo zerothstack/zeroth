@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
 import { AbstractModel, ModelStatic, identifier } from '../../common/models/model';
 import { Database } from '../services/database.service';
@@ -82,7 +86,7 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
         throw e;
       });
   }
-  
+
   /**
    * @inheritdoc
    */

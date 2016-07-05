@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { Logger, LogLevel } from '../../common/services/logger.service';
 import { createConnection, CreateConnectionOptions, Connection } from 'typeorm';

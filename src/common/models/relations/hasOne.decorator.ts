@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { ModelStatic } from '../model';
 import { initializeRelationMap } from './index';
 import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';

@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import 'core-js';
 import 'reflect-metadata';
 import { ReflectiveInjector, Type } from '@angular/core';

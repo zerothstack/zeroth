@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { AbstractController, MiddlewareRegistry } from '../controllers/abstract.controller';
 import { MiddlewareFactory } from './index';
 

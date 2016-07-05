@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { ModelConstructor } from '../model';
 import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
 import { initializeMetadata } from '../../metadata/metadata';

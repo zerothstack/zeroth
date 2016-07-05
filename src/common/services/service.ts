@@ -1,4 +1,7 @@
 /**
+ * @module common
+ */
+/**
  * Common interface that all services *must* extend
  */
 export abstract class AbstractService {

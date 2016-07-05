@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { Injector } from '@angular/core';
 import { useContainer, Validator } from 'class-validator';
 

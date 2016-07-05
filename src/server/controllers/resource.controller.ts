@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Server } from '../servers/abstract.server';
 import { Injectable } from '@angular/core';
 import { AbstractController } from './abstract.controller';

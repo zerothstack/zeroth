@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { HttpMethod } from '../servers/abstract.server';
 /**
  * Decorator for registering a basic action method in a controller

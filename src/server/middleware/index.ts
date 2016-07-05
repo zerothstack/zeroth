@@ -1,4 +1,7 @@
 /**
+ * @module server
+ */
+/**
  * Barrel module only for exporting middleware implementations and interfaces
  */
 import { Injector } from '@angular/core';

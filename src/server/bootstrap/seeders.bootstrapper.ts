@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { AbstractSeeder } from '../seeders/index';
 import { RegistryEntityStatic } from '../../common/registry/entityRegistry';

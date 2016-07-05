@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Server, HttpMethod } from '../servers/abstract.server';
 import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';

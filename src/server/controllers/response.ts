@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { EventEmitter } from 'events';
 export class Response extends EventEmitter {
 

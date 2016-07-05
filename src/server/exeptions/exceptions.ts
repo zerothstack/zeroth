@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { ValidationError } from 'class-validator';
 
 export abstract class HttpException extends Error {

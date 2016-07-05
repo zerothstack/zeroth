@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import * as _ from 'lodash';
 import { ModelMetadata, initializeMetadata } from '../metadata/metadata';
 

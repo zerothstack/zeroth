@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { ModelStatic, ModelConstructor } from '../model';
 import { initializeMetadata } from '../../metadata/metadata';
 

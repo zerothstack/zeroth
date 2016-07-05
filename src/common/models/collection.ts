@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { AbstractModel, identifier } from './model';
 
 export class Collection<T extends AbstractModel> extends Array<T> {

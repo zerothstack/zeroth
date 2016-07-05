@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { Server as Hapi, Request as HapiRequest, IReply, Response as HapiResponse } from 'hapi';
 import { Server, RouteConfig } from './abstract.server';

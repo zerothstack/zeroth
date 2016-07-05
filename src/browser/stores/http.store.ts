@@ -1,3 +1,7 @@
+/**
+ * @module browser
+ */
+/** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { AbstractStore } from '../../common/stores/store';

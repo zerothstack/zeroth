@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import 'core-js';
 import 'reflect-metadata';
 import { ReflectiveInjector } from '@angular/core';
@@ -5,7 +9,7 @@ import { Logger } from '../../common/services/logger.service';
 import { registry, EntityType, RegistryEntityStatic } from '../../common/registry/entityRegistry';
 
 /**
- * Provides abstract class for all bootstrappers to extend. Provides common interface for the
+ * Provides abstract class for all bootstrappers to extend with, common interface for the
  * bootstrap function to have a single pattern to invoke the bootstrappers
  */
 export abstract class EntityBootstrapper {

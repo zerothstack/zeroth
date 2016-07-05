@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Database } from '../services/database.service';
 import { Logger } from '../../common/services/logger.service';
 /**

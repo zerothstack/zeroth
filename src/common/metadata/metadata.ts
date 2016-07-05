@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 import { TableOptions } from 'typeorm/decorator/options/TableOptions';
 import { RelationType, Relation } from '../models/relations/index';
 import { RegistryEntityConstructor } from '../registry/entityRegistry';

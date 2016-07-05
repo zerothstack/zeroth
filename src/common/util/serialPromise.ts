@@ -1,3 +1,7 @@
+/**
+ * @module common
+ */
+/** End Typedoc Module Declaration */
 export interface PromiseFactory<T> {
   (arg?: any, ...args: any[]): T | Promise<T>;
 }

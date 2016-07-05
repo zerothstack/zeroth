@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
 import { banner } from '../../common/util/banner';
 import { Logger } from '../../common/services/logger.service';

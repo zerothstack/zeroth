@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 export * from './routeBase.decorator';
 export * from './abstract.controller';
 export * from './resource.controller';
