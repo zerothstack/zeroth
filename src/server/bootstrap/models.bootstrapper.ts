@@ -8,12 +8,24 @@ import { Table } from 'typeorm/tables';
 import { PrimaryColumn, Column, UpdateDateColumn, CreateDateColumn } from 'typeorm/columns';
 import { ModelMetadata } from '../../common/metadata/metadata';
 
+/**
+ * Provides bootstrapping of the @[[Model]] entities
+ */
 export class ModelBootstrapper extends EntityBootstrapper {
 
+  /**
+   * Models are not injectable, so this method simply returns an empty array
+   * @returns {Array}
+   */
   public getInjectableEntities(): any[] {
     return [];
   }
 
+  /**
+   * Bootstraps the models. Each model has it's metadata mapped to the decorators from TypeORM
+   * which are invoked to register their metadata with the internal TypeORM. This registry is later
+   * used by the ModelStores which manipulate the TypeORM repository
+   */
   public bootstrap(): void {
     this.getFromRegistry('model')
       .forEach((model: ModelStatic<any>) => {
@@ -42,8 +54,6 @@ export class ModelBootstrapper extends EntityBootstrapper {
           }
 
         }
-
-        //@todo assign table/columns etc
 
       });
   }

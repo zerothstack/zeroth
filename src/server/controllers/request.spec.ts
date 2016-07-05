@@ -22,8 +22,8 @@ describe('Request', () => {
       });
 
     process.nextTick(() => {
-      emitter.emit('data', JSON.stringify(payload));
-      emitter.emit('end');
+      emitter.emit(Request.EVENT_DATA, JSON.stringify(payload));
+      emitter.emit(Request.EVENT_END);
     });
 
   });
@@ -44,8 +44,8 @@ describe('Request', () => {
       });
 
     process.nextTick(() => {
-      emitter.emit('data', 'definitely_not_json');
-      emitter.emit('end');
+      emitter.emit(Request.EVENT_DATA, 'definitely_not_json');
+      emitter.emit(Request.EVENT_END);
     });
   });
 
@@ -73,7 +73,7 @@ describe('Request', () => {
       });
 
     process.nextTick(() => {
-      emitter.emit('data', 'a'.repeat(1e6 + 1)); //this may be a fairly intensive test, not sure
+      emitter.emit(Request.EVENT_DATA, 'a'.repeat(1e6 + 1)); //this may be a fairly intensive test, not sure
                                                  // about the impact
     });
 

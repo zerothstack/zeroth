@@ -12,8 +12,6 @@ import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 import { HttpException, InternalServerErrorException } from '../exeptions/exceptions';
 
-export const httpMethods: HttpMethod[] = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
-
 export interface MethodDefinition {
   method: HttpMethod;
   route: string;
@@ -31,7 +29,8 @@ export interface MethodDictionary {
 export type MiddlewareLocation = 'before' | 'after';
 
 /**
- * Abstract controller that all controllers should extend from
+ * Abstract controller that all controllers *must* extend from. The [[ControllerBootstrapper]] relies
+ * on the interface provided by this class to invoke registration of routes and middleware
  */
 @Injectable()
 export abstract class AbstractController {
@@ -42,12 +41,15 @@ export abstract class AbstractController {
     all: MiddlewareRegistry
   };
 
+  /** The start of the route of this controller instance */
   protected routeBase: string;
+  /** Current controller instance */
   protected logger: Logger;
+  /** Instance of injector used for the registration of @Injectable middleware */
   private injector: Injector;
 
   constructor(protected server: Server, logger: Logger) {
-    this.logger = logger.source('controller');
+    this.logger = logger.source(this.constructor.name);
   }
 
   /**
@@ -63,7 +65,7 @@ export abstract class AbstractController {
   }
 
   /**
-   * Register an action. This is used by the @Route() decoratore, but can also be used directly
+   * Register an action. This is used by the @Route() decorator, but can also be called directly
    * for custom route registration
    * @param methodSignature
    * @param method
@@ -82,6 +84,14 @@ export abstract class AbstractController {
     this.actionMethods.set(methodSignature, methodDefinition);
   }
 
+  /**
+   * Middleware registration. This is used by the @Before & @After decorators to assign middleware
+   * to the controller method instance.
+   * @param location
+   * @param middlewareFactories
+   * @param methodSignature
+   * @returns {AbstractController}
+   */
   public registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature: string): this {
 
     initializeMiddlewareRegister(this);

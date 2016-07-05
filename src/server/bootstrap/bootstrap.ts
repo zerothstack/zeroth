@@ -43,6 +43,15 @@ export function deferredLog(level: LogLevel, ...messages: any[]) {
   deferredLogs.push({level, messages});
 }
 
+/**
+ * Handles the logging of any error encountered during bootstrap. If there is an instance of [[Logger]]
+ * available, it is used, otherwise a fallback to console.error is used.
+ *
+ * In either case, all of the deferred logs are output first, then the error is logged and the
+ * process is aborted
+ * @param e
+ * @param logger
+ */
 function handleBootstrapError(e: Error, logger: Logger) {
   if (logger) {
     deferredLogs.forEach((log: DeferredLog) => {
@@ -69,6 +78,18 @@ function handleBootstrapError(e: Error, logger: Logger) {
   process.exit(1);
 }
 
+/**
+ * The core bootstrapping factory function.
+ *
+ * This function resolves all of the providers, invokes all boostrappers, and finally returns the
+ * [[Server]] instance for the bootstrapping start file to call [[Server.start]] on to start the
+ * server running
+ * @see http://ubiquits.com/guide/application-lifecycle/#startup for detailed documentation
+ * @param loadClasses
+ * @param providers
+ * @param afterBootstrap
+ * @returns {function(): Promise<BootstrapResponse>}
+ */
 export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: ProviderDefinition[] = [], afterBootstrap?: (bootstrap: BootstrapResponse)=>void): () => Promise<BootstrapResponse> {
 
   let logger: Logger;

@@ -8,13 +8,11 @@ describe('Response', () => {
     const dataFixture = {a: 1};
 
     let emittedData: any;
-    response.on('data', (data: any) => {
-
+    response.on(Response.EVENT_DATA, (data: any) => {
       emittedData = data;
-
     });
 
-    response.on('end', () => {
+    response.on(Response.EVENT_END, () => {
       expect(emittedData)
         .toEqual(dataFixture);
       done();
