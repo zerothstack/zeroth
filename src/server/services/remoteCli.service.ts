@@ -8,12 +8,10 @@ import { PromiseFactory } from '../../common/util/serialPromise';
 import * as Vantage from 'vantage';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
-const tableModule  = require('table');
+
+const table: Table = require('table').default;
 
 import Socket = SocketIO.Socket;
-
-const table: Table = tableModule.default;
-
 
 export interface TableBorderTemplate {
 
@@ -128,13 +126,14 @@ export class RemoteCli extends AbstractService {
 
         let server = remoteCli.injector.get(Server);
 
-        const routeTable = server.getRoutes().map((route:RouteConfig) => {
+        const routeTable = server.getRoutes()
+          .map((route: RouteConfig) => {
 
-          // @todo break into newlines when 'table' supports it
-          const stack = route.callStack.map((handler: PromiseFactory<Response>) => handler.name);
+            // @todo break into newlines when 'table' supports it
+            const stack = route.callStack.map((handler: PromiseFactory<Response>) => handler.name);
 
-          return [route.method, route.path, stack]
-        });
+            return [route.method, route.path, stack]
+          });
 
         routeTable.unshift(['Method', 'Path', 'Stack'].map((s: string) => chalk.blue(s)));
 
@@ -167,7 +166,13 @@ export class RemoteCli extends AbstractService {
     return this;
   }
 
-
+  /**
+   * Constructs table string for output to the cli
+   * @see https://github.com/gajus/table
+   * @param data
+   * @param config
+   * @returns {string}
+   */
   public makeTable(data: any[][], config?: TableConfig): string {
     return table(data, config);
   }

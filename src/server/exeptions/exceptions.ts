@@ -49,7 +49,10 @@ export abstract class HttpException extends Error {
 // 503 ServiceUnavailable
 // 507 InsufficientStorage
 
-//400
+
+/**
+ * Defines Error class for Bad Request errors, with HTTP status code 400
+ */
 export class BadRequestException extends HttpException {
   protected statusCode: number = 400;
 
@@ -58,7 +61,10 @@ export class BadRequestException extends HttpException {
     this.name = 'BadRequestException';
   }
 }
-//401
+
+/**
+ * Defines Error class for Unauthorized errors, with HTTP status code 401
+ */
 export class UnauthorizedException extends HttpException {
   protected statusCode: number = 401;
 
@@ -67,7 +73,10 @@ export class UnauthorizedException extends HttpException {
     this.name = 'UnauthorizedException';
   }
 }
-//402
+
+/**
+ * Defines Error class for Payment Required errors, with HTTP status code 402
+ */
 export class PaymentRequiredException extends HttpException {
   protected statusCode: number = 402;
 
@@ -76,7 +85,10 @@ export class PaymentRequiredException extends HttpException {
     this.name = 'PaymentRequiredException';
   }
 }
-//403
+
+/**
+ * Defines Error class for Forbidden errors, with HTTP status code 403
+ */
 export class ForbiddenException extends HttpException {
   protected statusCode: number = 403;
 
@@ -85,7 +97,10 @@ export class ForbiddenException extends HttpException {
     this.name = 'ForbiddenException';
   }
 }
-//404
+
+/**
+ * Defines Error class for Not Found errors, with HTTP status code 404
+ */
 export class NotFoundException extends HttpException {
   protected statusCode: number = 404;
 
@@ -94,7 +109,10 @@ export class NotFoundException extends HttpException {
     this.name = 'NotFoundException';
   }
 }
-//405
+
+/**
+ * Defines Error class for Method Not Allowed errors, with HTTP status code 405
+ */
 export class MethodNotAllowedException extends HttpException {
   protected statusCode: number = 405;
 
@@ -103,7 +121,10 @@ export class MethodNotAllowedException extends HttpException {
     this.name = 'MethodNotAllowedException';
   }
 }
-//406
+
+/**
+ * Defines Error class for Not Acceptable errors, with HTTP status code 406
+ */
 export class NotAcceptableException extends HttpException {
   protected statusCode: number = 406;
 
@@ -112,7 +133,10 @@ export class NotAcceptableException extends HttpException {
     this.name = 'NotAcceptableException';
   }
 }
-//407
+
+/**
+ * Defines Error class for Proxy Authentication Required errors, with HTTP status code 407
+ */
 export class ProxyAuthenticationRequiredException extends HttpException {
   protected statusCode: number = 407;
 
@@ -121,7 +145,10 @@ export class ProxyAuthenticationRequiredException extends HttpException {
     this.name = 'ProxyAuthenticationRequiredException';
   }
 }
-//408
+
+/**
+ * Defines Error class for Request Timeout errors, with HTTP status code 408
+ */
 export class RequestTimeoutException extends HttpException {
   protected statusCode: number = 408;
 
@@ -130,7 +157,10 @@ export class RequestTimeoutException extends HttpException {
     this.name = 'RequestTimeoutException';
   }
 }
-//409
+
+/**
+ * Defines Error class for Conflict errors, with HTTP status code 409
+ */
 export class ConflictException extends HttpException {
   protected statusCode: number = 409;
 
@@ -139,7 +169,10 @@ export class ConflictException extends HttpException {
     this.name = 'ConflictException';
   }
 }
-//410
+
+/**
+ * Defines Error class for Gone errors, with HTTP status code 410
+ */
 export class GoneException extends HttpException {
   protected statusCode: number = 410;
 
@@ -148,7 +181,10 @@ export class GoneException extends HttpException {
     this.name = 'GoneException';
   }
 }
-//411
+
+/**
+ * Defines Error class for Length Required errors, with HTTP status code 411
+ */
 export class LengthRequiredException extends HttpException {
   protected statusCode: number = 411;
 
@@ -157,7 +193,10 @@ export class LengthRequiredException extends HttpException {
     this.name = 'LengthRequiredException';
   }
 }
-//412
+
+/**
+ * Defines Error class for Precondition Failed errors, with HTTP status code 412
+ */
 export class PreconditionFailedException extends HttpException {
   protected statusCode: number = 412;
 
@@ -166,7 +205,10 @@ export class PreconditionFailedException extends HttpException {
     this.name = 'PreconditionFailedException';
   }
 }
-//413
+
+/**
+ * Defines Error class for Payload Too Large errors, with HTTP status code 413
+ */
 export class PayloadTooLargeException extends HttpException {
   protected statusCode: number = 413;
 
@@ -175,7 +217,10 @@ export class PayloadTooLargeException extends HttpException {
     this.name = 'PayloadTooLargeException';
   }
 }
-//414
+
+/**
+ * Defines Error class for URI Too Long errors, with HTTP status code 414
+ */
 export class URITooLongException extends HttpException {
   protected statusCode: number = 414;
 
@@ -184,7 +229,10 @@ export class URITooLongException extends HttpException {
     this.name = 'URITooLongException';
   }
 }
-//415
+
+/**
+ * Defines Error class for Unsupported Media Type errors, with HTTP status code 415
+ */
 export class UnsupportedMediaTypeException extends HttpException {
   protected statusCode: number = 415;
 
@@ -193,7 +241,10 @@ export class UnsupportedMediaTypeException extends HttpException {
     this.name = 'UnsupportedMediaTypeException';
   }
 }
-//416
+
+/**
+ * Defines Error class for Range Not Satisfiable errors, with HTTP status code 416
+ */
 export class RangeNotSatisfiableException extends HttpException {
   protected statusCode: number = 416;
 
@@ -202,7 +253,10 @@ export class RangeNotSatisfiableException extends HttpException {
     this.name = 'RangeNotSatisfiableException';
   }
 }
-//417
+
+/**
+ * Defines Error class for Expectation Failed errors, with HTTP status code 417
+ */
 export class ExpectationFailedException extends HttpException {
   protected statusCode: number = 417;
 
@@ -211,7 +265,10 @@ export class ExpectationFailedException extends HttpException {
     this.name = 'ExpectationFailedException';
   }
 }
-//422
+
+/**
+ * Defines Error class for Unprocessable Entity errors, with HTTP status code 422
+ */
 export class UnprocessableEntityException extends HttpException {
   protected statusCode: number = 422;
 
@@ -220,7 +277,10 @@ export class UnprocessableEntityException extends HttpException {
     this.name = 'UnprocessableEntityException';
   }
 }
-//429
+
+/**
+ * Defines Error class for Too Many Requests errors, with HTTP status code 429
+ */
 export class TooManyRequestsException extends HttpException {
   protected statusCode: number = 429;
 
@@ -229,7 +289,10 @@ export class TooManyRequestsException extends HttpException {
     this.name = 'TooManyRequestsException';
   }
 }
-//451
+
+/**
+ * Defines Error class for Unavailable For Legal Reasons errors, with HTTP status code 451
+ */
 export class UnavailableForLegalReasonsException extends HttpException {
   protected statusCode: number = 451;
 
@@ -238,7 +301,10 @@ export class UnavailableForLegalReasonsException extends HttpException {
     this.name = 'UnavailableForLegalReasonsException';
   }
 }
-//500
+
+/**
+ * Defines Error class for Internal Server Error errors, with HTTP status code 500
+ */
 export class InternalServerErrorException extends HttpException {
   protected statusCode: number = 500;
 
@@ -247,7 +313,10 @@ export class InternalServerErrorException extends HttpException {
     this.name = 'InternalServerErrorException';
   }
 }
-//501
+
+/**
+ * Defines Error class for Not Implemented errors, with HTTP status code 501
+ */
 export class NotImplementedException extends HttpException {
   protected statusCode: number = 501;
 
@@ -256,7 +325,10 @@ export class NotImplementedException extends HttpException {
     this.name = 'NotImplementedException';
   }
 }
-//503
+
+/**
+ * Defines Error class for Service Unavailable errors, with HTTP status code 503
+ */
 export class ServiceUnavailableException extends HttpException {
   protected statusCode: number = 503;
 
@@ -266,6 +338,9 @@ export class ServiceUnavailableException extends HttpException {
   }
 }
 
+/**
+ * Defines Error class for Insufficient Storage errors, with HTTP status code 503
+ */
 export class InsufficientStorageException extends HttpException {
   protected statusCode: number = 507;
 
@@ -275,7 +350,9 @@ export class InsufficientStorageException extends HttpException {
   }
 }
 
-
+/**
+ * Defines Error class for Validation exceptions
+ */
 export class ValidationException extends UnprocessableEntityException {
   constructor(message: string = 'Validation error', errors:ValidationError[]) {
     super(message);

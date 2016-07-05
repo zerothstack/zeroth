@@ -5,6 +5,9 @@ import { Service } from '../../common/registry/decorators';
 
 import Spy = jasmine.Spy;
 
+/**
+ * Provides no-side effect mock for RemoteCli for use in testing fixtures
+ */
 @Injectable()
 @Service()
 export class RemoteCliMock extends RemoteCli {
@@ -13,10 +16,20 @@ export class RemoteCliMock extends RemoteCli {
     super(loggerBase, injector)
   }
 
+  /**
+   * Override of parent command register method
+   * @returns {RemoteCliMock}
+   */
   protected registerCommands(): this {
     return this;
   }
 
+  /**
+   * Override of parent start method
+   * @param port
+   * @param callback
+   * @returns {RemoteCliMock}
+   */
   public start(port: number, callback?: ConnectedSocketCallback): this {
     return this;
   }

@@ -29,6 +29,10 @@ export function After<T>(...middlewareFactories: MiddlewareFactory[]): MethodDec
   };
 }
 
+/**
+ * Initializes the `registeredMiddleware` property on the controller with empty stores
+ * @param target
+ */
 export function initializeMiddlewareRegister(target: AbstractController): void {
   if (!target.registeredMiddleware) {
     target.registeredMiddleware = {

@@ -18,6 +18,10 @@ export interface RouteConfig {
   callStackHandler: (request: Request, response: Response) => Promise<Response>;
 }
 
+/**
+ * Root class that all implementations of server *must* extends. Provides common interface for
+ * bootstrapper to handle server startup without caring about underlying implementation
+ */
 @Injectable()
 export abstract class Server {
 
@@ -26,7 +30,7 @@ export abstract class Server {
   /** Port number server is running on */
   protected port: number;
 
-  /** require('http').Server object from the base class */
+  /** `require('http').Server` object from the base class */
   protected httpServer: HttpServer;
 
   /** All Configured routes */
@@ -58,6 +62,10 @@ export abstract class Server {
     return this.registerRouteWithEngine(config);
   };
 
+  /**
+   * Register the defined route with the engine
+   * @param config
+   */
   protected abstract registerRouteWithEngine(config: RouteConfig): this;
 
   /**
