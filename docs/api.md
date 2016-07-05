@@ -11,4 +11,3 @@ Typedoc output not found. Have you run the generator?
 ```bash
 $ u typedoc
 ```
-u
