@@ -17,6 +17,9 @@ export class LoggerMock extends Logger {
     super(LoggerMock);
   }
 
+  /**
+   * @inheritdoc
+   */
   public persistLog(logLevel: LogLevel, messages: any[]): this {
     return this;
   }

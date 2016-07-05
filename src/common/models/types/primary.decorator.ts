@@ -6,6 +6,11 @@ import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
 import { ModelConstructor } from '../model';
 import { StoredProperty } from './storedProperty.decorator';
 
+/**
+ *  @Primary property decorator for assigning which property is the primary identifier
+ * @returns {function(ModelConstructor<any>, string): void}
+ * @constructor
+ */
 export function Primary(options?: ColumnOptions): PropertyDecorator {
 
   return function primary(target: ModelConstructor<any>, propertyKey: string) {

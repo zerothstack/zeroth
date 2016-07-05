@@ -13,6 +13,11 @@ export const isBrowser = () => {
   return typeof window !== 'undefined';
 };
 
+/**
+ * A concrete implementation of [[Logger]] this is a generic logger that will log to the console.
+ * It can be used in both frontend and backend, and will log to the respective consoles.
+ * Only in the NodeJS environment does colour highlighting take place
+ */
 @Service()
 @Injectable()
 export class ConsoleLogger extends Logger {
@@ -24,6 +29,12 @@ export class ConsoleLogger extends Logger {
     this.envBrowser = isBrowser();
   }
 
+  /**
+   * Format the log with an appropriate colour
+   * @param logLevel
+   * @param message
+   * @returns {string}
+   */
   public format(logLevel: LogLevel, message: string) {
     switch (logLevel) {
       case 'emergency':
@@ -52,6 +63,13 @@ export class ConsoleLogger extends Logger {
     return message;
   }
 
+  /**
+   * Format the messages - in node env anything that is not a string is passed into util.inspect
+   * for coloured syntax highlighting
+   * @param logLevel
+   * @param messages
+   * @returns {any}
+   */
   private formatMessages(logLevel: LogLevel, messages: any[]): any[] {
     // if in browser, defer to the browser for formatting
     if (this.envBrowser) {
@@ -70,6 +88,13 @@ export class ConsoleLogger extends Logger {
     });
   }
 
+  /**
+   * Output the log to console. The log messages are prepended with the current time and source if
+   * set
+   * @param logLevel
+   * @param messages
+   * @returns {ConsoleLogger}
+   */
   public persistLog(logLevel: LogLevel, messages: any[]): this {
 
     messages = this.formatMessages(logLevel, messages);

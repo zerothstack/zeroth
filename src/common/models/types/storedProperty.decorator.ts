@@ -6,6 +6,11 @@ import { ModelConstructor } from '../model';
 import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
 import { initializeMetadata } from '../../metadata/metadata';
 
+/**
+ *  @StoredProperty property decorator for assigning the field type of the decorated property
+ * @returns {function(ModelConstructor<any>, string): void}
+ * @constructor
+ */
 export function StoredProperty(options?: ColumnOptions): PropertyDecorator {
 
   return function storedProperty(target: ModelConstructor<any>, propertyKey: string): void {

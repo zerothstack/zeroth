@@ -2,6 +2,11 @@
  * @module common
  */
 /** End Typedoc Module Declaration */
+
+/**
+ * Ubiquits Banner for usage in cli welcome
+ * @type {string}
+ */
 export const banner = `
     /|       |\\      _
    / /       \\ \\    | |

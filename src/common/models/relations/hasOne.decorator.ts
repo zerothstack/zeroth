@@ -5,8 +5,22 @@
 import { ModelStatic } from '../model';
 import { initializeRelationMap } from './index';
 import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';
+
 /**
- * Decorator for HasOne relationships
+ * Defines the relationship between the current model and a foreign model vial the decorated key
+ *
+ * Example:
+ * ```typescript
+ *
+ *  @Model
+ *  class Hand extends AbstractModel {
+ *
+ *    @HasOne()
+ *    public thumb: ThumbModel;
+ *  }
+ *
+ * ```
+ * Foreign model property is only required if there is no type annotation
  */
 export function HasOne(foreignModel?: ModelStatic<any>, joinOptions?:RelationOptions): PropertyDecorator {
   return (target: any, propertyKey: string) => {

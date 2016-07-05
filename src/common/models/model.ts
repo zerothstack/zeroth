@@ -25,8 +25,13 @@ export interface ModelStatic<T extends AbstractModel> extends RegistryEntityStat
   prototype: T;
 }
 
+/**
+ * Common abstract class that **all** models must extend from. Provides common interfaces for other
+ * services to interact with without knowing about the concrete implementation
+ */
 export abstract class AbstractModel {
 
+  /** The metadata associated with the class instance */
   public static __metadata: ModelMetadata;
 
   constructor(data?: any) {
@@ -48,6 +53,10 @@ export abstract class AbstractModel {
     return this;
   }
 
+  /**
+   * Get the primary identifier of the model
+   * @returns {any}
+   */
   public getIdentifier(): identifier {
     return this[this.getMetadata().identifierKey];
   }

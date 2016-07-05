@@ -45,6 +45,9 @@ export interface LoggerConstructor<T extends Logger> {
  *   }
  * ```
  *
+ * Logger provides methods for all log types defined by
+ * [The Syslog Protocol (RFC 5424)](http://tools.ietf.org/html/rfc5424)
+ *
  */
 @Injectable()
 export abstract class Logger extends AbstractService {

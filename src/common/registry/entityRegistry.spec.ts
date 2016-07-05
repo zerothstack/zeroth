@@ -1,5 +1,5 @@
 import { EntityRegistry, EntityType, registry } from './entityRegistry';
-import { Model, Controller, Seeder, Middleware, Migration, Store, Service } from './decorators';
+import { Model, Controller, Seeder, Migration, Store, Service } from './decorators';
 import { AbstractModel } from '../models/model';
 
 describe('Entity registry', () => {
@@ -172,9 +172,6 @@ describe('Entity registry', () => {
     @Seeder()
     class FooSeeder {
     }
-    @Middleware()
-    class FooMiddleware {
-    }
     @Migration()
     class FooMigration {
     }
@@ -189,7 +186,6 @@ describe('Entity registry', () => {
       'Model',
       'Controller',
       'Seeder',
-      'Middleware',
       'Migration',
       'Store',
       'Service',

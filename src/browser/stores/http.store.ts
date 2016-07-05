@@ -10,6 +10,10 @@ import { Logger } from '../../common/services/logger.service';
 import { Collection } from '../../common/models/collection';
 import 'rxjs/add/operator/toPromise';
 
+/**
+ * HttpStore store should be extended with a specific implementation for a model. Interacts with
+ * the backend over the REST API using Angular's Http service
+ */
 @Injectable()
 export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T> {
 
@@ -20,7 +24,11 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
     this.logger = loggerBase.source('HTTP Store');
   }
 
-
+  /**
+   * Get the rest endpoint for the model 
+   * @param id
+   * @returns {string}
+   */
   protected endpoint(id?: identifier): string {
 
     let endpoint = `${process.env.API_BASE}/${this.modelStatic.getMetadata().storageKey}`;
