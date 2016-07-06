@@ -1,5 +1,159 @@
-<a name="0.6.0"></a>
-# [0.6.0](https://github.com/ubiquits/ubiquits/compare/v0.4.4...v0.6.0) (2016-06-28)
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/ubiquits/ubiquits/compare/v0.6.10...v0.7.0) (2016-07-06)
+
+
+* refactor(controller):Removed required dependency Server from abstract controller ([f35e00c](https://github.com/ubiquits/ubiquits/commit/f35e00c))
+
+
+### Bug Fixes
+
+* **docs:** Fix routing docs now [@RouteBase](https://github.com/RouteBase) is deprecated ([69199e1](https://github.com/ubiquits/ubiquits/commit/69199e1))
+* **documentation:** Corrected documentation for models and routing where incorrect ([9491a85](https://github.com/ubiquits/ubiquits/commit/9491a85))
+
+
+### Code Refactoring
+
+* **RouteBase:** Removed [@RouteBase](https://github.com/RouteBase) in favour of entity decorator metadata ([66d1916](https://github.com/ubiquits/ubiquits/commit/66d1916))
+
+
+### Features
+
+* **database:** Implement, test & document prepared strings for database ([30d318e](https://github.com/ubiquits/ubiquits/commit/30d318e))
+* **documentation:** Added doc pages for seeders and added mock stores docs to model stores guide ([203cb51](https://github.com/ubiquits/ubiquits/commit/203cb51))
+* **documentation:** Added doc pages for services and migrations, started on seeders ([a542124](https://github.com/ubiquits/ubiquits/commit/a542124))
+* **documentation:** Added doc pages for unit testing, fixed missing LoggerMock export ([a2d889c](https://github.com/ubiquits/ubiquits/commit/a2d889c))
+
+
+### BREAKING CHANGES
+
+* The `Server` injected dependency is no longer required for all controllers as it is now passed into the `registerRoutes(server: Server)` method on bootstrap.
+All controllers should remove the server variable passed to super:
+
+ Before:
+ ```typescript
+ class ExampleController extends AbstractController {
+   constructor(server: Server, logger: Logger){
+     super(server, logger);
+   }
+ }
+ ```
+ After:
+ ```typescript
+ class ExampleController extends AbstractController {
+   constructor(logger: Logger){
+     super(logger);
+   }
+ }
+ ```
+* RouteBase: The `@RouteBase` decorator is now deprecated
+
+```typescript
+@RouteBase('base')
+@Controller()
+class Controller
+```
+becomes
+```typescript
+@Controller({
+routeBase: 'base'
+})
+class Controller
+```
+
+
+
+<a name="0.6.10"></a>
+## [0.6.10](https://github.com/ubiquits/ubiquits/compare/v0.6.9...v0.6.10) (2016-07-05)
+
+
+
+<a name="0.6.9"></a>
+## [0.6.9](https://github.com/ubiquits/ubiquits/compare/v0.6.8...v0.6.9) (2016-07-05)
+
+
+
+<a name="0.6.8"></a>
+## [0.6.8](https://github.com/ubiquits/ubiquits/compare/v0.6.7...v0.6.8) (2016-07-04)
+
+
+### Bug Fixes
+
+* **mocks:** Extracted logger mock out to separate file so server doesn't try to import jasmine at runtime ([1066acd](https://github.com/ubiquits/ubiquits/commit/1066acd))
+
+
+
+<a name="0.6.7"></a>
+## [0.6.7](https://github.com/ubiquits/ubiquits/compare/v0.6.6...v0.6.7) (2016-07-04)
+
+
+
+<a name="0.6.6"></a>
+## [0.6.6](https://github.com/ubiquits/ubiquits/compare/v0.6.5...v0.6.6) (2016-07-04)
+
+
+### Bug Fixes
+
+* **bootstrap:** Fix null class loaders in bootstrap ([64844e9](https://github.com/ubiquits/ubiquits/commit/64844e9))
+* **bootstrap:** Further refinement to bootstrapper injector resolution to handle conflicts in the correct order. ([d8bbaa3](https://github.com/ubiquits/ubiquits/commit/d8bbaa3))
+* **bootstrap:** Major overhaul of bootstrapping behavior to allow external registered components to have correct injector providers ([efa00ff](https://github.com/ubiquits/ubiquits/commit/efa00ff))
+
+
+### Features
+
+* **services:** Implement [@service](https://github.com/service) decorator, bring all abstract classes into alignment with same naming convention ([2515c9f](https://github.com/ubiquits/ubiquits/commit/2515c9f))
+
+
+
+<a name="0.6.5"></a>
+## [0.6.5](https://github.com/ubiquits/ubiquits/compare/v0.6.4...v0.6.5) (2016-07-02)
+
+
+### Bug Fixes
+
+* **bootstrap:** Fix issue where resolved entities are not passed back to the injector. Add tests for controllers bootstrapper ([66f111d](https://github.com/ubiquits/ubiquits/commit/66f111d))
+* **test:** Fix test failure on travis ([eacc576](https://github.com/ubiquits/ubiquits/commit/eacc576))
+
+
+
+<a name="0.6.4"></a>
+## [0.6.4](https://github.com/ubiquits/ubiquits/compare/v0.6.3...v0.6.4) (2016-06-30)
+
+
+### Features
+
+* **docs:** Add documentation for application lifecycle ([ceefd50](https://github.com/ubiquits/ubiquits/commit/ceefd50))
+
+
+
+<a name="0.6.3"></a>
+## [0.6.3](https://github.com/ubiquits/ubiquits/compare/v0.6.2...v0.6.3) (2016-06-30)
+
+
+### Bug Fixes
+
+* **registry:** Fixes registry metadata hydration, extends decorators to be able to pass column information ([a88576f](https://github.com/ubiquits/ubiquits/commit/a88576f))
+
+
+### Features
+
+* **models:** Implement model timestamps ([afeed29](https://github.com/ubiquits/ubiquits/commit/afeed29))
+* **validation:** Implement update to class-validator to handle async validators. ([b971a4a](https://github.com/ubiquits/ubiquits/commit/b971a4a))
+
+
+
+<a name="0.6.2"></a>
+## [0.6.2](https://github.com/ubiquits/ubiquits/compare/v0.6.1...v0.6.2) (2016-06-29)
+
+
+
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/ubiquits/ubiquits/compare/v0.6.0...v0.6.1) (2016-06-28)
+
+
+### Bug Fixes
+
+* **changelog:** Rebase commits to get changelog working correctly ([d56b89c](https://github.com/ubiquits/ubiquits/commit/d56b89c))
+* **changelog:** Rebase commits to get changelog working correctly ([bbdfd98](https://github.com/ubiquits/ubiquits/commit/bbdfd98))
 
 
 ### Features
@@ -12,6 +166,26 @@
 * **registry:** Refactor bootstrapper to use registry pattern for handling static registry of components through decorators ([0d3a634](https://github.com/ubiquits/ubiquits/commit/0d3a634))
 * **validation:** Add documentation for validation ([2b572e5](https://github.com/ubiquits/ubiquits/commit/2b572e5)), closes [#72](https://github.com/ubiquits/ubiquits/issues/72)
 * **validation:** Implement validation with class-validator and PUT one methods ([ea9310a](https://github.com/ubiquits/ubiquits/commit/ea9310a))
+
+
+
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/ubiquits/ubiquits/compare/v0.5.2...v0.6.0) (2016-06-28)
+
+
+
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/ubiquits/ubiquits/compare/v0.5.1...v0.5.2) (2016-06-22)
+
+
+
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/ubiquits/ubiquits/compare/v0.5.0...v0.5.1) (2016-06-22)
+
+
+
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/ubiquits/ubiquits/compare/v0.4.4...v0.5.0) (2016-06-21)
 
 
 
