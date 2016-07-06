@@ -20,8 +20,8 @@ import { Collection } from '../../common/models/collection';
 @Injectable()
 export abstract class ResourceController<M extends AbstractModel> extends AbstractController {
 
-  constructor(server: Server, logger: Logger, protected modelStore:AbstractStore<M>) {
-    super(server, logger);
+  constructor(logger: Logger, protected modelStore:AbstractStore<M>) {
+    super(logger);
   }
 
   /**

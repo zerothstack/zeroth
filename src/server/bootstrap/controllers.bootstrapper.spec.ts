@@ -22,8 +22,8 @@ const providers: any[] = [
 @Injectable()
 class TestController extends AbstractController {
 
-  constructor(server: Server, logger: Logger) {
-    super(server, logger);
+  constructor(logger: Logger) {
+    super(logger);
   }
 
   @Route('GET', '/test')

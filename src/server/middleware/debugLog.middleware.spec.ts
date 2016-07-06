@@ -16,8 +16,8 @@ import { debugLog, DebugLogMiddleware } from './debugLog.middleware';
 @Injectable()
 class MiddlewareController extends AbstractController {
 
-  constructor(server: Server, logger: Logger) {
-    super(server, logger);
+  constructor(logger: Logger) {
+    super(logger);
   }
 
   @Route('GET', '/test')
@@ -68,7 +68,7 @@ describe('debugLog middleware', () => {
       (c: MiddlewareController, i: Injector, s: Server) => {
 
         controller = c.registerInjector(i)
-          .registerRoutes();
+          .registerRoutes(s);
 
         const callStackHandler: any = s.getRoutes()
           .find((route: RouteConfig) => route.methodName == 'testMethod').callStackHandler;

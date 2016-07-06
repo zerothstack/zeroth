@@ -48,8 +48,8 @@ class FruitMockStore extends MockStore<Fruit> {
 @Injectable()
 class TestController extends ResourceController<Fruit> {
 
-  constructor(server: Server, logger: Logger, fruitStore: FruitStore) {
-    super(server, logger, fruitStore);
+  constructor(logger: Logger, fruitStore: FruitStore) {
+    super(logger, fruitStore);
   }
 
 }
@@ -71,7 +71,7 @@ describe('Resource Controller', () => {
   it('Registers a route to retrieve an entity', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
-      c.registerRoutes();
+      c.registerRoutes(s);
 
       const callStackHandler = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'getOne').callStackHandler;
 
@@ -96,7 +96,7 @@ describe('Resource Controller', () => {
   it('Registers a route to retrieve many entities', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
-      c.registerRoutes();
+      c.registerRoutes(s);
 
       const callStackHandler = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'getMany').callStackHandler;
 
@@ -120,7 +120,7 @@ describe('Resource Controller', () => {
   it('Registers a route put one entity', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
-      c.registerRoutes();
+      c.registerRoutes(s);
 
       const callStackHandler = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'putOne').callStackHandler;
 

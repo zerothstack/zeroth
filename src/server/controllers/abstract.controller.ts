@@ -11,14 +11,8 @@ import { Response } from './response';
 import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 import { HttpException, InternalServerErrorException } from '../exeptions/exceptions';
-import {
-  RegistryEntityStatic,
-  RegistryEntityConstructor, RegistryEntity
-} from '../../common/registry/entityRegistry';
-import {
-  ModelMetadata, ControllerMetadata,
-  initializeMetadata
-} from '../../common/metadata/metadata';
+import { RegistryEntityStatic, RegistryEntity } from '../../common/registry/entityRegistry';
+import { ControllerMetadata } from '../../common/metadata/metadata';
 
 export interface MethodDefinition {
   method: HttpMethod;
@@ -64,7 +58,7 @@ export abstract class AbstractController extends RegistryEntity<ControllerMetada
   /** Instance of injector used for the registration of @Injectable middleware */
   private injector: Injector;
 
-  constructor(protected server: Server, logger: Logger) {
+  constructor(logger: Logger) {
     super();
     this.logger = logger.source(this.constructor.name);
   }
@@ -134,10 +128,10 @@ export abstract class AbstractController extends RegistryEntity<ControllerMetada
   }
 
   /**
-   * Register all routes defined in this controller (or any extending instances)
+   * Register all routes defined in this controller (or any extending instances) with the server
    * @returns {AbstractController}
    */
-  public registerRoutes(): this {
+  public registerRoutes(server: Server): this {
 
     this.actionMethods.forEach((methodDefinition: MethodDefinition, methodSignature: string) => {
 
@@ -166,7 +160,7 @@ export abstract class AbstractController extends RegistryEntity<ControllerMetada
         }
       }
 
-      this.server.register({
+      server.register({
         methodName: methodSignature,
         method: methodDefinition.method,
         path: `${process.env.API_BASE}/${this.getMetadata().routeBase}${methodDefinition.route}`,

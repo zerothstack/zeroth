@@ -15,8 +15,8 @@ import { UnavailableForLegalReasonsException } from '../exeptions/exceptions';
 @Injectable()
 class TestController extends AbstractController {
 
-  constructor(server: Server, logger: Logger) {
-    super(server, logger);
+  constructor(logger: Logger) {
+    super(logger);
   }
 
   @Route('GET', '/test')
@@ -52,7 +52,7 @@ describe('Controller', () => {
   it('Registers a route that returns a response', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
-      c.registerRoutes();
+      c.registerRoutes(s);
 
       const callStackHandler = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'test').callStackHandler;
 
@@ -72,7 +72,7 @@ describe('Controller', () => {
   it('Registers a route that returns an http error response', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
-      c.registerRoutes();
+      c.registerRoutes(s);
 
       const callStackHandler = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'httpError').callStackHandler;
 
@@ -95,7 +95,7 @@ describe('Controller', () => {
   it('Registers a route that falls back to an http error respnse', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 
-      c.registerRoutes();
+      c.registerRoutes(s);
 
       const callStackHandler = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'unknownError').callStackHandler;
 

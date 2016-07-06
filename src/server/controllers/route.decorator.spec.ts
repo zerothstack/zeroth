@@ -18,8 +18,8 @@ import { Controller } from '../../common/registry/decorators';
 })
 class TestController extends AbstractController {
 
-  constructor(server: Server, logger: Logger) {
-    super(server, logger);
+  constructor(logger: Logger) {
+    super(logger);
   }
 
   @Route('PUT', '/test/:id')
@@ -46,7 +46,7 @@ describe('@Route decorator', () => {
       (c: TestController, i: Injector, s: Server) => {
 
         let controller = c.registerInjector(i)
-          .registerRoutes();
+          .registerRoutes(s);
 
         const routeConfig: RouteConfig = s.getRoutes()
           .find((route: RouteConfig) => route.methodName == 'testMethod');
