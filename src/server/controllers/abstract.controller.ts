@@ -15,7 +15,10 @@ import {
   RegistryEntityStatic,
   RegistryEntityConstructor, RegistryEntity
 } from '../../common/registry/entityRegistry';
-import { ModelMetadata, ControllerMetadata } from '../../common/metadata/metadata';
+import {
+  ModelMetadata, ControllerMetadata,
+  initializeMetadata
+} from '../../common/metadata/metadata';
 
 export interface MethodDefinition {
   method: HttpMethod;
@@ -33,9 +36,19 @@ export interface MethodDictionary {
 
 export type MiddlewareLocation = 'before' | 'after';
 
+export interface ControllerConstructor<T extends AbstractController> extends Function {
+  constructor: ControllerStatic<T>;
+}
+
+export interface ControllerStatic<T extends AbstractController> extends RegistryEntityStatic<ControllerMetadata> {
+  new(server: Server, logger: Logger): T;
+  prototype: T;
+  registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature?: string): void;
+}
+
 /**
- * Abstract controller that all controllers *must* extend from. The [[ControllerBootstrapper]] relies
- * on the interface provided by this class to invoke registration of routes and middleware
+ * Abstract controller that all controllers *must* extend from. The [[ControllerBootstrapper]]
+ * relies on the interface provided by this class to invoke registration of routes and middleware
  */
 @Injectable()
 export abstract class AbstractController extends RegistryEntity<ControllerMetadata> {
@@ -45,10 +58,6 @@ export abstract class AbstractController extends RegistryEntity<ControllerMetada
   };
 
   protected actionMethods: Map<string, MethodDefinition>;
-  public registeredMiddleware: {
-    methods: Map<string, MiddlewareRegistry>
-    all: MiddlewareRegistry
-  };
 
   /** Current controller instance */
   protected logger: Logger;
@@ -98,26 +107,30 @@ export abstract class AbstractController extends RegistryEntity<ControllerMetada
    * @param location
    * @param middlewareFactories
    * @param methodSignature
-   * @returns {AbstractController}
+   * @returns void
    */
-  public registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature: string): this {
+  public static registerMiddleware(location: MiddlewareLocation, middlewareFactories: InjectableMiddlewareFactory[], methodSignature?: string): void {
 
     initializeMiddlewareRegister(this);
 
-    let current: MiddlewareRegistry = this.registeredMiddleware.methods.get(methodSignature);
+    const middleware = (this.getMetadata() as ControllerMetadata).middleware;
+    if (methodSignature) {
+      let current: MiddlewareRegistry = middleware.methods.get(methodSignature);
 
-    if (!current) {
-      current = {
-        before: [],
-        after: []
-      };
+      if (!current) {
+        current = {
+          before: [],
+          after: []
+        };
 
-      this.registeredMiddleware.methods.set(methodSignature, current);
+        middleware.methods.set(methodSignature, current);
+      }
+
+      current[location].push(...middlewareFactories);
+    } else {
+      middleware.all[location].push(...middlewareFactories);
     }
 
-    current[location].push(...middlewareFactories);
-
-    return this;
   }
 
   /**
@@ -132,13 +145,20 @@ export abstract class AbstractController extends RegistryEntity<ControllerMetada
 
       callStack.push(this[methodSignature]);
 
-      if (this.registeredMiddleware) {
-        const methodMiddlewareFactories = this.registeredMiddleware.methods.get(methodSignature);
+      if (this.getMetadata().middleware) {
+        const methodMiddlewareFactories = this.getMetadata()
+          .middleware
+          .methods
+          .get(methodSignature);
 
         //wrap method registered factories with the class defined ones [beforeAll, before, after,
         // afterAll]
-        const beforeMiddleware = this.registeredMiddleware.all.before.concat(methodMiddlewareFactories.before);
-        const afterMiddleware  = methodMiddlewareFactories.after.concat(this.registeredMiddleware.all.after);
+        const beforeMiddleware = this.getMetadata()
+          .middleware
+          .all
+          .before
+          .concat(methodMiddlewareFactories.before);
+        const afterMiddleware  = methodMiddlewareFactories.after.concat(this.getMetadata().middleware.all.after);
 
         if (methodMiddlewareFactories) {
           callStack.unshift(...beforeMiddleware.map((middleware: MiddlewareFactory) => middleware(this.injector)));

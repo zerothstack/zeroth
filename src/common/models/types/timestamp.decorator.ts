@@ -10,7 +10,7 @@ import { initializeMetadata } from '../../metadata/metadata';
  * @param target
  */
 function initTimestamps(target: ModelConstructor<any>) {
-  initializeMetadata(target);
+  initializeMetadata(target.constructor);
 
   if (!target.constructor.__metadata.timestamps) {
     target.constructor.__metadata.timestamps = {};

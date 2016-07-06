@@ -13,7 +13,7 @@ import { ModelMetadata, ControllerMetadata } from '../metadata/metadata';
  */
 function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): ClassDecorator {
   return function <TFunction extends Function>(target: TFunction): void {
-    registry.register(type, target.prototype.constructor, metadata);
+    registry.register(type, target, metadata);
   }
 }
 

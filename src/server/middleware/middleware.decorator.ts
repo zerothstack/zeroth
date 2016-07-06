@@ -2,8 +2,16 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-import { AbstractController, MiddlewareRegistry } from '../controllers/abstract.controller';
+import {
+  AbstractController, MiddlewareRegistry,
+  ControllerConstructor, ControllerStatic
+} from '../controllers/abstract.controller';
 import { MiddlewareFactory } from './index';
+import { initializeMetadata, ControllerMetadata } from '../../common/metadata/metadata';
+import {
+  RegistryEntityStatic,
+  RegistryEntityConstructor
+} from '../../common/registry/entityRegistry';
 
 /**
  * Decorator for assigning before middleware method in a controller
@@ -13,9 +21,9 @@ import { MiddlewareFactory } from './index';
  */
 export function Before<T>(...middlewareFactories: MiddlewareFactory[]): MethodDecorator {
 
-  return function (target: AbstractController, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
+  return function (target: ControllerConstructor<any>, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
 
-    target.registerMiddleware('before', middlewareFactories, propertyKey);
+    target.constructor.registerMiddleware('before', middlewareFactories, propertyKey);
   };
 }
 
@@ -27,9 +35,9 @@ export function Before<T>(...middlewareFactories: MiddlewareFactory[]): MethodDe
  */
 export function After<T>(...middlewareFactories: MiddlewareFactory[]): MethodDecorator {
 
-  return function (target: AbstractController, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
+  return function (target: ControllerConstructor<any>, propertyKey: string, descriptor: TypedPropertyDescriptor<T>) {
 
-    target.registerMiddleware('after', middlewareFactories, propertyKey);
+    target.constructor.registerMiddleware('after', middlewareFactories, propertyKey);
   };
 }
 
@@ -37,9 +45,10 @@ export function After<T>(...middlewareFactories: MiddlewareFactory[]): MethodDec
  * Initializes the `registeredMiddleware` property on the controller with empty stores
  * @param target
  */
-export function initializeMiddlewareRegister(target: AbstractController): void {
-  if (!target.registeredMiddleware) {
-    target.registeredMiddleware = {
+export function initializeMiddlewareRegister(target: RegistryEntityStatic<ControllerMetadata>): void {
+  initializeMetadata(target);
+  if (!target.__metadata.middleware) {
+    target.__metadata.middleware = {
       methods: new Map<string, MiddlewareRegistry>(),
       all: {
         before: [],
@@ -56,9 +65,8 @@ export function initializeMiddlewareRegister(target: AbstractController): void {
  * @constructor
  */
 export function BeforeAll(...middlewareFactories: MiddlewareFactory[]): ClassDecorator {
-  return function (target: Function): void {
-    initializeMiddlewareRegister(target.prototype);
-    target.prototype.registeredMiddleware.all.before = middlewareFactories;
+  return function (target: ControllerStatic<any>): void {
+    target.registerMiddleware('before', middlewareFactories);
   }
 }
 
@@ -69,8 +77,7 @@ export function BeforeAll(...middlewareFactories: MiddlewareFactory[]): ClassDec
  * @constructor
  */
 export function AfterAll(...middlewareFactories: MiddlewareFactory[]): ClassDecorator {
-  return function (target: Function): void {
-    initializeMiddlewareRegister(target.prototype);
-    target.prototype.registeredMiddleware.all.after = middlewareFactories;
+  return function (target: ControllerStatic<any>): void {
+    target.registerMiddleware('after', middlewareFactories);
   }
 }

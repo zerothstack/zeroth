@@ -15,7 +15,7 @@ export function StoredProperty(options?: ColumnOptions): PropertyDecorator {
 
   return function storedProperty(target: ModelConstructor<any>, propertyKey: string): void {
 
-    initializeMetadata(target);
+    initializeMetadata(target.constructor);
 
     if (!target.constructor.__metadata.storedProperties) {
       target.constructor.__metadata.storedProperties = new Map();

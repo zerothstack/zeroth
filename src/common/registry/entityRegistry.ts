@@ -35,7 +35,7 @@ export class RegistryEntity<M> {
     if (metadata || !this.__metadataDefault){
       return metadata;
     }
-    console.log('returning default');
+
     return this.__metadataDefault;
   }
 
@@ -87,7 +87,7 @@ export class EntityRegistry {
     let typeRegistry = this.registry.get(type);
 
     if (metadata){
-      initializeMetadata(entity.prototype);
+      initializeMetadata(entity);
       _.merge(entity.__metadata, metadata);
     }
 

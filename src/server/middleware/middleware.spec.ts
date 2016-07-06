@@ -64,12 +64,12 @@ describe('Middleware Decorators', () => {
         controller = c.registerRoutes()
           .registerInjector(i);
 
-        expect(controller.registeredMiddleware)
+        expect(controller.getMetadata().middleware)
           .not
           .toBeNull();
-        expect(controller.registeredMiddleware.all.before.length)
+        expect(controller.getMetadata().middleware.all.before.length)
           .toEqual(2);
-        expect(controller.registeredMiddleware.all.after.length)
+        expect(controller.getMetadata().middleware.all.after.length)
           .toEqual(1);
       }));
 
