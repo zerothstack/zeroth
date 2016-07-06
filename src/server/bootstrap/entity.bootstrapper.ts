@@ -6,7 +6,10 @@ import 'core-js';
 import 'reflect-metadata';
 import { ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
-import { registry, EntityType, RegistryEntityStatic } from '../../common/registry/entityRegistry';
+import {
+  registry, EntityType, RegistryEntityStatic,
+  EntityMetadata
+} from '../../common/registry/entityRegistry';
 
 /**
  * Provides abstract class for all bootstrappers to extend with, common interface for the
@@ -15,7 +18,7 @@ import { registry, EntityType, RegistryEntityStatic } from '../../common/registr
 export abstract class EntityBootstrapper {
 
   /** Array of all entities retrieved from the [[EntityRegistry]] */
-  protected entities: RegistryEntityStatic[];
+  protected entities: RegistryEntityStatic<EntityMetadata>[];
   /** Reference to the Injector instance. Can be set with [[setInjector]]*/
   protected injector: ReflectiveInjector;
   /** Instance of Logger, initialized with the current implementations class name as source */
@@ -26,7 +29,7 @@ export abstract class EntityBootstrapper {
    * an empty array when their entities are not injectable. See [[ModelBootstrapper.getInjectableEntities]]
    * for an example of this.
    */
-  public abstract getInjectableEntities(): RegistryEntityStatic[];
+  public abstract getInjectableEntities(): RegistryEntityStatic<EntityMetadata>[];
 
   /**
    * Kick off the bootstrapping function. The logger instance is assigned here as the injector is
@@ -55,7 +58,7 @@ export abstract class EntityBootstrapper {
    * @param token
    * @returns {T}
    */
-  protected getInstance<T extends Object>(token: RegistryEntityStatic): T {
+  protected getInstance<T extends Object>(token: RegistryEntityStatic<EntityMetadata>): T {
     const instance: T = this.injector.get(token);
 
     this.logger.info(`Resolved ${instance.constructor.name}`);
@@ -74,7 +77,7 @@ export abstract class EntityBootstrapper {
    * @param type
    * @returns {any[]}
    */
-  protected getFromRegistry(type: EntityType): RegistryEntityStatic[] {
+  protected getFromRegistry(type: EntityType): RegistryEntityStatic<EntityMetadata>[] {
     return [
       ...registry.getAllOfType(type)
         .values()
@@ -87,7 +90,7 @@ export abstract class EntityBootstrapper {
    * @param type
    * @returns {RegistryEntityStatic[]}
    */
-  protected getEntitiesFromRegistry(type: EntityType): RegistryEntityStatic[] {
+  protected getEntitiesFromRegistry(type: EntityType): RegistryEntityStatic<EntityMetadata>[] {
 
     // Note the apparent redundancy in assigning `this.entities` is intentional as the `entities`
     // property is used in the `getInjectableEntities` method of some implementations

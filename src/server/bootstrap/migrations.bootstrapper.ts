@@ -4,7 +4,7 @@
 /** End Typedoc Module Declaration */
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { AbstractMigration } from '../migrations/index';
-import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
+import { RegistryEntityStatic, EntityMetadata } from '../../common/registry/entityRegistry';
 
 /**
  * Provides bootstrapping of the @[[Migration]] entities
@@ -14,7 +14,7 @@ export class MigrationBootstrapper extends EntityBootstrapper {
   /**
    * Returns all migrations registered to the [[EntityRegistry]]
    */
-  public getInjectableEntities(): RegistryEntityStatic[] {
+  public getInjectableEntities(): RegistryEntityStatic<EntityMetadata>[] {
     return this.getEntitiesFromRegistry('migration');
   }
 
@@ -27,7 +27,7 @@ export class MigrationBootstrapper extends EntityBootstrapper {
 
     this.logger.debug(`Running [${this.entities.length}] migrations`);
 
-    const allMigrationPromises = this.entities.map((resolvedMigration: RegistryEntityStatic) => {
+    const allMigrationPromises = this.entities.map((resolvedMigration: RegistryEntityStatic<EntityMetadata>) => {
 
       this.logger.info(`migrating ${resolvedMigration.constructor.name}`);
       return this.getInstance<AbstractMigration>(resolvedMigration)

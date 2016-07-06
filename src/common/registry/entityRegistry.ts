@@ -3,18 +3,51 @@
  */
 /** End Typedoc Module Declaration */
 import * as _ from 'lodash';
-import { ModelMetadata, initializeMetadata } from '../metadata/metadata';
+import { ModelMetadata, initializeMetadata, ControllerMetadata } from '../metadata/metadata';
+import { ControllerBootstrapper } from '../../server/bootstrap/controllers.bootstrapper';
 
 export type EntityType = 'model' | 'controller' | 'seeder' | 'migration' | 'store' | 'service';
-export type EntityMetadata = ModelMetadata /* | <list other metadata types>*/;
+export type EntityMetadata = ModelMetadata | ControllerMetadata;
 
-export interface RegistryEntityConstructor{
-  constructor:RegistryEntityStatic;
+export interface RegistryEntityConstructor<M>{
+  constructor:RegistryEntityStatic<M>;
 }
 
-export interface RegistryEntityStatic extends Function {
-  __metadata?:EntityMetadata;
-  getMetadata?():EntityMetadata;
+export interface RegistryEntityStatic<M> extends Function {
+  __metadata?:M;
+  getMetadata?():M;
+}
+
+export class RegistryEntity<M> {
+  constructor(){}
+  /** The metadata associated with the class instance */
+  public static __metadata: EntityMetadata;
+  /** The default metadata associated with the class instance */
+  public static __metadataDefault: EntityMetadata;
+
+  /**
+   * Get the metadata for the model (static side)
+   * @returns {ModelMetadata}
+   */
+  public static getMetadata(): EntityMetadata {
+
+    const metadata = this.__metadata;
+    if (metadata || !this.__metadataDefault){
+      return metadata;
+    }
+    console.log('returning default');
+    return this.__metadataDefault;
+  }
+
+  /**
+   * Get the metadata for the model (instance side)
+   * Note this is the same as Model.getMetadata(), but more convenient if you don't know or have
+   * access to the model name
+   * @returns {ModelMetadata}
+   */
+  public getMetadata(): M {
+    return (this.constructor as RegistryEntityStatic<M>).getMetadata();
+  }
 }
 
 /**
@@ -33,7 +66,7 @@ export interface RegistryEntityStatic extends Function {
 export class EntityRegistry {
 
   /** The internal registry */
-  protected registry: Map<EntityType, Map<string, RegistryEntityStatic>> = new Map();
+  protected registry: Map<EntityType, Map<string, RegistryEntityStatic<EntityMetadata>>> = new Map();
 
   constructor() {
   }
@@ -45,7 +78,7 @@ export class EntityRegistry {
    * @param metadata
    * @returns {EntityRegistry}
    */
-  public register(type: EntityType, entity: RegistryEntityStatic, metadata?:any): this {
+  public register(type: EntityType, entity: RegistryEntityStatic<EntityMetadata>, metadata?:any): this {
 
     if (!this.registry.get(type)) {
       this.registry.set(type, new Map());
@@ -68,7 +101,7 @@ export class EntityRegistry {
    * @param type
    * @returns {any}
    */
-  public getAllOfType(type: EntityType): Map<string, RegistryEntityStatic> {
+  public getAllOfType(type: EntityType): Map<string, RegistryEntityStatic<EntityMetadata>> {
     if (!this.registry.has(type)) {
       return new Map();
     }
@@ -123,7 +156,7 @@ export class EntityRegistry {
    * @param name
    * @returns {RegistryEntityStatic}
    */
-  public findByType(type: EntityType, name: string): RegistryEntityStatic {
+  public findByType(type: EntityType, name: string): RegistryEntityStatic<EntityMetadata> {
     return this.getAllOfType(type)
       .get(name);
   }
@@ -133,10 +166,10 @@ export class EntityRegistry {
    * @param name
    * @returns {any}
    */
-  public findAllWithName(name: string): Map<EntityType, RegistryEntityStatic> | null {
+  public findAllWithName(name: string): Map<EntityType, RegistryEntityStatic<EntityMetadata>> | null {
 
-    let found: Map<EntityType, RegistryEntityStatic> = new Map();
-    this.registry.forEach((entitySet: Map<string, RegistryEntityStatic>, key: EntityType) => {
+    let found: Map<EntityType, RegistryEntityStatic<EntityMetadata>> = new Map();
+    this.registry.forEach((entitySet: Map<string, RegistryEntityStatic<EntityMetadata>>, key: EntityType) => {
       let search = entitySet.get(name);
       if (search) {
         found.set(key, search);

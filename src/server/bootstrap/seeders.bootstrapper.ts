@@ -4,7 +4,7 @@
 /** End Typedoc Module Declaration */
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { AbstractSeeder } from '../seeders/index';
-import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
+import { RegistryEntityStatic, EntityMetadata } from '../../common/registry/entityRegistry';
 
 /**
  * Provides bootstrapping of the @[[Seeder]] entities
@@ -14,7 +14,7 @@ export class SeederBootstrapper extends EntityBootstrapper {
   /**
    * Returns all seeders registered to the [[EntityRegistry]]
    */
-  public getInjectableEntities(): RegistryEntityStatic[] {
+  public getInjectableEntities(): RegistryEntityStatic<EntityMetadata>[] {
     return this.getEntitiesFromRegistry('seeder');
   }
 
@@ -24,7 +24,7 @@ export class SeederBootstrapper extends EntityBootstrapper {
    * @returns {Promise<any>|Promise<void[]>}
    */
   public bootstrap(): Promise<void> {
-    const allSeederPromises = this.entities.map((resolvedSeeder: RegistryEntityStatic) => {
+    const allSeederPromises = this.entities.map((resolvedSeeder: RegistryEntityStatic<EntityMetadata>) => {
 
       return this.getInstance<AbstractSeeder>(resolvedSeeder).seed();
 

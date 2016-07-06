@@ -10,10 +10,12 @@ import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Route } from './route.decorator';
-import { RouteBase } from './routeBase.decorator';
+import { Controller } from '../../common/registry/decorators';
 
 @Injectable()
-@RouteBase('base')
+@Controller({
+  routeBase: 'base'
+})
 class TestController extends AbstractController {
 
   constructor(server: Server, logger: Logger) {
@@ -33,7 +35,7 @@ const providers = [
   {provide: RemoteCli, useClass: RemoteCliMock},
 ];
 
-describe('@Route & @RouteBase decorators', () => {
+describe('@Route decorator', () => {
 
   beforeEach(() => {
     addProviders(providers);

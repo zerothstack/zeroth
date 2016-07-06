@@ -2,7 +2,7 @@
  * @module common
  */
 /** End Typedoc Module Declaration */
-import { RegistryEntityStatic } from '../registry/entityRegistry';
+import { RegistryEntityStatic, RegistryEntity } from '../registry/entityRegistry';
 import { ModelMetadata } from '../metadata/metadata';
 
 export type identifier = string | number | symbol;
@@ -20,7 +20,7 @@ export interface ModelConstructor<T extends AbstractModel> extends Function {
   constructor: ModelStatic<T>;
 }
 
-export interface ModelStatic<T extends AbstractModel> extends RegistryEntityStatic {
+export interface ModelStatic<T extends AbstractModel> extends RegistryEntityStatic<ModelMetadata> {
   new(data?: any, exists?: boolean): T;
   prototype: T;
 }
@@ -29,12 +29,10 @@ export interface ModelStatic<T extends AbstractModel> extends RegistryEntityStat
  * Common abstract class that **all** models must extend from. Provides common interfaces for other
  * services to interact with without knowing about the concrete implementation
  */
-export abstract class AbstractModel {
-
-  /** The metadata associated with the class instance */
-  public static __metadata: ModelMetadata;
+export abstract class AbstractModel extends RegistryEntity<ModelMetadata> {
 
   constructor(data?: any) {
+    super();
     this.hydrate(data);
   }
 
@@ -59,24 +57,6 @@ export abstract class AbstractModel {
    */
   public getIdentifier(): identifier {
     return this[this.getMetadata().identifierKey];
-  }
-
-  /**
-   * Get the metadata for the model (static side)
-   * @returns {ModelMetadata}
-   */
-  public static getMetadata(): ModelMetadata {
-    return this.__metadata;
-  }
-
-  /**
-   * Get the metadata for the model (instance side)
-   * Note this is the same as Model.getMetadata(), but more convenient if you don't know or have
-   * access to the model name
-   * @returns {ModelMetadata}
-   */
-  public getMetadata(): ModelMetadata {
-    return (this.constructor as ModelStatic<this>).__metadata;
   }
 
 }

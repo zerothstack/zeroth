@@ -4,7 +4,7 @@
 /** End Typedoc Module Declaration */
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { AbstractService } from '../../common/services/service';
-import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
+import { RegistryEntityStatic, EntityMetadata } from '../../common/registry/entityRegistry';
 
 /**
  * Provides bootstrapping of the @[[Service]] entities
@@ -14,7 +14,7 @@ export class ServiceBootstrapper extends EntityBootstrapper {
   /**
    * Returns all services registered to the [[EntityRegistry]]
    */
-  public getInjectableEntities(): RegistryEntityStatic[] {
+  public getInjectableEntities(): RegistryEntityStatic<EntityMetadata>[] {
     return this.getEntitiesFromRegistry('service');
   }
 
@@ -27,7 +27,7 @@ export class ServiceBootstrapper extends EntityBootstrapper {
 
     this.logger.debug(`Initializing [${this.entities.length}] services`);
 
-    const allServicePromises = this.entities.map((resolvedService: RegistryEntityStatic) => {
+    const allServicePromises = this.entities.map((resolvedService: RegistryEntityStatic<EntityMetadata>) => {
 
       let service = this.getInstance<AbstractService>(resolvedService);
 

@@ -118,7 +118,6 @@ export function bootstrap(loadClasses: ClassDictionary<any>[] = [], providers: P
           return result.concat(bootstrapper.getInjectableEntities());
         }, []);
 
-
         const mergedProviders = ReflectiveInjector.resolve(bootrapperProviders.concat(providers));
 
         const injector = ReflectiveInjector.fromResolvedProviders(mergedProviders);

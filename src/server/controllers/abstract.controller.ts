@@ -11,6 +11,11 @@ import { Response } from './response';
 import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 import { HttpException, InternalServerErrorException } from '../exeptions/exceptions';
+import {
+  RegistryEntityStatic,
+  RegistryEntityConstructor, RegistryEntity
+} from '../../common/registry/entityRegistry';
+import { ModelMetadata, ControllerMetadata } from '../../common/metadata/metadata';
 
 export interface MethodDefinition {
   method: HttpMethod;
@@ -33,7 +38,11 @@ export type MiddlewareLocation = 'before' | 'after';
  * on the interface provided by this class to invoke registration of routes and middleware
  */
 @Injectable()
-export abstract class AbstractController {
+export abstract class AbstractController extends RegistryEntity<ControllerMetadata> {
+
+  public static __metadataDefault: ControllerMetadata = {
+    routeBase: '/'
+  };
 
   protected actionMethods: Map<string, MethodDefinition>;
   public registeredMiddleware: {
@@ -41,14 +50,13 @@ export abstract class AbstractController {
     all: MiddlewareRegistry
   };
 
-  /** The start of the route of this controller instance */
-  protected routeBase: string;
   /** Current controller instance */
   protected logger: Logger;
   /** Instance of injector used for the registration of @Injectable middleware */
   private injector: Injector;
 
   constructor(protected server: Server, logger: Logger) {
+    super();
     this.logger = logger.source(this.constructor.name);
   }
 
@@ -141,7 +149,7 @@ export abstract class AbstractController {
       this.server.register({
         methodName: methodSignature,
         method: methodDefinition.method,
-        path: `${process.env.API_BASE}/${this.routeBase}${methodDefinition.route}`,
+        path: `${process.env.API_BASE}/${this.getMetadata().routeBase}${methodDefinition.route}`,
         callStack: callStack,
         callStackHandler: (request: Request, response: Response): Promise<Response> => {
           return callStack.reduce((current: Promise<Response>, next: PromiseFactory<Response>): Promise<Response> => {
@@ -166,7 +174,7 @@ export abstract class AbstractController {
         }
       });
 
-      this.logger.debug(`registered ${methodDefinition.method} ${this.routeBase}${methodDefinition.route} to ${this.constructor.name}@${methodSignature}`);
+      this.logger.debug(`registered ${methodDefinition.method} ${this.getMetadata().routeBase}${methodDefinition.route} to ${this.constructor.name}@${methodSignature}`);
     });
 
     return this;
