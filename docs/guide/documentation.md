@@ -9,10 +9,10 @@ layout: guide.hbs
 
 Ubiquits comes with documentation generation tools out of the box, so all you need to do is start writing.
 
-Under the hood of `@ubiquits/toolchain` is the awesome tool  [Metalsmith](metalsmith.io) which allows for the 
+Under the hood of `@ubiquits/toolchain` is the awesome tool  [Metalsmith] which allows for the 
  automatic generation of static sites using simple markdown source files and handlebars templates.
   
-Ubiquits ["eats it's own dogfood"](https://en.wikipedia.org/wiki/Eating_your_own_dog_food) as such so this documentation
+Ubiquits ["eats it's own dogfood"][dogfood] as such so this documentation
  is generated using the same tooling. 
 
 ## Getting started
@@ -40,7 +40,7 @@ Note that you can still run other commands within the ubiquits console. To stop 
  
 ## Adding pages
 Pages can be easily added by just creating a new markdown document anywhere under the `./docs` directory and putting some
-yaml [frontmatter](https://jekyllrb.com/docs/frontmatter/) meta information.
+yaml [frontmatter] meta information.
 
 For example the frontmatter for this page is:
 ```yaml
@@ -77,7 +77,7 @@ The template defines which handlebars template is used to render the page. The t
 | post.hbs  | News articles         | Date information                    |
 
 All templates can be overidden by just placing your template in the same location as the toolchain.
-See [the template directory in the toolchain](https://github.com/ubiquits/toolchain/tree/master/docs/templates) 
+See [the template directory in the toolchain][template-dir] 
 for the locations of the layouts/partials
 
 ### Styles & Assets
@@ -90,7 +90,7 @@ The `./package.json` file content is available globally to handlebars templates 
 Any additional variables that you would like to add can be defined by [configuring the `meta` object of `configureDocs()` in the `ubiquits.js` file](/guide/cli/#-configuredocs-config-)
 
 ## TypeDoc
-To document your API in it's full detail, [TypeDoc](http://typedoc.io) is used to automatically generate documentation.
+To document your API in it's full detail, [TypeDoc][] is used to automatically generate documentation.
 You can see an example of this documentation at [/api](/api)
 
 To run the generator, execute `typedoc` in the cli. This takes a while so we don't run it on every watch. This is
@@ -104,10 +104,10 @@ If you want to deploy to a different destination see the configuration options b
 Configuration of the deployment is handled in the `ubiquits.js` file. 
 By default, the documentation will deploy to the `gh-pages` branch at your repositories `origin`.
 
-If you have different requirements, see the [`UbiquitsProject.configureDeployment()`](/guide/cli/#-configuredeployment-config-) section for configuration options.
+If you have different requirements, see the [`UbiquitsProject.configureDeployment()`][configure-deployment] section for configuration options.
 
 ### Google Analytics
-You can add tracking with [Google Analytics](https://analytics.google.com) to your documentation by [configuring the `meta.gaCode` property of `configureDocs()` in the `ubiquits.js` file](/guide/cli/#-configuredocs-config-) 
+You can add tracking with [Google Analytics][ga] to your documentation by [configuring the `meta.gaCode` property of `configureDocs()` in the `ubiquits.js` file][configure-docs] 
 
 ### Travis CI
 To automate deployment fully, you can use TravisCI to run the deployment process, however you will need to configure
@@ -125,22 +125,45 @@ To automate deployment fully, you can use TravisCI to run the deployment process
 * Add your *encrypted* private key to .travis/deployment_key.pem.enc 
 - see https://docs.travis-ci.com/user/encrypting-files/#Automated-Encryption for more encryption instructions
 
-Note that you **MUST NOT** commit your unencrypted private key directly into .travis/deployment_key.pem.
+Note that you **MUST NOT** commit your unencrypted private key directly into `.travis/deployment_key.pem.`
 
 ## Plugins
-The toolchain currently uses the following metalsmith plugins:
+The toolchain currently uses the following [metalsmith] plugins:
 
-* metalsmith-markdown
-* metalsmith-layouts
-* metalsmith-permalinks 
-* metalsmith-serve
-* metalsmith-watch
-* metalsmith-prism
-* metalsmith-collections
-* metalsmith-define
-* metalsmith-date-formatter
-* metalsmith-headings-identifier
-* metalsmith-headings
+* [metalsmith-markdown]
+* [metalsmith-layouts]
+* [metalsmith-permalinks] 
+* [metalsmith-serve]
+* [metalsmith-watch]
+* [metalsmith-prism]
+* [metalsmith-collections]
+* [metalsmith-define]
+* [metalsmith-date-formatter]
+* [metalsmith-headings-identifier]
+* [metalsmith-headings]
+* [metalsmith-drafts]
 
-At this time adding new plugins is not configurable. If you'd like this capability, [get in touch](https://github.com/ubiquits/toolchain/issues).
+At this time adding new plugins is not configurable. If you'd like this capability, [get in touch][issues].
 
+[metalsmith]: http://metalsmith.io
+[dogfood]: https://en.wikipedia.org/wiki/Eating_your_own_dog_food
+[frontmatter]: https://jekyllrb.com/docs/frontmatter/
+[template-dir]: https://github.com/ubiquits/toolchain/tree/master/docs/templates
+[typedoc]: http://typedoc.io
+[configure-deployment]: /guide/cli/#-configuredeployment-config-
+[configure-docs]: /guide/cli/#-configuredocs-config-
+[ga]:https://analytics.google.com
+[issues]:https://github.com/ubiquits/toolchain/issues
+
+[metalsmith-markdown]:https://github.com/segmentio/metalsmith-markdown
+[metalsmith-layouts]:https://github.com/zakhenry/metalsmith-layouts
+[metalsmith-permalinks]:https://github.com/segmentio/metalsmith-permalinks
+[metalsmith-serve]:https://github.com/zakhenry/metalsmith-serve
+[metalsmith-watch]:https://github.com/zakhenry/metalsmith-watch
+[metalsmith-prism]:https://github.com/Availity/metalsmith-prism
+[metalsmith-collections]:https://github.com/segmentio/metalsmith-collections
+[metalsmith-define]:https://github.com/aymericbeaumet/metalsmith-define
+[metalsmith-date-formatter]:https://github.com/hellatan/metalsmith-date-formatter
+[metalsmith-headings-identifier]:https://github.com/majodev/metalsmith-headings-identifier
+[metalsmith-headings]:https://github.com/zakhenry/metalsmith-headings
+[metalsmith-drafts]:https://github.com/segmentio/metalsmith-drafts
