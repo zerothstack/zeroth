@@ -2,11 +2,36 @@ import { Logger } from '../../common/services/logger.service';
 import { Database } from './database.service';
 import { addProviders, inject, async } from '@angular/core/testing';
 import * as typeorm from 'typeorm';
+import { Driver } from 'typeorm';
+import { Injectable } from '@angular/core';
 import { RemoteCli } from './remoteCli.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from './remoteCli.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
+import * as SQL from 'sql-template-strings';
 import Spy = jasmine.Spy;
+
+@Injectable()
+class ExampleUtil {
+
+  constructor(protected database: Database, protected logger: Logger) {
+  }
+
+  public flagLongUsernames(role: string, length: number): Promise<void> {
+
+    let driver: Driver;
+    return this.database.getDriver()
+      .then((d: Driver) => {
+        driver = d;
+        return driver.beginTransaction();
+      })
+      .then(() => this.database.query(Database.prepare`UPDATE users SET flagged = LENGTH(username) > ${length} WHERE role = ${role}`))
+      .then(() => driver.commitTransaction())
+      .catch(() => driver.rollbackTransaction());
+
+  }
+
+}
 
 describe('Database', () => {
 
@@ -17,6 +42,7 @@ describe('Database', () => {
     {provide: Logger, useClass: LoggerMock},
     {provide: RemoteCli, useClass: RemoteCliMock},
     Database,
+    ExampleUtil
   ];
 
   const envMap = {
@@ -148,5 +174,54 @@ describe('Database', () => {
       });
 
   })));
+
+  describe('Complex queries', () => {
+
+    it('runs complex queries with transactions and prepared statements', async(inject([ExampleUtil, Database], (util: ExampleUtil, database: Database) => {
+
+      const resultMock = [{foo: 'bar'}];
+
+      const driverMock = {
+        beginTransaction: jasmine.createSpy('beginTransaction').and.returnValue(Promise.resolve()),
+        commitTransaction: jasmine.createSpy('commitTransaction').and.returnValue(Promise.resolve()),
+        query: jasmine.createSpy('query').and.returnValue(resultMock),
+      };
+
+      connectionSpy.driver = driverMock;
+
+      return util.flagLongUsernames('admin', 5)
+        .then(() => {
+
+          expect(connectionSpy.driver.beginTransaction).toHaveBeenCalled();
+          expect(connectionSpy.driver.query)
+            .toHaveBeenCalledWith((SQL as any)`UPDATE users SET flagged = LENGTH(username) > ${5} WHERE role = ${'admin'}`);
+          expect(connectionSpy.driver.commitTransaction).toHaveBeenCalled();
+        });
+
+    })));
+
+    it('runs complex queries with exceptions rolling back transactions', async(inject([ExampleUtil, Database], (util: ExampleUtil, database: Database) => {
+
+      const driverMock = {
+        beginTransaction: jasmine.createSpy('beginTransaction').and.returnValue(Promise.resolve()),
+        commitTransaction: jasmine.createSpy('commitTransaction').and.returnValue(Promise.resolve()),
+        rollbackTransaction: jasmine.createSpy('rollbackTransaction').and.returnValue(Promise.resolve()),
+        query: jasmine.createSpy('query').and.returnValue(Promise.reject(new Error('DB Error'))),
+      };
+
+      connectionSpy.driver = driverMock;
+
+      return util.flagLongUsernames('admin', 5)
+        .then(() => {
+
+          expect(connectionSpy.driver.beginTransaction).toHaveBeenCalled();
+          expect(connectionSpy.driver.query).toHaveBeenCalled();
+          expect(connectionSpy.driver.commitTransaction).not.toHaveBeenCalled();
+          expect(connectionSpy.driver.rollbackTransaction).toHaveBeenCalled();
+        });
+
+    })));
+
+  });
 
 });
