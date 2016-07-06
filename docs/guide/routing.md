@@ -7,13 +7,15 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Routing is defined in the backend controllers using the `@Route` and `@RouteBase` decorators.
+Routing is defined in the backend controllers using the `@Route` decorator.
 
 In the following controller example, the route base is set to `example` and the method action is set to `/test`.
 
 ```
 @Injectable()
-@RouteBase('example')
+@Controller({
+  routeBase: 'example',
+})
 export class TestController extends AbstractController {
 
   constructor(server: Server, logger: Logger) {
