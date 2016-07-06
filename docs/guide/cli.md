@@ -8,6 +8,15 @@ layout: guide.hbs
 ---
 
 ![CLI Screenshot](/assets/image/ubiquits-cli.png)
+## Introduction
+Ubiquits provides a commandline environment that has two major parts - the build tools and the runtime tools. The build
+tools are programs that build the various components of a Ubiquits app; typescript compilation, webpack building, 
+livereload handling etc. The runtime tools are provided by your application (or the core) at runtime, and are custom 
+tools that affect the runtime of your server instance. This could include tools like running migrations, reindexing
+Elastic search, creating users, batch database operations etc - the possibilities are endless.
+
+The ubiquits cli operates within it's own pseudo shell, so the commands available are limited to Ubiquits specific
+ commands, or ones you have created yourself.
 
 ## Installation
 To install the cli if you haven't done so in the [quickstart](/guide/quick-start), run the following:
@@ -18,12 +27,21 @@ npm install -g @ubiquits/toolchain
 
 This will install the cli tool globally, which will allow you to initialize new project/modules outside of your current project.
 
-The install symlinks both `ubiquits` and `u` to your `$prefix/bin` location so you can start the ubiquits cli with just `u` if you prefer (it's easier to type!).
+The installation process symlinks both `ubiquits` and `u` to your `$prefix/bin` location so you can start the ubiquits cli with just `u` if you prefer (it's easier to type!).
 
-Note that the quickstart requires `@ubiquits/toolchain` as a `devDependency` so if you don't want the cli installed globally it will still work just fine when you are executing from your project directory.
+Once you've installed the cli, create a new empty directory and run 
+```bash
+ubiquits
+```
+This will prompt you to initialize a new project, then take you on a tour of the features.
+
+If you already have a Ubiquits project up and running and want to take the tour again, simply run `ubiquits` (or `u`!) to enter 
+the shell, then run `tour` to start the tour. (Note this command is hidden from the `help` output as you won't need it often) 
+
+*Note that the quickstart requires `@ubiquits/toolchain` as a `devDependency` so if you don't want the cli installed globally it will still work just fine when you are executing from your project directory.*
 
 ## `ubiquits.js` file configuration
-You will notice in the root of your project there is a `ubiquits.js` file. This is akin to a `gulpfile` or `karma.conf.js` file. It is used to set the configuration for the toolchain.
+You will notice in the root of your project there is a `ubiquits.js` file. This is akin to a `gulpfile` or `karma.conf.js` file. It is used to set the configuration for the toolchain cli.
 
 Note that this is a javascript file - unfortunately you cant use typescript here as it is not pre-compiled by the toolchain - that would be too slow.
 
@@ -150,7 +168,7 @@ config is merged with the defaults:
 ### `registerCommand(command)`
 In addition to the supplied commands in the toolchain, you may register new commands.
  
-The toolchain uses Vantage (which is an extension of Vorpal) for command handling, and the `registerCommand` callback 
+The toolchain uses [Vantage] (which is an extension of [Vorpal]) for command handling, and the `registerCommand` callback 
  supplies an instance of vantage and the instance of the project.
 
 Visit the Vorpal documentation for instructions on how to define your own commands. 
@@ -199,3 +217,6 @@ npm rm -g @ubiquits/toolchain
 ```
 
 *Sorry to see you go!*
+
+[Vantage]: https://github.com/dthree/vantage
+[Vorpal]: http://vorpal.js.org/

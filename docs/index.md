@@ -6,20 +6,22 @@ description: Full stack isomorphic typescript framework.
 
 ## Roadmap
 
-### Alpha release (feature complete) [TBC]
+### First [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) release (feature complete) [July 29]
 - [ ] Angular Universal (server side prerendering) integration
 - [ ] Docker deployment
-- [ ] Database migrations
 - [ ] Email sending
 - [ ] Queue handling
-- [ ] Database seeding from `MockModelProvider`s
-- [x] Full validation decorator complement
-- [ ] 100% Code coverage
+- [ ] Pagination service (front & backend)
 - [ ] on initialization generate passwords and certificate for auth
-- [ ] Integrate code generations from Angular CLI 
+- [ ] Integrate code generation methods from Angular CLI 
+- [ ] Docker integration into toolchain for local dev
+- [ ] CLI handled migrations & seeding
+- [x] Database migrations
+- [x] Database seeding from `MockModelProvider`s
+- [x] Full validation decorator complement
+- [x] 100% Code coverage
 - [x] Migration to TypeORM
 - [x] Entity registry with decorators for registering components anywhere
-- [ ] Docker integration into toolchain for local dev
 
 ### Developer Preview [June 20th]
 - [x] Model hydration and mocking

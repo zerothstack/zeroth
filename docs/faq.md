@@ -30,7 +30,7 @@ Universal **is** server side, but it only deals with prerendering the frontend c
 Ubiquits on the other hand has full backend capabilities of being a REST API and interacting with other services securely.
 
 ### Can I use Ubiquits with React/Aurelia/Angular1.x/frontend-framework-of-the-month?
-Yes! However it may take a little hacking to get it to work smoothly. Ubiquits is designed to be used with an Angular 2
+Yes! However it may take a little hacking to get it to work smoothly as it does with Angular. Ubiquits is designed to be used with an Angular 2
 frontend - it shares dependency injection patterns and provides `ModelStores` and other components that are designed to
 be provided by the injector. Ubiquits is primarily a backend framework, and can actually be used as a completely isolated
 API server, however you would be missing out on a lot of what makes it great.
@@ -75,11 +75,11 @@ You haven't built it yet! But seriously, it may be planned. Take a look at the [
 is listed there, and if not feel free to open an issue to discuss. Be sure to take a look at the [contribution guide][contributing].
 
 ### Is Ubiquits right for me?
-If you have made the decision to use Angular 2, and are intending to have a JavaScript framework, you should seriously
+If you have made the decision to use Angular 2, and are intending to have a JavaScript backend framework, you should seriously
 consider using Ubiquits. You will be able to apply your skills from Angular 2 directly to Ubiquits as they largely follow
 the same design principles.
 
-If you coming to NodeJS from more mature backend environments like C# .Net, PHP Laravel/Symfony/ZF2, Ruby on Rails, Java Spring
+If you are coming to NodeJS from more mature backend environments like C# .Net, PHP Laravel/Symfony/ZF2, Ruby on Rails, Java Spring
 etc, and are finding the large scale offerings in the NodeJS world lacking, Ubiquits would be an excellent choice. TypeScript
 tends to be easier to learn for those coming from strict typed languages, as you generally don't have to worry about JavaScript's
 loose typing quirks unless you want to make use of it.

@@ -4,10 +4,11 @@
 /** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { Logger, LogLevel } from '../../common/services/logger.service';
-import { createConnection, CreateConnectionOptions, Connection } from 'typeorm';
+import { createConnection, CreateConnectionOptions, Connection, Driver } from 'typeorm';
 import { registry } from '../../common/registry/entityRegistry';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
+import * as SQL from 'sql-template-strings';
 
 export interface DatabaseLogFunction {
   (level: LogLevel, ...messages: any[]): void;
@@ -60,7 +61,8 @@ export class Database extends AbstractService {
 
   /**
    * Connect to the datatbase, returning promised of connection instance.
-   * Static method so calls can be made outside of dependency injection context for example pre-bootstrap
+   * Static method so calls can be made outside of dependency injection context for example
+   * pre-bootstrap
    * @param logFunction
    * @returns {Promise<Connection>}
    */
@@ -111,7 +113,37 @@ export class Database extends AbstractService {
    * @returns {Promise<any>}
    */
   public query(sql: string): Promise<any> {
-    return this.initialized.then(() => this.connection.driver.query(sql));
+    return this.getDriver()
+      .then((driver: Driver) => driver.query(sql));
+  }
+
+  /**
+   * Get current driver from connection for direct database interaction
+   * @returns {Promise<Driver>}
+   */
+  public getDriver(): Promise<Driver> {
+    return this.initialized.then(() => this.connection.driver);
+  }
+
+  /**
+   * ES6 template string tagger to create prepared statements
+   *
+   * Example:
+   * ```typescript
+   * return this.database.query(Database.prepare`INSERT
+   * INTO    books
+   * (name, author, isbn, category, recommended_age, pages, price)
+   * VALUES  (${name}, ${author}, ${isbn}, ${category}, ${recommendedAge}, ${pages}, ${price})
+   * `);
+   * ```
+   * This will generate a prepared statement with all the safety features that come with that
+   * @see https://www.npmjs.com/package/sql-template-strings
+   * @param args
+   * @returns {any}
+   */
+  public static prepare(...args:any[]):any {
+    return (SQL as any)(...args);
   }
 
 }
+

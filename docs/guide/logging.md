@@ -7,7 +7,7 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Ubiquits provides an `@injectable` abstract service named `Logger`. This means that no matter what implementation you use,
+Ubiquits provides an `@Injectable()` abstract service named `Logger`. This means that no matter what implementation you use,
  you can always inject the `Logger` service and the actual implementation will be determined by the service provider.
  
 
@@ -27,14 +27,14 @@ export class ExampleUtil {
 
 ```
 
-In the bootstrapper, the specific implementation is resolved with
+In the `./src/server/main.ts` file, the specific implementation is defined with
 ```typescript
-ReflectiveInjector.resolve([
-  provide(Logger, {useClass: ConsoleLogger}),
-]);
+let providers: ProviderDefinition[] = [
+  {provide: Logger, useClass: ConsoleLogger},
+];
 ```
 
-For more information on registering and resolving dependencies, see [the Dependency Injection Guide](/guide/dependency-injection); 
+For more information on registering and resolving dependencies, see [the provider registration guide][provider-registration]; 
 
 ## Methods
 
@@ -43,12 +43,19 @@ emergency, alert, critical, error, warning, notice, info and debug.
 
 ```typescript
 logger.debug(`Current request`, request);
+
 logger.info(`User ${username} logged in`);
+
 logger.notice(`User ${username} had 3 failed password attempts`);
+
 logger.warning(`Response took ${responseTime}. This is far higher than normal`);
+
 logger.error(`Query failed`, e.message);
+
 logger.critical(`Redis connection failed`);
+
 logger.alert(`S3 Bucket is ${percentage}% full`);
+
 logger.emergency(`The server is on fire!`);
 ```
 
@@ -78,5 +85,24 @@ Any non-string item passed as message is parsed by `util.inspect` which will nic
 
 The different log levels are colour coded, to make it easy to differentiate the different log types.
 
+### `MockLogger`
+Use this implementation in your unit tests to avoid any unwanted output to the console. The mock logger simply provides
+implementations for the abstract `Logger` class, and does nothing with the logs.
+
+You can utilise the `MockLogger` in tests to assert logs by spying on the `persistLog` method.
+
+For example:
+
+```typescript
+const loggerSpy = spyOn(exampleService.logger, 'persistLog');
+
+exampleService.someMethodThatCallsLog();
+
+expect(loggerSpy).toHaveBeenCalledWith('info', ['Hello world']);
+```
+Note that the `persistLog` method takes the log message arguments as an array
+
 ## Planned Implementations
 * [Winston](https://github.com/winstonjs/winston)
+
+[provider-registration]: http://localhost:8080/guide/application-lifecycle/#3-provider-registration

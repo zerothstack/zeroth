@@ -56,7 +56,6 @@ export class RegistryEntity<M> {
  * * [[Model|@Model]]
  * * [[Controller|@Controller]]
  * * [[Seeder|@Seeder]]
- * * [[Middleware|@Middleware]]
  * * [[Migration|@Migration]]
  * * [[Store|@Store]]
  * * [[Service|@Service]]

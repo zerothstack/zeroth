@@ -68,6 +68,47 @@ let providers:ProviderDefinition[] = [
 A common technique is to implement a `MockStore` first, then worry about the connections to the database or third party
  services later. That way you can focus on user/API interface before you lock in your data structures.
 
+## Mock Stores
+Mock stores are for retrieving mock models that are instances of your `Model`, but have mocked data provided. They are
+useful for [unit testing][testing] and [seeders][seeding].
 
+Mock stores must extend `MockStore<T extends AbstractModel>` so that they have the common methods of model retrieval.
+The methods for persisting data are simply stubbed, as it doesn't make sense to save data to a mock store.
+
+Example `./src/common/stores/user.mock.store.ts`:
+```typescript
+import { UserStore } from '../../common/stores/user.store';
+import { User } from '../models/user.model';
+import { identifier, MockStore } from '@ubiquits/core/common';
+import { Injector, Injectable } from '@angular/core';
+
+@Injectable()
+export class UserMockStore extends MockStore<User> implements UserStore {
+
+  constructor(injector:Injector) {
+    super(User, injector);
+  }
+  
+  protected getMock(id?:identifier):User {
+    return new this.modelStatic({
+      userId: id || this.chance().guid(),
+      username: this.chance().first(),
+      birthday: this.chance().date({
+        year: this.chance().integer({min: 1900, max: 2000})
+      })
+    });
+  }
+
+}
+```
+
+All a mock store needs to do is implement the `getMock(id?:identifier):T` interface, so that the parent `MockStore` can
+retrieve mock models.
+
+Available to the class is the `this.chance()` method, which returns an instance of [ChanceJS] so you can have access to
+a library of data mocking methods.
 
 [auth0]: https://auth0.com/
+[testing]: /guide/testing
+[seeding]: /guide/seeding
+[chancejs]: http://chancejs.com/

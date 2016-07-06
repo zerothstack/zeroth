@@ -16,7 +16,11 @@ items in the call stack, the only difference being that the controller method is
  and so has access to all services injected by that controller.
 
 ## Usage
-Middleware are applied with the method decorators `@Before(...middlewareFactories)` and `@After(...middlewareFactories)`.
+Middleware are applied with the following method decorators 
+* `@Before(...middlewareFactories)` - property decorator for middleware called **before** a controller method
+* `@After(...middlewareFactories)` - property decorator for middleware called **after** a controller method
+* `@BeforeAll(...middlewareFactories)` - class decorator for middleware called **before all** route methods in controller
+* `@AfterAll(...middlewareFactories)` - class decorator for middleware called **after all** route methods in controller
 
 ### Order
 Middleware is applied in left to right order of the decorator params.
