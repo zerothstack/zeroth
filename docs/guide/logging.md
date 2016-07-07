@@ -74,6 +74,40 @@ Will output
 [12:05:21] [MyController] Hello World
 ```
 
+## Log verbosity level
+In the `.env` configuration, there is an entry for `LOG_LEVEL`. This value can be one of 
+`none`, `error`, `info`, `verbose` or `silly`
+
+Each log type has a default verbosity, meaning that for example if you have configured `LOG_LEVEL=error`, only the
+error level messages will be logged.
+
+The verbosity levels work like the following table:
+```
+| Log Level | Verbosity Level |
+|-----------|-----------------|
+| emergency | >= error        |
+| critical  | >= error        |
+| error     | >= error        |
+| warning   | >= info         |
+| notice    | >= info         |
+| debug     | >= verbose      |
+```
+You will notices that `silly` is not listed in the table. This is because to mark a log as only displaying when level is
+`silly`, you need to chain `.silly` into the command.
+```typescript
+try {
+  //do something that throws error
+} catch (e) {
+  this.logger.error(e.message).silly.debug(e.stack);
+}
+```
+In the above example, the error message will always log (unless level is `none`), and the debug of the stack trace will
+*only* log if you have log level `silly`. Despite debug having the default level `verbose`, the `.silly` modifier overrides
+ that rule.
+ 
+There is also a chainable `.verbose` modifier available to force a log message to only show when log level is `verbose`
+(or `silly`).
+
 ## Implementations
 As there are many different ways to log, there can be multiple implementations of the abstract `Logger` class.
 

@@ -4,6 +4,7 @@
 /** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { AbstractService } from './service';
+import { InternalServerErrorException } from '../../server/exeptions/exceptions';
 
 /**
  * Syslog Levels
@@ -17,6 +18,16 @@ export type LogLevel = 'emergency'
   | 'notice'
   | 'info'
   | 'debug';
+
+export type LogVerbosityType = 'silly' | 'verbose' | 'info' | 'error' | 'none';
+
+export enum LogVerbosity {
+  none,
+  error,
+  info,
+  verbose,
+  silly,
+}
 
 export interface LoggerConstructor<T extends Logger> {
   new (): T;
@@ -53,6 +64,7 @@ export interface LoggerConstructor<T extends Logger> {
 export abstract class Logger extends AbstractService {
 
   protected sourceName: string;
+  protected verbosityLevel: LogVerbosity;
 
   constructor(protected impl: LoggerConstructor<any>) {
     super();
@@ -73,7 +85,7 @@ export abstract class Logger extends AbstractService {
    * @returns {Logger}
    */
   public emergency(...args: any[]): this {
-    return this.log('emergency', ...args);
+    return this.log('emergency', LogVerbosity.error, ...args);
   }
 
   /**
@@ -82,7 +94,7 @@ export abstract class Logger extends AbstractService {
    * @returns {any}
    */
   public alert(...args: any[]): this {
-    return this.log('alert', ...args);
+    return this.log('alert', LogVerbosity.error, ...args);
   }
 
   /**
@@ -91,7 +103,7 @@ export abstract class Logger extends AbstractService {
    * @returns {any}
    */
   public critical(...args: any[]): this {
-    return this.log('critical', ...args);
+    return this.log('critical', LogVerbosity.error, ...args);
   }
 
   /**
@@ -100,7 +112,7 @@ export abstract class Logger extends AbstractService {
    * @returns {any}
    */
   public error(...args: any[]): this {
-    return this.log('error', ...args);
+    return this.log('error', LogVerbosity.error, ...args);
   }
 
   /**
@@ -109,7 +121,7 @@ export abstract class Logger extends AbstractService {
    * @returns {any}
    */
   public warning(...args: any[]): this {
-    return this.log('warning', ...args);
+    return this.log('warning', LogVerbosity.info, ...args);
   }
 
   /**
@@ -118,7 +130,7 @@ export abstract class Logger extends AbstractService {
    * @returns {any}
    */
   public notice(...args: any[]): this {
-    return this.log('notice', ...args);
+    return this.log('notice', LogVerbosity.info, ...args);
   }
 
   /**
@@ -127,7 +139,7 @@ export abstract class Logger extends AbstractService {
    * @returns {any}
    */
   public info(...args: any[]): this {
-    return this.log('info', ...args);
+    return this.log('info', LogVerbosity.info, ...args);
   }
 
   /**
@@ -136,17 +148,30 @@ export abstract class Logger extends AbstractService {
    * @returns {Logger}
    */
   public debug(...args: any[]): this {
-    return this.log('debug', ...args);
+    return this.log('debug', LogVerbosity.verbose, ...args);
   }
 
   /**
-   * Given the log level and list of messages, invoke the persist log method.
+   * Given the log level and list of messages, and if the global verbosity level is satisified,
+   * invoke the persist log method.
    * @param logLevel
+   * @param verbosity
    * @param messages
-   * @returns {Logger}
+   * @returns {any}
    */
-  protected log(logLevel: LogLevel, ...messages: any[]): this {
-    return this.persistLog(logLevel, messages);
+  protected log(logLevel: LogLevel, verbosity: LogVerbosity, ...messages: any[]): this {
+
+    this.setVerbosity(verbosity);
+
+    const globalVerbosity: number = LogVerbosity[(process.env.LOG_LEVEL as string)];
+
+    if (typeof globalVerbosity == 'number' && globalVerbosity < this.verbosityLevel) {
+      this.setVerbosity(undefined, true);
+      return;
+    }
+
+    return this.persistLog(logLevel, messages)
+      .setVerbosity(undefined, true); //reset the verbosity to undefined for the next log
   }
 
   /**
@@ -158,6 +183,48 @@ export abstract class Logger extends AbstractService {
   protected setSource(sourceName: string): this {
     this.sourceName = sourceName;
     return this;
+  }
+
+  /**
+   * Sets the current log verbosity level, used to compare against the global value to determine
+   * whether or not to persist the log. If a verbosity is already set, don't force unless requested.
+   * to, as
+   * @param level
+   * @param force
+   * @returns {Logger}
+   */
+  protected setVerbosity(level: LogVerbosity, force: boolean = false): this {
+    if (!force && !!this.verbosityLevel) {
+      return this;
+    }
+    this.verbosityLevel = level;
+    return this;
+  }
+
+  /**
+   * Chainable method to allow forcing the log level to only show when log verbosity level is 'silly'
+   *
+   * Example:
+   * ```typescript
+   * try {
+   *   //do something that throws error
+   * } catch (e) {
+   *   this.logger.error(e.message).silly.debug(e.stack);
+   * }
+   * ```
+   * This will only log the stack trace if the global `process.env.LOG_LEVEL` is `'silly'`
+   * @returns {Logger}
+   */
+  public get silly() {
+    return this.setVerbosity(LogVerbosity.silly, true);
+  }
+
+  /**
+   * Chainable method to allow forcing the log level to only show when log verbosity level is 'verbose'
+   * @returns {Logger}
+   */
+  public get verbose() {
+    return this.setVerbosity(LogVerbosity.verbose, true);
   }
 
   /**
