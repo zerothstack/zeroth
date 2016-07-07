@@ -4,7 +4,6 @@
 /** End Typedoc Module Declaration */
 import * as _ from 'lodash';
 import { ModelMetadata, initializeMetadata, ControllerMetadata } from '../metadata/metadata';
-import { ControllerBootstrapper } from '../../server/bootstrap/controllers.bootstrapper';
 
 export type EntityType = 'model' | 'controller' | 'seeder' | 'migration' | 'store' | 'service';
 export type EntityMetadata = ModelMetadata | ControllerMetadata;
