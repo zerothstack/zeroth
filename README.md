@@ -18,7 +18,7 @@ This repo is for the core module only, and should not be forked to create a new 
 view the [Quickstart Guide](http://ubiquits.com/guide/quick-start/)
 
 ## Note
-Ubiquits is currently pre-alpha. Follow https://twitter.com/ubiquits for updates, and check the [Roadmap](http://ubiquits.com/#roadmap) for current status.
+Ubiquits is currently in alpha developer preview. Follow https://twitter.com/ubiquits for updates, and check the [Roadmap](http://ubiquits.com/#roadmap) for current status.
 
 ## Want to help?
 

@@ -58,7 +58,7 @@ Collections are groups of pages, and can be used to generate listings or navigat
 By default, the ubiquits toolchain processes three collections:
 * `main` - the top-level items that should appear in the navigation
 * `guide` - pages to go under the guide page
-* `news` - all pages for the news section
+* `articles` - all pages for the articles section
 
 If you set the `collection: <type>` attribute in the frontmatter of your page, it will be automatically added to their
  respective listings or navigation sections
