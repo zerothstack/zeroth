@@ -73,7 +73,7 @@ describe('Remote Commands', () => {
 
     const callbackLogFunction = vantageSpy.listen.calls.mostRecent().args[1];
 
-    const loggerSpy = spyOn((cli as any).logger, 'persistLog');
+    const loggerSpy = spyOn((cli as any).logger, 'persistLog').and.callThrough();
     callbackLogFunction({conn: {remoteAddress: '127.0.0.1'}});
 
     expect(loggerSpy)
