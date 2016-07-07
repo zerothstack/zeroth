@@ -56,7 +56,7 @@
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "^0.1.40",
+    "@ubiquits/toolchain": "^0.1.42",
     "proxyquire": "^1.7.10"
   },
   "directories": {
