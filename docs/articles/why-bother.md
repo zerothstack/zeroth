@@ -1,8 +1,9 @@
 ---
 title: Why bother?
+description: A high-level overview of Zak's motivations behind building the Ubiquits framework 
 date: 2016-06-09
 author: Zak Henry (https://twitter.com/zak)
-collection: news 
+collection: articles
 layout: post.hbs
 ----------------
 
