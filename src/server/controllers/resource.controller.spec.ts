@@ -16,6 +16,7 @@ import { Collection } from '../../common/models/collection';
 import { EventEmitter } from 'events';
 import { IncomingMessage } from 'http';
 import { Primary } from '../../common/models/types/primary.decorator';
+import * as _ from 'lodash';
 
 class Fruit extends AbstractModel {
   @Primary()
@@ -124,12 +125,91 @@ describe('Resource Controller', () => {
           return methodInfo.callStackHandler(request, response)
             .then((finalResponse) => {
 
-              console.log(finalResponse);
+              expect(finalResponse.body instanceof Fruit)
+                .toBe(true);
+              expect(finalResponse.body.getIdentifier())
+                .toBe(123);
+
+            });
+
+        });
+
+    })));
+
+  it('Registers a route to patch an entity', async(inject([TestController, Server],
+    (c: TestController, s: Server) => {
+
+      c.registerRoutes(s);
+
+      const methodInfo = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'patchOne');
+
+      expect(methodInfo)
+        .toBeDefined(`method info should exist for 'patchOne'`);
+
+      let emitter = new EventEmitter();
+
+      (emitter as any).setEncoding = (): any => null;
+
+      let request  = new Request(emitter as IncomingMessage);
+      let response = new Response();
+
+      return (c as any).modelStore.findOne(123)
+        .then((fixture: Fruit) => {
+
+          process.nextTick(() => {
+            emitter.emit('data', JSON.stringify(fixture));
+            emitter.emit('end');
+          });
+
+          return methodInfo.callStackHandler(request, response)
+            .then((finalResponse) => {
 
               expect(finalResponse.body instanceof Fruit)
                 .toBe(true);
               expect(finalResponse.body.getIdentifier())
                 .toBe(123);
+
+            });
+
+        });
+
+    })));
+
+  it('Throws exception when patch is attempted on entity that does not exist', async(inject([TestController, Server],
+    (c: TestController, s: Server) => {
+
+      c.registerRoutes(s);
+
+      const methodInfo = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'patchOne');
+
+      expect(methodInfo)
+        .toBeDefined(`method info should exist for 'patchOne'`);
+
+      let emitter = new EventEmitter();
+
+      (emitter as any).setEncoding = (): any => null;
+
+      let request  = new Request(emitter as IncomingMessage);
+      let response = new Response();
+
+      return (c as any).modelStore.findOne(123)
+        .then((fixture: Fruit) => {
+
+          fixture = _.clone(fixture);
+          fixture.fruitId = 999; //not in store
+
+          const hasOneSpy = spyOn((c as any).modelStore, 'hasOne').and.callThrough();
+
+          process.nextTick(() => {
+            emitter.emit('data', JSON.stringify(fixture));
+            emitter.emit('end');
+          });
+
+          return methodInfo.callStackHandler(request, response)
+            .then((res:Response) => {
+
+              expect(hasOneSpy).toHaveBeenCalledWith(fixture);
+              expect(res.body.message).toEqual('NotFoundException: Model with id [999] does not exist');
 
             });
 
