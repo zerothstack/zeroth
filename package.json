@@ -1,6 +1,6 @@
 {
   "name": "@ubiquits/core",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "ubiquits core",
   "main": "lib/index.js",
   "typings": "index.d.ts",
