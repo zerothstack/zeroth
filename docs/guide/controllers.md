@@ -100,5 +100,15 @@ deleteOne(request: Request, routeParams: RouteParamMap):Response;
 deleteMany(request: Request, routeParams: RouteParamMap):Response;
 ```
 
-[barrel]:https://angular.io/docs/ts/latest/glossary.html#!#barrel
+You may note the absence of `POST` methods. This is intentional, as a well designed REST api that has distributed primary
+key generation (UUIDs) should never require a method that generates the id server-side. This is a core tenet of an
+[idempotent][http-idempotence] api - a request should be able to be replayed without there being a change in the state.
+
+If you *really* need `POST` requests, your extension of the `ResourceController` can always implement it's own methods
+ with a `@Route('POST', '/')` decorator, however this is strongly discouraged.
+ 
+
+
+[barrel]: https://angular.io/docs/ts/latest/glossary.html#!#barrel
 [routing]: /guide/routing
+[http-idempotence]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications
