@@ -7,9 +7,24 @@ import { initializeMetadata } from '../../metadata/metadata';
 
 export type RelationType = 'hasOne' | 'hasMany' | 'belongsTo' | 'belongsToMany';
 
-export interface Relation {
-  model: ModelStatic<any>;
-  databaseOptions: any;
+
+/**
+ * This is a crude method to two-way register the type of binding for relations. This is to overcome
+ * a limitation of Typescripts design-time decorators and node's module resolution.
+ * @see https://github.com/Microsoft/TypeScript/issues/4521
+ */
+export type ForeignRelationModelGetter = (thisStatic?:ModelStatic<any>) => ModelStatic<any>;
+
+export class Relation {
+
+  constructor(public model:ModelStatic<any>, private foreignRelationModelGetter:ForeignRelationModelGetter, public databaseOptions?:any) {
+
+  }
+
+  public get foreign(){
+    return this.foreignRelationModelGetter(this.model);
+  }
+
 }
 
 /**
@@ -32,3 +47,4 @@ export function initializeRelationMap(target: ModelConstructor<any>, type: Relat
 }
 
 export * from './hasOne.decorator';
+export * from './belongsTo.decorator';

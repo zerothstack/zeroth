@@ -13,20 +13,22 @@ import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';
  * ```typescript
  *
  *  @Model
- *  class Hand extends AbstractModel {
+ *  class Thumb extends AbstractModel {
  *
- *    @HasOne()
- *    public thumb: ThumbModel;
+ *    @BelongsTo(f => HandModel)
+ *    public hand: HandModel;
+ *
+ *    public handId: number;
  *  }
  *
  * ```
  * Foreign model property is only required if there is no type annotation
  */
-export function HasOne(foreignTypeGetter: ForeignRelationModelGetter, joinOptions?: RelationOptions): PropertyDecorator {
+export function BelongsTo(foreignTypeGetter: ForeignRelationModelGetter, joinOptions?: RelationOptions): PropertyDecorator {
   return (target: any, propertyKey: string) => {
-    initializeRelationMap(target, 'hasOne');
+    initializeRelationMap(target, 'belongsTo');
 
-    target.constructor.__metadata.relations.get('hasOne')
+    target.constructor.__metadata.relations.get('belongsTo')
       .set(propertyKey, new Relation(target.constructor, foreignTypeGetter, joinOptions));
   };
 }
