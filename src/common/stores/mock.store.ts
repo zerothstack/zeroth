@@ -73,4 +73,16 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
     return Promise.resolve(model);
   }
 
+  /**
+   * Mock seleting model by id
+   *
+   * As deleting does not make sense for a mock store, this just stubs the interface by returning
+   * the model in a resolved promise
+   * @param model
+   * @returns {Promise<void>}
+   */
+  public deleteOne(model: T): Promise<T> {
+    return Promise.resolve(model);
+  }
+
 }

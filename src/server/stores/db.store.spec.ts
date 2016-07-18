@@ -31,7 +31,7 @@ class TestDatabaseStore extends DatabaseStore<TestModel> {
 
 describe('Database Store', () => {
 
-  const repositorySpy   = jasmine.createSpyObj('repository', ['findOneById', 'find', 'persist']);
+  const repositorySpy   = jasmine.createSpyObj('repository', ['findOneById', 'find', 'persist', 'remove']);
   const dbConnectionSpy = jasmine.createSpyObj('dbConnection', ['getRepository']);
   dbConnectionSpy.getRepository.and.returnValue(repositorySpy);
 
@@ -118,6 +118,25 @@ describe('Database Store', () => {
           .toBe(true);
         expect(err.message)
           .toEqual('TestModel not found with id [123]');
+      });
+
+  })));
+
+
+  it('deletes a single entity from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+
+    (db as any).connection = dbConnectionSpy;
+
+    const testModelFixture = new TestModel({id: 10});
+
+    repositorySpy.remove.and.returnValue(Promise.resolve(testModelFixture));
+
+    return store.deleteOne(testModelFixture)
+      .then((res) => {
+        expect(repositorySpy.remove)
+          .toHaveBeenCalledWith(testModelFixture);
+        expect(res)
+          .toEqual(testModelFixture);
       });
 
   })));

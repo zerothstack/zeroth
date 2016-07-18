@@ -53,7 +53,11 @@ export abstract class AbstractStore<T extends AbstractModel> {
    */
   public abstract saveOne(model: T): Promise<T>;
 
-  // public abstract deleteOne(id: identifier): Promise<void>;
+  /**
+   * Delete the model from the store.
+   * @param model
+   */
+  public abstract deleteOne(model: T): Promise<T>;
 
   /**
    * Find multiple entities using a query for constraints
