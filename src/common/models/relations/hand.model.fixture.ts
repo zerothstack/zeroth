@@ -12,9 +12,6 @@ export class HandModel extends AbstractModel {
   public name: string;
 
   @HasOne(f => ThumbModel)
-  left: ThumbModel;
-
-  @HasOne(f => ThumbModel)
-  right: ThumbModel;
+  thumb: ThumbModel;
 
 }

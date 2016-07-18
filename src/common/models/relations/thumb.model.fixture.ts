@@ -11,9 +11,7 @@ export class ThumbModel extends AbstractModel {
 
   public name: string;
 
-  @BelongsTo(f => HandModel)
+  @BelongsTo(f => HandModel, hand => hand.handId)
   public hand: HandModel;
-
-  public handId: string;
 
 }
