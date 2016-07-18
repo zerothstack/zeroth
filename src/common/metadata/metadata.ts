@@ -19,7 +19,7 @@ export interface PropertyDefinition {
 export interface ModelMetadata {
   storageKey?: string;
   tableOptions?: TableOptions;
-  relations?: Map<RelationType, Map<string, Relation>>;
+  relations?: Map<RelationType, Map<string, Relation<any, any>>>;
   storedProperties?: Map<string, PropertyDefinition>
   identifierKey?: string;
   timestamps?: {

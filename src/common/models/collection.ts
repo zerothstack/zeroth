@@ -3,7 +3,6 @@
  */
 /** End Typedoc Module Declaration */
 import { AbstractModel, identifier } from './model';
-import * as _ from 'lodash';
 /**
  * Collection holds an array of [[AbstractModel|models]]. It provides common collection manipulation
  * methods for the controllers, services etc to work with models in an abstracted manner
@@ -12,7 +11,10 @@ export class Collection<T extends AbstractModel> extends Array<T> {
 
   constructor(initialItems?: T[]) {
     super();
-    this.push.apply(this, initialItems);
+
+    if (initialItems.length){
+      this.push.apply(this, initialItems);
+    }
   }
 
   /**
@@ -35,8 +37,11 @@ export class Collection<T extends AbstractModel> extends Array<T> {
    * Remove an item from the collection
    * @param model
    */
-  public remove(model:T):void {
-    _.pull(this, model);
+  public remove(model: T): void {
+    const index: number = this.findIndex((item: T) => item.getIdentifier() === model.getIdentifier());
+    if (index >= 0) {
+      this.splice(index, 1);
+    }
   }
 
   /**

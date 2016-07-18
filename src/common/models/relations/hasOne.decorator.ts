@@ -2,12 +2,12 @@
  * @module common
  */
 /** End Typedoc Module Declaration */
-import { ModelStatic } from '../model';
-import { initializeRelationMap } from './index';
+import { ModelStatic, AbstractModel, ModelConstructor } from '../model';
+import { initializeRelationMap, ForeignRelationModelGetter, Relation } from './index';
 import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';
 
 /**
- * Defines the relationship between the current model and a foreign model vial the decorated key
+ * Defines the relationship between the current model and a foreign model via the decorated key
  *
  * Example:
  * ```typescript
@@ -15,24 +15,17 @@ import { RelationOptions } from 'typeorm/decorator/options/RelationOptions';
  *  @Model
  *  class Hand extends AbstractModel {
  *
- *    @HasOne()
+ *    @HasOne(f => ThumbModel)
  *    public thumb: ThumbModel;
  *  }
  *
  * ```
- * Foreign model property is only required if there is no type annotation
  */
-export function HasOne(foreignModel?: ModelStatic<any>, joinOptions?:RelationOptions): PropertyDecorator {
-  return (target: any, propertyKey: string) => {
+export function HasOne<M extends AbstractModel, F extends AbstractModel>(foreignTypeGetter: ForeignRelationModelGetter<M, F>, joinOptions?: RelationOptions): PropertyDecorator {
+  return (target: ModelConstructor<M>, propertyKey: string) => {
     initializeRelationMap(target, 'hasOne');
 
-    if (!foreignModel) {
-      foreignModel = Reflect.getMetadata("design:type", target, propertyKey);
-    }
-
-    target.constructor.__metadata.relations.get('hasOne').set(propertyKey, {
-      model: foreignModel,
-      joinOptions
-    });
+    target.constructor.__metadata.relations.get('hasOne')
+      .set(propertyKey, new Relation(target.constructor, foreignTypeGetter, null, joinOptions));
   };
 }

@@ -1,50 +1,31 @@
 import Moment = moment.Moment;
-import { HasOne } from './hasOne.decorator';
-import { AbstractModel } from '../model';
-import { Primary } from '../types/primary.decorator';
-
-class ChildModel extends AbstractModel {
-
-  @Primary()
-  public id: string;//UUID;
-
-  public name: string;
-
-}
-
-class BasicModel extends AbstractModel {
-
-  @Primary()
-  public id: string;//UUID;
-
-  public name: string;
-
-  @HasOne(ChildModel)
-  child:ChildModel;
-
-  @HasOne()
-  child2:ChildModel;
-
-}
+import { ThumbModel } from './thumb.model.fixture';
+import { HandModel } from './hand.model.fixture';
 
 describe('Model Relations', () => {
 
   it('registers hasOne relationship with the constructor', () => {
 
-    const model = new BasicModel();
+    const model = new HandModel();
 
     const relations = model.getMetadata().relations;
-    expect(relations).toBeDefined();
-    expect(relations.get('hasOne').get('child').model).toEqual(ChildModel);
+    expect(relations)
+      .toBeDefined();
+    expect(relations.get('hasOne')
+      .get('thumb').foreign)
+      .toEqual(ThumbModel);
 
   });
 
-  it('registers hasOne relationship correctly when the type is not passed', () => {
+  it('registers belongsTo relationship with metadata', () => {
 
-    const model = new BasicModel();
+    const model = new ThumbModel();
 
     const relations = model.getMetadata().relations;
-    expect(relations.get('hasOne').get('child').model).toEqual(ChildModel);
+
+    expect(relations.get('belongsTo')
+      .get('hand').foreign)
+      .toEqual(HandModel);
 
   });
 
