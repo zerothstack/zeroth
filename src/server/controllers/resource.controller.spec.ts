@@ -93,6 +93,50 @@ describe('Resource Controller', () => {
 
     })));
 
+  it('Registers a route to delete an entity', async(inject([TestController, Server],
+    (c: TestController, s: Server) => {
+
+      c.registerRoutes(s);
+
+      const methodInfo = s.configuredRoutes.find((r: RouteConfig) => r.methodName == 'deleteOne');
+
+      expect(methodInfo)
+        .toBeDefined(`method info should exist for 'deleteOne'`);
+
+      const params = new Map();
+      params.set('id', 123);
+
+      let emitter = new EventEmitter();
+
+      (emitter as any).setEncoding = (): any => null;
+
+      let request  = new Request(emitter as IncomingMessage);
+      let response = new Response();
+
+      return (c as any).modelStore.findOne(123)
+        .then((fixture: Fruit) => {
+
+          process.nextTick(() => {
+            emitter.emit('data', JSON.stringify(fixture));
+            emitter.emit('end');
+          });
+
+          return methodInfo.callStackHandler(request, response)
+            .then((finalResponse) => {
+
+              console.log(finalResponse);
+
+              expect(finalResponse.body instanceof Fruit)
+                .toBe(true);
+              expect(finalResponse.body.getIdentifier())
+                .toBe(123);
+
+            });
+
+        });
+
+    })));
+
   it('Registers a route to retrieve many entities', async(inject([TestController, Server],
     (c: TestController, s: Server) => {
 

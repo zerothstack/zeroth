@@ -67,4 +67,19 @@ export abstract class ResourceController<M extends AbstractModel> extends Abstra
       .then((model:M) => response.data(model));
   }
 
+  /**
+   * Delete the payload model from the model store
+   * @param request
+   * @param response
+   * @returns {Promise<Response>}
+   */
+  @Route('DELETE', '/:id')
+  public deleteOne(request:Request, response:Response):Promise<Response> {
+
+    return request.getPayload()
+      .then((data:any) => this.modelStore.hydrate(data))
+      .then((model:M) => this.modelStore.deleteOne(model))
+      .then((model:M) => response.data(model));
+  }
+
 }
