@@ -1,6 +1,6 @@
 import { inject, addProviders, async } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
-import { Http, BaseRequestOptions, Response } from '@angular/http';
+import { Http, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
@@ -101,7 +101,7 @@ describe('Http store', () => {
 
   })));
 
-  it('Retrieves a single model from http', async(inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+  it('Retrieves a single model with http', async(inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
 
     let connection: MockConnection;
     b.connections.subscribe((c: MockConnection) => connection = c);
@@ -125,6 +125,31 @@ describe('Http store', () => {
       url: `${process.env.API_BASE}/tests/123`,
       merge: null
     }));
+
+    return testPromise;
+
+  })));
+
+  it('Deletes a single model with http', async(inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+
+    let connection: MockConnection;
+    b.connections.subscribe((c: MockConnection) => connection = c);
+
+    const model = new TestModel({id: 321, name: 'delete-me'});
+
+    const testPromise = s.deleteOne(model)
+      .then((res) => {
+
+        expect(res instanceof TestModel)
+          .toBe(true);
+        expect(res)
+          .toEqual(model);
+      });
+
+    connection.mockRespond(new Response(new ResponseOptions({
+      status: 204,
+      url: `${process.env.API_BASE}/tests/123`,
+    })));
 
     return testPromise;
 

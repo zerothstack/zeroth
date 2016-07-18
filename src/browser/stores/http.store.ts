@@ -25,7 +25,7 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
   }
 
   /**
-   * Get the rest endpoint for the model 
+   * Get the rest endpoint for the model
    * @param id
    * @returns {string}
    */
@@ -81,6 +81,18 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
       .then((res: Response) => this.checkStatus(res))
       .then(() => model) //@todo flag model as existing
       // .catch((error) => this.handleError(error));
+  }
+
+  /**
+   * @inheritdoc
+   * @param model
+   */
+  public deleteOne(model: T): Promise<T> {
+
+    return this.http.delete(this.endpoint(model.getIdentifier()))
+      .toPromise()
+      .then((res: Response) => this.checkStatus(res))
+      .then(() => model); //@todo flag model as existing
   }
 
   /**

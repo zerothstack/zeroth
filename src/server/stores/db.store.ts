@@ -40,7 +40,8 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
    */
   public getRepository(): Promise<Repository<T>> {
     if (!this.repositoryPromise) {
-      this.repositoryPromise = this.database.getConnection().then((connection: Connection) => connection.getRepository(this.modelStatic))
+      this.repositoryPromise = this.database.getConnection()
+        .then((connection: Connection) => connection.getRepository(this.modelStatic))
     }
 
     return this.repositoryPromise;
@@ -49,8 +50,9 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * @inheritdoc
    */
-  public initialized():Promise<this> {
-    return this.getRepository().then(() => this);
+  public initialized(): Promise<this> {
+    return this.getRepository()
+      .then(() => this);
   }
 
   /**
@@ -59,8 +61,8 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   public findOne(id: identifier): Promise<T> {
     return this.getRepository()
       .then((repo) => repo.findOneById(id))
-      .then((model:T) => {
-        if (!model){
+      .then((model: T) => {
+        if (!model) {
           throw new NotFoundException(`${this.modelStatic.name} not found with id [${id}]`);
         }
         return model;
@@ -95,6 +97,15 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   public saveOne(model: T): Promise<T> {
     return this.getRepository()
       .then((repo) => repo.persist(model));
+  }
+
+  /**
+   * @inheritdoc
+   * @param model
+   */
+  public deleteOne(model: T): Promise<T> {
+    return this.getRepository()
+      .then((repo) => repo.remove(model));
   }
 
 }

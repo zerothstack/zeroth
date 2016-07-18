@@ -295,16 +295,6 @@ describe('Console Logger', () => {
 
       expect(persistSpy)
         .toHaveBeenCalled();
-      
-      
-      try {
-        //do something that throws error
-      } catch (e) {
-        this.logger.error(e.message).silly.debug(e.stack);
-      }
-      
-      
-      
     });
 
   });

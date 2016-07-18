@@ -191,6 +191,22 @@ describe('Mock Store', () => {
 
   })));
 
+  it('mocks delete action', async(inject([TestClass], (c: TestClass) => {
+
+    let shipRef: Ship = null;
+
+    return c.shipStore.findOne(1234)
+      .then((ship: Ship) => {
+        shipRef = ship;
+        return c.shipStore.deleteOne(ship)
+      })
+      .then((ship: Ship) => {
+        expect(ship instanceof Ship)
+          .toBe(true);
+      });
+
+  })));
+
   it('explicitly hydrates from raw data', async(inject([TestClass], (c: TestClass) => {
 
     let data: any = {
