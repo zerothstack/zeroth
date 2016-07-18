@@ -40,9 +40,7 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
   };
 
   /**
-   * Retrieve one model from the REST api
-   * @param id
-   * @returns {IPromise<void>|Promise<T>}
+   * @inheritdoc
    */
   public findOne(id: identifier): Promise<T> {
 
@@ -55,9 +53,7 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
   }
 
   /**
-   * Find many models
-   * @param query
-   * @returns {IPromise<void>|Promise<T>}
+   * @inheritdoc
    */
   public findMany(query?:any):Promise<Collection<T>> {
     return this.http.get(this.endpoint())
@@ -68,9 +64,7 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
   }
 
   /**
-   * Save a model
-   * @param model
-   * @returns {Promise<void>|IPromise<void>|Promise<T>}
+   * @inheritdoc
    */
   public saveOne(model:T):Promise<T> {
     //@todo consider toJson method if custom serializing is needed?
@@ -85,7 +79,6 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
 
   /**
    * @inheritdoc
-   * @param model
    */
   public deleteOne(model: T): Promise<T> {
 
@@ -93,6 +86,17 @@ export abstract class HttpStore<T extends AbstractModel> extends AbstractStore<T
       .toPromise()
       .then((res: Response) => this.checkStatus(res))
       .then(() => model); //@todo flag model as existing
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public hasOne(model: T): Promise<boolean> {
+    return this.http.head(this.endpoint(model.getIdentifier()))
+      .toPromise()
+      .then((res: Response) => this.checkStatus(res))
+      .then(() => true)
+      .catch(() => false)
   }
 
   /**

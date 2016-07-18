@@ -23,8 +23,20 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
    */
   protected chanceInstance: ChanceInstance;
 
-  constructor(modelStatic: ModelStatic<T>, injector:Injector) {
+  protected modelCollection: Collection<T>;
+
+  constructor(modelStatic: ModelStatic<T>, injector: Injector) {
     super(modelStatic, injector);
+
+    this.initializeMockCollection();
+  }
+
+  /**
+   * Start the mock store off with some dummy data
+   */
+  protected initializeMockCollection(): void {
+    const models         = _.times(10, () => this.getMock());
+    this.modelCollection = new Collection(models);
   }
 
   /**
@@ -44,23 +56,24 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
    * Get an instance of the model
    * @param id
    */
-  protected abstract getMock(id?:identifier):T;
+  protected abstract getMock(id?: identifier): T;
 
   /**
    * @inheritdoc
    */
   public findOne(id?: identifier): Promise<T> {
-    return Promise.resolve(this.getMock(id));
+    try {
+      return Promise.resolve(this.modelCollection.findById(id));
+    } catch (e){
+      return this.saveOne(this.getMock(id))
+    }
   }
 
   /**
    * @inheritdoc
    */
-  public findMany(query?:any): Promise<Collection<T>> {
-
-    const models = _.times(10, () => this.getMock());
-
-    return Promise.resolve(new Collection(models));
+  public findMany(query?: any): Promise<Collection<T>> {
+    return Promise.resolve(this.modelCollection);
   }
 
   /**
@@ -69,12 +82,13 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
    * As saving does not make sense for a mock store, this just stubs the interface by returning
    * the model in a resolved promise
    */
-  public saveOne(model:T): Promise<T> {
+  public saveOne(model: T): Promise<T> {
+    this.modelCollection.push(model);
     return Promise.resolve(model);
   }
 
   /**
-   * Mock seleting model by id
+   * Mock selecting model by id
    *
    * As deleting does not make sense for a mock store, this just stubs the interface by returning
    * the model in a resolved promise
@@ -82,7 +96,15 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
    * @returns {Promise<void>}
    */
   public deleteOne(model: T): Promise<T> {
+    this.modelCollection.remove(model);
     return Promise.resolve(model);
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public hasOne(model: T): Promise<boolean> {
+    return Promise.resolve(this.modelCollection.contains(model));
   }
 
 }

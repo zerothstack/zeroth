@@ -99,6 +99,16 @@ deleteOne(request: Request, routeParams: RouteParamMap):Response;
 @Route('DELETE', '/')
 deleteMany(request: Request, routeParams: RouteParamMap):Response;
 ```
+### `patchOne`
+```typescript
+@Route('PATCH', '/:id')
+patchOne(request: Request, routeParams: RouteParamMap):Response;
+```
+### `patchMany` *(planned)*
+```typescript
+@Route('PATCH', '/')
+patchMany(request: Request, routeParams: RouteParamMap):Response;
+```
 
 You may note the absence of `POST` methods. This is intentional, as a well designed REST api that has distributed primary
 key generation (UUIDs) should never require a method that generates the id server-side. This is a core tenet of an

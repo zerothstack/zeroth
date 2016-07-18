@@ -130,6 +130,40 @@ describe('Http store', () => {
 
   })));
 
+  it('Checks if a single model exists with http', async(inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
+
+    let connection: MockConnection;
+    b.connections.subscribe((c: MockConnection) => connection = c);
+
+    const model = new TestModel({id: 321});
+
+    const testPromise = s.hasOne(model)
+      .then((res) => {
+
+        expect(res)
+          .toBe(true);
+
+        // make next request for failure, using 404 not found this time
+        const promise = s.hasOne(model);
+
+        connection.mockRespond(new Response(new ResponseOptions({
+          status: 404,
+        })));
+
+        return promise;
+
+      }).then((res) => {
+        expect(res).toBe(false);
+      });
+
+    connection.mockRespond(new Response(new ResponseOptions({
+      status: 204,
+    })));
+
+    return testPromise;
+
+  })));
+
   it('Deletes a single model with http', async(inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {
 
     let connection: MockConnection;

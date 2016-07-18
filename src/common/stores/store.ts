@@ -21,7 +21,7 @@ export abstract class AbstractStore<T extends AbstractModel> {
    * class-validator Validator instance
    * @see https://github.com/pleerock/class-validator
    */
-  protected validator:Validator;
+  protected validator: Validator;
 
   constructor(protected modelStatic: ModelStatic<T>, protected injector: Injector) {
 
@@ -52,6 +52,12 @@ export abstract class AbstractStore<T extends AbstractModel> {
    * @returns {Promise<T>}
    */
   public abstract saveOne(model: T): Promise<T>;
+
+  /**
+   * Check if a model exists in the database
+   * @param model
+   */
+  public abstract hasOne(model: T): Promise<boolean>;
 
   /**
    * Delete the model from the store.

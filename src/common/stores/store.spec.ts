@@ -12,6 +12,7 @@ import {
 import { ValidationException } from '../../server/exeptions/exceptions';
 import { Primary } from '../models/types/primary.decorator';
 import Spy = jasmine.Spy;
+import { Collection } from '../models/collection';
 
 @Injectable()
 class StubService {
@@ -187,6 +188,10 @@ describe('Mock Store', () => {
       .then((ship) => {
         expect(shipRef)
           .toEqual(ship);
+        return c.shipStore.findMany();
+      })
+      .then((allModels:Collection<Ship>) => {
+        expect(allModels.findById(1234)).toEqual(shipRef);
       });
 
   })));
@@ -203,6 +208,11 @@ describe('Mock Store', () => {
       .then((ship: Ship) => {
         expect(ship instanceof Ship)
           .toBe(true);
+
+        return c.shipStore.findMany();
+      })
+      .then((allModels:Collection<Ship>) => {
+        expect(() => allModels.findById(1234)).toThrowError('Item with id [1234] not in collection');
       });
 
   })));

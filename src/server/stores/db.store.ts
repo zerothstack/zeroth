@@ -6,7 +6,7 @@ import { Injectable, Injector } from '@angular/core';
 import { AbstractModel, ModelStatic, identifier } from '../../common/models/model';
 import { Database } from '../services/database.service';
 import { Logger } from '../../common/services/logger.service';
-import { AbstractStore } from '../../common/stores/store';
+import { AbstractStore, Query } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { NotFoundException } from '../exeptions/exceptions';
 import { Repository, Connection } from 'typeorm';
@@ -72,7 +72,7 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * @inheritdoc
    */
-  public findMany(query?: any): Promise<Collection<T>> {
+  public findMany(query?: Query): Promise<Collection<T>> {
     return this.getRepository()
       .then((repo) => repo.find({
         //@todo define query and restrict count with pagination
@@ -101,11 +101,21 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
 
   /**
    * @inheritdoc
-   * @param model
    */
   public deleteOne(model: T): Promise<T> {
     return this.getRepository()
       .then((repo) => repo.remove(model));
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public hasOne(model: T): Promise<boolean> {
+    return this.getRepository()
+      .then((repo) => repo.findOneById(model))
+      .then(() => true)
+      .catch(() => false)
+      ;
   }
 
 }

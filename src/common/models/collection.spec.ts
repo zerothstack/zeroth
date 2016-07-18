@@ -55,4 +55,13 @@ describe('Collection', () => {
       .toThrowError(`Item with id [3] not in collection`);
   });
 
+  it('can check if an entity is present in the collection', () => {
+
+    expect(collection.contains(data[1]))
+      .toBe(true);
+    expect(collection.contains(new BasicModel({id: 10})))
+      .toBe(false);
+
+  });
+
 });

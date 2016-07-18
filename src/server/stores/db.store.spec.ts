@@ -122,7 +122,6 @@ describe('Database Store', () => {
 
   })));
 
-
   it('deletes a single entity from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
     (db as any).connection = dbConnectionSpy;
@@ -194,6 +193,29 @@ describe('Database Store', () => {
           .toHaveBeenCalledWith(testModelFixture);
         expect(res)
           .toEqual(testModelFixture);
+      });
+
+  })));
+
+  it('checks if entity exists in the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
+
+    (db as any).connection = dbConnectionSpy;
+
+    const testModelFixture = new TestModel({id: 10});
+
+    repositorySpy.findOneById.and.returnValue(Promise.resolve(testModelFixture));
+
+    return store.hasOne(testModelFixture)
+      .then((res) => {
+        expect(res)
+          .toBe(true);
+        repositorySpy.findOneById.and.returnValue(Promise.reject(new Error('not found')));
+
+        return store.hasOne(testModelFixture);
+      })
+      .then((res) => {
+        expect(res)
+          .toBe(false);
       });
 
   })));
