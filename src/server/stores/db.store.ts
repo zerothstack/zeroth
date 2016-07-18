@@ -101,11 +101,21 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
 
   /**
    * @inheritdoc
-   * @param model
    */
   public deleteOne(model: T): Promise<T> {
     return this.getRepository()
       .then((repo) => repo.remove(model));
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public hasOne(model: T): Promise<boolean> {
+    return this.getRepository()
+      .then((repo) => repo.findOneById(model))
+      .then(() => true)
+      .catch(() => false)
+      ;
   }
 
 }
