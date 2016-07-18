@@ -79,16 +79,6 @@ of methods for interacting with the resource that controller provides.
 @Route('GET', '/')
 getMany(request: Request, routeParams: RouteParamMap):Response;
 ```
-### `postOne` *(planned)*
-```typescript
-@Route('POST', '/')
-postOne(request: Request, routeParams: RouteParamMap):Response;
-```
-### `postMany` *(planned)*
-```typescript
-@Route('POST', '/')
-postMany(request: Request, routeParams: RouteParamMap):Response;
-```
 ### `putOne`
 ```typescript
 @Route('PUT', '/:id')
@@ -99,7 +89,7 @@ putOne(request: Request, routeParams: RouteParamMap):Response;
 @Route('PUT', '/')
 putMany(request: Request, routeParams: RouteParamMap):Response;
 ```
-### `deleteOne` *(planned)*
+### `deleteOne`
 ```typescript
 @Route('DELETE', '/:id')
 deleteOne(request: Request, routeParams: RouteParamMap):Response;
