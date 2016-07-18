@@ -1,12 +1,3 @@
----
-** Important Notice **
-The maintainer of this project (@zakhenry) will be out of contact with the project from July 8th to July 17th - he is away canoeing in the Scandinavian wilderness, so won't have internet access.
-
-Never fear, the project is still very much in active development, he's just taking some much-needed time off. He'll be back with a hankering to make Ubiquits even more awesome in no time!
-
-With this understood, please delete this message and post your issue 
-
-----
 **I'm submitting a ...**
 - [ ] bug report
 - [ ] feature request
