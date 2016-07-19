@@ -21,7 +21,9 @@
   "exclude": [
     "node_modules",
     "lib",
-    "dist"
+    "dist",
+    "src/**/*.spec*",
+    "src/**/*.fixture*"
   ],
   "include": [
     "src/**/*"
