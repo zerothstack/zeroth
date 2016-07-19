@@ -3,11 +3,8 @@
  */
 /** End Typedoc Module Declaration */
 import { IncomingMessage } from 'http';
+import { UnprocessableEntityException, PayloadTooLargeException } from '../exeptions/exceptions';
 import EventEmitter = NodeJS.EventEmitter;
-import {
-  PayloadTooLargeException,
-  UnprocessableEntityException
-} from '../../common/exeptions/exceptions';
 
 /**
  * Request class that is passed into all middleware and controller methods to extract data from the

@@ -4,6 +4,7 @@
 /** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { AbstractService } from './service';
+import { InternalServerErrorException } from '../../server/exeptions/exceptions';
 
 /**
  * Syslog Levels

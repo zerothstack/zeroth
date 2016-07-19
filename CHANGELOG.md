@@ -1,5 +1,98 @@
-<a name="0.7.0"></a>
-# [0.7.0](https://github.com/ubiquits/ubiquits/compare/v0.6.10...v0.7.0) (2016-07-06)
+<a name="0.7.13"></a>
+## [0.7.13](https://github.com/ubiquits/ubiquits/compare/v0.7.12...v0.7.13) (2016-07-18)
+
+
+### Bug Fixes
+
+* **collection:** Fix chrome bug where splice invokes a new collection instance ([fb5067f](https://github.com/ubiquits/ubiquits/commit/fb5067f))
+* **relations:** Fix circulare module dependency issue caused by reciprocal relations ([e78267e](https://github.com/ubiquits/ubiquits/commit/e78267e))
+
+
+### Features
+
+* **relations:** Implement generics for relations to correctly type the type lookup methods ([48cb903](https://github.com/ubiquits/ubiquits/commit/48cb903))
+
+
+
+<a name="0.7.12"></a>
+## [0.7.12](https://github.com/ubiquits/ubiquits/compare/v0.7.11...v0.7.12) (2016-07-18)
+
+
+### Features
+
+* **controllers:** Add patchOne method, implement all supporting methods in stores and mocks ([5b9f9b6](https://github.com/ubiquits/ubiquits/commit/5b9f9b6))
+* **controllers:** Add tests for all patch methods ([a1150fc](https://github.com/ubiquits/ubiquits/commit/a1150fc))
+
+
+
+<a name="0.7.11"></a>
+## [0.7.11](https://github.com/ubiquits/ubiquits/compare/v0.7.10...v0.7.11) (2016-07-18)
+
+
+### Features
+
+* **controllers:** Implement deleteOne method for resource controller. Update docs ([69d40ba](https://github.com/ubiquits/ubiquits/commit/69d40ba))
+* **controllers:** Update docs for controller methods, add note about POST intentionally 501 ([43fd51e](https://github.com/ubiquits/ubiquits/commit/43fd51e))
+
+
+
+<a name="0.7.10"></a>
+## [0.7.10](https://github.com/ubiquits/ubiquits/compare/v0.7.9...v0.7.10) (2016-07-18)
+
+
+### Features
+
+* **stores:** Implement deleteOne method for all stores ([9254ee6](https://github.com/ubiquits/ubiquits/commit/9254ee6))
+
+
+
+<a name="0.7.9"></a>
+## [0.7.9](https://github.com/ubiquits/ubiquits/compare/v0.7.8...v0.7.9) (2016-07-18)
+
+
+
+<a name="0.7.8"></a>
+## [0.7.8](https://github.com/ubiquits/ubiquits/compare/v0.7.7...v0.7.8) (2016-07-07)
+
+
+### Features
+
+* **logger:** Add verbosity level capabilities to logger ([8c5a330](https://github.com/ubiquits/ubiquits/commit/8c5a330))
+
+
+
+<a name="0.7.7"></a>
+## [0.7.7](https://github.com/ubiquits/ubiquits/compare/v0.7.6...v0.7.7) (2016-07-07)
+
+
+
+<a name="0.7.6"></a>
+## [0.7.6](https://github.com/ubiquits/ubiquits/compare/v0.7.5...v0.7.6) (2016-07-07)
+
+
+
+<a name="0.7.5"></a>
+## [0.7.5](https://github.com/ubiquits/ubiquits/compare/v0.7.4...v0.7.5) (2016-07-07)
+
+
+
+<a name="0.7.4"></a>
+## [0.7.4](https://github.com/ubiquits/ubiquits/compare/v0.7.3...v0.7.4) (2016-07-07)
+
+
+
+<a name="0.7.3"></a>
+## [0.7.3](https://github.com/ubiquits/ubiquits/compare/v0.7.2...v0.7.3) (2016-07-06)
+
+
+
+<a name="0.7.2"></a>
+## [0.7.2](https://github.com/ubiquits/ubiquits/compare/v0.7.1...v0.7.2) (2016-07-06)
+
+
+
+<a name="0.7.1"></a>
+## [0.7.1](https://github.com/ubiquits/ubiquits/compare/v0.6.10...v0.7.1) (2016-07-06)
 
 
 * refactor(controller):Removed required dependency Server from abstract controller ([f35e00c](https://github.com/ubiquits/ubiquits/commit/f35e00c))

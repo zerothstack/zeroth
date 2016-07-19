@@ -1,5 +1,15 @@
 import { UUID, AbstractModel } from './model';
 import { Primary } from './types/primary.decorator';
+import Moment = moment.Moment;
+
+class ChildModel extends AbstractModel {
+
+  @Primary()
+  public id: string;//UUID;
+
+  public name: string;
+
+}
 
 class BasicModel extends AbstractModel {
 

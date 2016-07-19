@@ -10,7 +10,7 @@ import { Request } from './request';
 import { Response } from './response';
 import { AbstractController } from './abstract.controller';
 import { Route } from './route.decorator';
-import { UnavailableForLegalReasonsException } from '../../common/exeptions/exceptions';
+import { UnavailableForLegalReasonsException } from '../exeptions/exceptions';
 
 @Injectable()
 class TestController extends AbstractController {

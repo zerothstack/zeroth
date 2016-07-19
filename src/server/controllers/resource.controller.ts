@@ -12,7 +12,7 @@ import { Request } from './request';
 import { AbstractStore } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { ValidatorOptions } from '../../common/validation';
-import { NotFoundException } from '../../common/exeptions/exceptions';
+import { NotFoundException } from '../exeptions/exceptions';
 
 /**
  * Provides resource controller that all controllers that interact RESTfully with ModelStores
