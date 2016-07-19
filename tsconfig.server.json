@@ -9,19 +9,23 @@
     "removeComments": false,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "declaration": true
+    "declaration": false,
+    "outDir": "dist/server",
+    "sourceRoot": "src",
+    "inlineSources": true,
+    "types": [
+      "node",
+      "jasmine",
+      "socket.io"
+    ]
   },
   "exclude": [
     "node_modules",
     "lib",
     "dist",
-    "index.ts",
-    "index.d.ts",
-    "server.ts",
-    "server.d.ts",
-    "browser.ts",
-    "browser.d.ts",
-    "common.ts",
-    "common.d.ts"
+    "src/browser"
+  ],
+  "include": [
+    "src/**/*"
   ]
 }

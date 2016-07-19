@@ -22,9 +22,6 @@ before_install:
 - pr-bumper check
 - cp .env.example .env
 - sudo apt-get update
-#- sudo apt-get install -y libappindicator1 fonts-liberation
-#- wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#- sudo dpkg -i google-chrome*.deb
 - export CHROME_BIN=/usr/bin/google-chrome
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
@@ -42,9 +39,7 @@ before_deploy:
 - ssh-add .travis/deployment_key.pem
 - pr-bumper bump
 - git fetch --tags # make sure travis ci has all remote tags for changelog
-- u changelog
-- u doc build
-- u typedoc
+- cp -r lib/* . # hoist ./lib files to cwd for better module structure
 env:
   global:
   - secure: n/IuwtJpQAd5LG1ik75mJOjMuK4uOAYeaQERNG+eYj2v5gJ7QMIn3z/osV3rP3C3TOfPvRRwN8f2L8mOjhUndHMFizpxeFdXkE0zKmqYza8OEywx6USbNq3qJTafx/01cW8Ttqm79dmxkO+59xan/7MiAY8OYRRz8SHBc9vVYHuGmzrrDoEHpK8HLs8N2UNX2LZUoZFoqJ2fDUiP/mktXj1GJ/+X00f12mtez8rmnvrnV8fNThRbQoR0T6SY7Cq/Tj+UArpLhRhqvD61/BIz7e4PTFgCmZrB6xBWU9Dzv9/2CBR1CWrKwWHB2nn2NexKCIjQ9Kdnx43tx7t96nmXV7MVzovDwJ0lkod4v2vdjr3x02M1hoaaOEnCO3tyFRcA93R6yUlWyoXUqGtSzmJMKNXPvzKkNMhqRNaBD4q02+ss/9Ocfzq2ZeUCgZ+wUghSb2BxvvLDWii3nKlrtAhraGQHtusb6Np96PaXvlRpuXRvK6h9FaSvf15sdhL7yZ19CbQnuryEgVmntxpMVxFR9WWwpKOq/Ih+kRC1jns9Hv54xSuziteewpHmcKs2LHCggXblCWsQlnGhKuvKB9jfZVVYGXC6eGkzfIVaebiIVwuYvBhcCqwE8ZF2MI890hCncFIXIvZiNd/tClyVFSCzOaDruecX34BW9UFvczORglc=

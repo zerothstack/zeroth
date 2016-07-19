@@ -9,16 +9,21 @@
     "removeComments": false,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "outDir": "lib",
     "sourceRoot": "src",
-    "outDir": "dist/browser",
     "types": [
-      "jasmine"
+      "node",
+      "jasmine",
+      "socket.io"
     ]
   },
   "exclude": [
     "node_modules",
     "lib",
-    "dist",
-    "src/server"
+    "dist"
+  ],
+  "include": [
+    "src/**/*"
   ]
 }

@@ -9,10 +9,10 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface
 } from '../validation';
-import { ValidationException } from '../../server/exeptions/exceptions';
 import { Primary } from '../models/types/primary.decorator';
 import Spy = jasmine.Spy;
 import { Collection } from '../models/collection';
+import { ValidationException } from '../exeptions/exceptions';
 
 @Injectable()
 class StubService {
