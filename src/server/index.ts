@@ -23,4 +23,3 @@ export * from './seeders';
 export * from './migrations';
 export * from './stores';
 export * from './middleware';
-export * from './exeptions';

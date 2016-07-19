@@ -1,4 +1,3 @@
-import Moment = moment.Moment;
 import { ThumbModel } from './thumb.model.fixture';
 import { HandModel } from './hand.model.fixture';
 
@@ -26,6 +25,10 @@ describe('Model Relations', () => {
     expect(relations.get('belongsTo')
       .get('hand').foreign)
       .toEqual(HandModel);
+
+    expect(relations.get('belongsTo')
+      .get('hand').viaProperty(new HandModel({handId:1})))
+      .toEqual(1);
 
   });
 
