@@ -34,3 +34,9 @@ testem.log
 
 #deployment keys
 .travis/*.pem
+
+# hoisted /lib files
+/index.*
+/browser
+/common
+/server

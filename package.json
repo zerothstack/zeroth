@@ -9,7 +9,7 @@
     "test": "u test -s",
     "coveralls": "u coveralls",
     "build": "u build",
-    "postpublish": "u deploy docs"
+    "postpublish": "u changelog && u doc build && u deploy docs"
   },
   "repository": {
     "type": "git",

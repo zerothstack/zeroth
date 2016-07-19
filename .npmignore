@@ -18,4 +18,3 @@
 
 # root config
 !/.env.example
-!/typings.json
