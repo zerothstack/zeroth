@@ -9,6 +9,8 @@ import { Injector } from '@angular/core';
 import { Chance } from 'chance';
 import * as _ from 'lodash';
 
+export type ChanceInstance = Chance.Chance;
+
 /**
  * Provides abstract class to build concrete mock stores which can create new mock instances of
  * models.
@@ -19,7 +21,7 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
    * Instance of chancejs
    * @see http://chancejs.com
    */
-  protected chanceInstance: Chance.Chance;
+  protected chanceInstance: ChanceInstance;
 
   protected modelCollection: Collection<T>;
 
@@ -43,7 +45,7 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
    * @param seed
    * @returns {ChanceInstance}
    */
-  protected chance(seed?: any): Chance.Chance {
+  protected chance(seed?: any): ChanceInstance {
     if (!this.chanceInstance || !!seed) {
       this.chanceInstance = new Chance(seed);
     }

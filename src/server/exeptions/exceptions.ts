@@ -1,5 +1,5 @@
 /**
- * @module common
+ * @module server
  */
 /** End Typedoc Module Declaration */
 import { ValidationError } from 'class-validator';
