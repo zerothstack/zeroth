@@ -1,7 +1,4 @@
-/**
- * @module common
- */
-/** End Typedoc Module Declaration */
+import Moment = moment.Moment;
 import { AbstractModel } from '../model';
 import { Primary } from '../types/primary.decorator';
 import { BelongsTo } from './belongsTo.decorator';

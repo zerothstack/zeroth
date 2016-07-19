@@ -7,10 +7,10 @@ import { DatabaseStore } from './db.store';
 import { AbstractModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
+import { NotFoundException } from '../exeptions/exceptions';
 import { Collection } from '../../common/models/collection';
 import { DatabaseMock } from '../services/database.service.mock';
 import Spy = jasmine.Spy;
-import { NotFoundException } from '../../common/exeptions/exceptions';
 
 class TestModel extends AbstractModel {
 

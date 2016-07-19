@@ -1,10 +1,7 @@
 import { Request } from '../controllers/request';
 import { IncomingMessage } from 'http';
 import { EventEmitter } from 'events';
-import {
-  UnprocessableEntityException,
-  PayloadTooLargeException
-} from '../../common/exeptions/exceptions';
+import { PayloadTooLargeException, UnprocessableEntityException } from '../exeptions/exceptions';
 
 describe('Request', () => {
 
