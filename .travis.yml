@@ -41,6 +41,7 @@ before_deploy:
 - chmod 600 .travis/deployment_key.pem
 - ssh-add .travis/deployment_key.pem
 - pr-bumper bump
+- git fetch --tags # make sure travis ci has all remote tags for changelog
 - u changelog
 - u doc build
 - u typedoc
