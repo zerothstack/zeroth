@@ -9,9 +9,10 @@
     "removeComments": false,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "declaration": true,
-    "outDir": "lib",
+    "declaration": false,
+    "outDir": "dist/server",
     "sourceRoot": "src",
+    "inlineSources": true,
     "types": [
       "node",
       "jasmine",
@@ -22,8 +23,7 @@
     "node_modules",
     "lib",
     "dist",
-    "src/**/*.spec*",
-    "src/**/*.fixture*"
+    "src/browser"
   ],
   "include": [
     "src/**/*"
