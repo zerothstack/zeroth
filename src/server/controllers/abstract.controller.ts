@@ -10,9 +10,9 @@ import { PromiseFactory } from '../../common/util/serialPromise';
 import { Response } from './response';
 import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
-import { HttpException, InternalServerErrorException } from '../exeptions/exceptions';
 import { RegistryEntityStatic, RegistryEntity } from '../../common/registry/entityRegistry';
 import { ControllerMetadata } from '../../common/metadata/metadata';
+import { InternalServerErrorException, HttpException } from '../../common/exeptions/exceptions';
 
 export interface MethodDefinition {
   method: HttpMethod;
