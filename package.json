@@ -9,6 +9,7 @@
     "test": "u test -s",
     "coveralls": "u coveralls",
     "build": "u build",
+    "prepublish": "cp -r lib/* .",
     "postpublish": "u changelog && u doc build && u deploy docs"
   },
   "repository": {
@@ -68,7 +69,7 @@
     "@types/validator": "^4.5.26"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "^0.2.1",
+    "@ubiquits/toolchain": "^0.2.2",
     "proxyquire": "^1.7.10"
   },
   "directories": {
