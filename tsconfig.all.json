@@ -12,6 +12,7 @@
     "declaration": true,
     "outDir": "lib",
     "sourceRoot": "src",
+    "skipLibCheck": true,
     "types": [
       "node",
       "jasmine",

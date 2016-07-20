@@ -11,6 +11,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "sourceRoot": "src",
     "outDir": "dist/browser",
+    "skipLibCheck": true,
     "types": [
       "jasmine"
     ]

@@ -13,6 +13,7 @@
     "outDir": "dist/server",
     "sourceRoot": "src",
     "inlineSources": true,
+    "skipLibCheck": true,
     "types": [
       "node",
       "jasmine",
