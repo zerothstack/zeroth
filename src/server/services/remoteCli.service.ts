@@ -9,7 +9,7 @@ import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
 import { Response } from '../controllers/response';
 import { PromiseFactory } from '../../common/util/serialPromise';
-import * as Vantage from 'vantage';
+import * as Vantage from '@xiphiaz/vantage';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
 
@@ -103,6 +103,8 @@ export class RemoteCli extends AbstractService {
 
     this.vantage.delimiter('ubiquits-runtime~$');
 
+    this.registerAuthenticationStrategy();
+
     let displayBanner = `Welcome to Ubiquits runtime cli. Type 'help' for commands`;
     if ((<any>process.stdout).columns > 68) {
       displayBanner = `${banner}\n${displayBanner}`;
@@ -164,6 +166,8 @@ export class RemoteCli extends AbstractService {
       };
     }
 
+    this.logger.debug('Auth function', this.vantage._authFn);
+
     this.vantage.listen(port, callback);
     this.logger.info(`Vantage server started on ${port}`);
 
@@ -181,4 +185,23 @@ export class RemoteCli extends AbstractService {
     return table(data, config);
   }
 
+  protected registerAuthenticationStrategy(): void {
+
+    this.vantage.auth((vantage: any, options: any) => {
+      return (args: any, cb: Function) => {
+        try {
+          if (args.client && args.client.auth == 'zak:password'){
+            return cb('Ok', true);
+          }
+
+          return cb("Credentials are incorrect", false);
+        } catch (e){
+          this.logger.error('Authentication error', e);
+          cb(null, false);
+        }
+      }
+    });
+
+    this.logger.debug('Registered vantage authentication strategy');
+  }
 }
