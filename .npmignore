@@ -1,16 +1,11 @@
-
 #ignore all
 /*
-# add lib output
-!/lib/**
-# remove lib maps
-/lib/**/*.map
 
 !/docker/**
-
-# root js files
-!/*.js
-!/*.d.ts
+!/common/**
+!/browser/**
+!/server/**
+!/index.*
 
 # root docs
 #!/README.md
