@@ -6,7 +6,7 @@ description: Full stack isomorphic typescript framework.
 
 ## Roadmap
 
-### First [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) release (feature complete) [July 29]
+### First [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) release (feature complete) [August 26]
 - [ ] Angular Universal (server side prerendering) integration
 - [ ] Docker deployment
 - [ ] Email sending
