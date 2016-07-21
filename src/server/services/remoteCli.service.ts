@@ -3,7 +3,7 @@
  */
 /** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
-import { banner } from '../../common/util/banner';
+import { bannerBg } from '../../common/util/banner';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
@@ -102,16 +102,9 @@ export class RemoteCli extends AbstractService {
   public initialize(): this {
     this.vantage = new Vantage();
 
-    this.vantage.delimiter('ubiquits-runtime~$');
+    this.vantage.delimiter(chalk.magenta('ubiquits-runtime~$'));
 
     this.registerAuthenticationStrategy();
-
-    let displayBanner = `Welcome to Ubiquits runtime cli. Type 'help' for commands`;
-    if ((<any>process.stdout).columns > 68) {
-      displayBanner = `${banner}\n${displayBanner}`;
-    }
-
-    this.vantage.banner(displayBanner);
 
     this.logger.debug('Remote cli initialized');
 
@@ -189,30 +182,46 @@ export class RemoteCli extends AbstractService {
   protected registerAuthenticationStrategy(): void {
 
     this.vantage.auth((vantage: any, options: any) => {
-      return (args: any, cb: Function) => {
-        try {
-          this.logger.silly.debug('Passed client arguments: ', args);
 
-          if (!args.client.jwt) {
+      const remoteCli = this;
+
+      return function (args: {client: {jwt: string, publicKeyPath: string, columns: number}}, cb: Function) {
+
+        try {
+          remoteCli.logger.silly.debug('Passed client arguments: ', args);
+
+          const token: string   = args.client.jwt;
+          const keyPath: string = args.client.publicKeyPath;
+
+          if (!token) {
             return cb("JWT was not passed in connection request", false);
           }
 
-          this.logger.info(`Authenticating JSON web token against public key [${args.client.publicKeyPath}]`);
+          remoteCli.logger.info(`Authenticating JSON web token against public key [${keyPath}]`);
 
-          this.authService.verify(args.client.jwt, args.client.publicKeyPath)
+          remoteCli.authService.verify(token, keyPath)
             .then((payload: any) => {
-              this.logger.info(`Welcome ${payload.username}, you are authenticated`);
+              remoteCli.logger.info(`${payload.username} has been authenticated with token`)
+                .debug('Token:', token);
+              let displayBanner = `Hi ${payload.username}, Welcome to Ubiquits runtime cli.`;
+              this.log('columns', args.client.columns);
+              if (args.client.columns > 80) {
+                displayBanner = bannerBg(undefined, token);
+              }
+              this.log(chalk.grey(`You were authenticated with a JSON Web token verified against the public key at ${keyPath}`));
+              this.log(displayBanner);
+              this.log(` Type 'help' for a list of available commands`);
               return cb(null, true);
             })
-            .catch(() => {
-              return cb("Credentials are incorrect", false);
+            .catch((e: Error) => {
+              return cb(e.message, false);
             });
 
         } catch (e) {
-          this.logger.error('Authentication error', e);
+          remoteCli.logger.error('Authentication error', e);
           cb(null, false);
         }
-      }
+      };
     });
 
     this.logger.debug('Registered vantage authentication strategy');
