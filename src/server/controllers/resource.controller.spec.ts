@@ -17,6 +17,8 @@ import { EventEmitter } from 'events';
 import { IncomingMessage } from 'http';
 import { Primary } from '../../common/models/types/primary.decorator';
 import * as _ from 'lodash';
+import { AuthServiceMock } from '../services/authService.service.mock';
+import { AuthService } from '../services/authService.service';
 
 class Fruit extends AbstractModel {
   @Primary()
@@ -61,6 +63,7 @@ const providers = [
   {provide: Logger, useClass: LoggerMock},
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
+  {provide: AuthService, useClass: AuthServiceMock},
 ];
 
 describe('Resource Controller', () => {

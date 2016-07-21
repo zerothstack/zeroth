@@ -12,6 +12,8 @@ import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { debugLog, DebugLogMiddleware } from './debugLog.middleware';
+import { AuthServiceMock } from '../services/authService.service.mock';
+import { AuthService } from '../services/authService.service';
 
 @Injectable()
 class MiddlewareController extends AbstractController {
@@ -45,6 +47,7 @@ const providers: any[] = [
         {provide: Server, useClass: ServerMock},
         {provide: Logger, useClass: LoggerMock},
         {provide: RemoteCli, useClass: RemoteCliMock},
+        {provide: AuthService, useClass: AuthServiceMock},
         {
           provide: DebugLogMiddleware,
           deps: [],

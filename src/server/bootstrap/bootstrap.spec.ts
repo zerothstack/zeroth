@@ -8,6 +8,8 @@ import { bootstrap, BootstrapResponse, deferredLog } from './index';
 import { registry } from '../../common/registry/entityRegistry';
 import { ClassDictionary } from './bootstrap';
 import Spy = jasmine.Spy;
+import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/authService.service.mock';
 
 let loggerInstance: Logger;
 
@@ -24,6 +26,7 @@ const providers: any[] = [
   },
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
+  {provide: AuthService, useClass: AuthServiceMock},
 ];
 
 describe('Bootstrap', () => {

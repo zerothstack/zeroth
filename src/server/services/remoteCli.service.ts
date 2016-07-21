@@ -16,6 +16,7 @@ import { AbstractService } from '../../common/services/service';
 const table: Table = require('table').default;
 
 import Socket = SocketIO.Socket;
+import { AuthService } from './authService.service';
 
 export interface TableBorderTemplate {
 
@@ -89,7 +90,7 @@ export class RemoteCli extends AbstractService {
    */
   private logger: Logger;
 
-  constructor(loggerBase: Logger, private injector: Injector) {
+  constructor(loggerBase: Logger, private injector: Injector, protected authService: AuthService) {
     super();
     this.logger = loggerBase.source('remote-cli');
   }
@@ -190,12 +191,24 @@ export class RemoteCli extends AbstractService {
     this.vantage.auth((vantage: any, options: any) => {
       return (args: any, cb: Function) => {
         try {
-          if (args.client && args.client.auth == 'zak:password'){
-            return cb('Ok', true);
+          this.logger.silly.debug('Passed client arguments: ', args);
+
+          if (!args.client.jwt) {
+            return cb("JWT was not passed in connection request", false);
           }
 
-          return cb("Credentials are incorrect", false);
-        } catch (e){
+          this.logger.info(`Authenticating JSON web token against public key [${args.client.publicKeyPath}]`);
+
+          this.authService.verify(args.client.jwt, args.client.publicKeyPath)
+            .then((payload: any) => {
+              this.logger.info(`Welcome ${payload.username}, you are authenticated`);
+              return cb(null, true);
+            })
+            .catch(() => {
+              return cb("Credentials are incorrect", false);
+            });
+
+        } catch (e) {
           this.logger.error('Authentication error', e);
           cb(null, false);
         }

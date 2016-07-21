@@ -12,11 +12,14 @@ import { AbstractController } from '../controllers/abstract.controller';
 import { Route } from '../controllers/route.decorator';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
+import { AuthServiceMock } from '../services/authService.service.mock';
+import { AuthService } from '../services/authService.service';
 
 const providers: any[] = [
   {provide: Logger, useClass: LoggerMock},
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
+  {provide: AuthService, useClass: AuthServiceMock},
 ];
 
 @Injectable()

@@ -8,13 +8,15 @@ import { registry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCliMock } from './remoteCli.service.mock';
+import { AuthServiceMock } from './authService.service.mock';
+import { AuthService } from './authService.service';
 
 import Spy = jasmine.Spy;
 
 describe('Remote Commands', () => {
 
   const vantageSpy = jasmine.createSpyObj('vantage', [
-    'delimiter', 'banner', 'command', 'description', 'action', 'listen'
+    'delimiter', 'banner', 'command', 'description', 'action', 'listen', 'auth'
   ]);
 
   //support chaining
@@ -28,20 +30,21 @@ describe('Remote Commands', () => {
   const tableSpy              = jasmine.createSpy('table');
 
   const mockedModule = proxyquire('./remoteCli.service', {
-    vantage: vantageConstructorSpy,
+    ['@xiphiaz/vantage']: vantageConstructorSpy,
     table: tableSpy,
   });
 
   const providers = [
     {
       provide: RemoteCli,
-      deps: [Logger, Injector],
-      useFactory: (logger: Logger, injector: Injector) => {
-        return new mockedModule.RemoteCli(logger, injector).initialize();
+      deps: [Logger, Injector, AuthService],
+      useFactory: (logger: Logger, injector: Injector, authService:AuthService) => {
+        return new mockedModule.RemoteCli(logger, injector, authService).initialize();
       }
     },
     {provide: Logger, useClass: LoggerMock},
     {provide: Server, useClass: ServerMock},
+    {provide: AuthService, useClass: AuthServiceMock},
   ];
 
   beforeEach(() => {
@@ -140,6 +143,7 @@ describe('Remote Command Mock', () => {
     RemoteCliMock,
     {provide: Logger, useClass: LoggerMock},
     {provide: Server, useClass: ServerMock},
+    {provide: AuthService, useClass: AuthServiceMock},
   ];
 
   beforeEach(() => {

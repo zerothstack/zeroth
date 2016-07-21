@@ -10,6 +10,8 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { Server } from '../servers/abstract.server';
 import Spy = jasmine.Spy;
+import { AuthServiceMock } from '../services/authService.service.mock';
+import { AuthService } from '../services/authService.service';
 
 let loggerInstance: Logger = new LoggerMock();
 
@@ -22,6 +24,7 @@ const providers: any[] = [
   },
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
+  {provide: AuthService, useClass: AuthServiceMock},
 ];
 
 @Injectable()
