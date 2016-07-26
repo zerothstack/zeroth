@@ -17,6 +17,7 @@ const table: Table = require('table').default;
 
 import Socket = SocketIO.Socket;
 import { AuthService } from './authService.service';
+import { jwtAuthStrategyFactory } from './jwtAuthStrategy';
 
 export interface TableBorderTemplate {
 
@@ -73,6 +74,28 @@ export interface ConnectedSocketCallback {
   (socket: Socket): void;
 }
 
+
+export interface RemoteCliContext {
+  logger: Logger;
+  authService: AuthService;
+}
+
+export interface AuthenticationStrategyFactory {
+  (remoteCliContext: RemoteCliContext): AuthenticationStrategy;
+}
+
+export interface Authenticator {
+  (args: any, cb: Function): void;
+}
+
+export interface AuthenticationStrategy {
+  (vantage: any, options?: any): Authenticator;
+}
+
+export interface AuthenticationCallback {
+  (errorMessage: string, isSuccessful: boolean): void;
+}
+
 /**
  * Class allows developers to register custom commands that can be remote executed in a
  * shell environment. Useful for things like migrations and debugging.
@@ -88,7 +111,7 @@ export class RemoteCli extends AbstractService {
   /**
    * Logger instance for the class, initialized with `remote-cli` source
    */
-  private logger: Logger;
+  protected logger: Logger;
 
   constructor(loggerBase: Logger, private injector: Injector, protected authService: AuthService) {
     super();
@@ -179,50 +202,15 @@ export class RemoteCli extends AbstractService {
     return table(data, config);
   }
 
+  /**
+   * Register the authentication strategy with vantage
+   */
   protected registerAuthenticationStrategy(): void {
 
-    this.vantage.auth((vantage: any, options: any) => {
+    //when more auth strategies exist this should be refactored to injected class
+    const strategy:AuthenticationStrategy = jwtAuthStrategyFactory(this as any);
 
-      const remoteCli = this;
-
-      return function (args: {client: {jwt: string, publicKeyPath: string, columns: number}}, cb: Function) {
-
-        try {
-          remoteCli.logger.silly.debug('Passed client arguments: ', args);
-
-          const token: string   = args.client.jwt;
-          const keyPath: string = args.client.publicKeyPath;
-
-          if (!token) {
-            return cb("JWT was not passed in connection request", false);
-          }
-
-          remoteCli.logger.info(`Authenticating JSON web token against public key [${keyPath}]`);
-
-          remoteCli.authService.verify(token, keyPath)
-            .then((payload: any) => {
-              remoteCli.logger.info(`${payload.username} has been authenticated with token`)
-                .debug('Token:', token);
-              let displayBanner = `Hi ${payload.username}, Welcome to Ubiquits runtime cli.`;
-              this.log('columns', args.client.columns);
-              if (args.client.columns > 80) {
-                displayBanner = bannerBg(undefined, token);
-              }
-              this.log(chalk.grey(`You were authenticated with a JSON Web token verified against the public key at ${keyPath}`));
-              this.log(displayBanner);
-              this.log(` Type 'help' for a list of available commands`);
-              return cb(null, true);
-            })
-            .catch((e: Error) => {
-              return cb(e.message, false);
-            });
-
-        } catch (e) {
-          remoteCli.logger.error('Authentication error', e);
-          cb(null, false);
-        }
-      };
-    });
+    this.vantage.auth(strategy);
 
     this.logger.debug('Registered vantage authentication strategy');
   }

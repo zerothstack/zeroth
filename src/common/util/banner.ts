@@ -24,8 +24,8 @@ export const banner = `
 
 export function bannerBg(message: string = '$ Ubiquits Runtime CLI', bgString: string): string {
 
-  let shortMessage:string = '';
-  let longMessage:string = '';
+  let shortMessage: string = '';
+  let longMessage: string  = '';
 
   message = ` ${message} `;
 
