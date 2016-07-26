@@ -14,8 +14,8 @@ import { StoredProperty } from '../../common/models/types/storedProperty.decorat
 import * as typeormColumns from 'typeorm/columns';
 import { CreatedDate, UpdatedDate } from '../../common/models/types/timestamp.decorator';
 import Spy = jasmine.Spy;
-import { AuthServiceMock } from '../services/authService.service.mock';
-import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 const providers: any[] = [
   {provide: Logger, useClass: LoggerMock},

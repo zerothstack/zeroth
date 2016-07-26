@@ -10,8 +10,8 @@ import { RemoteCliMock } from './remoteCli.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import * as SQL from 'sql-template-strings';
 import Spy = jasmine.Spy;
-import { AuthServiceMock } from './authService.service.mock';
-import { AuthService } from './authService.service';
+import { AuthServiceMock } from './auth.service.mock';
+import { AuthService } from './auth.service';
 
 @Injectable()
 class ExampleUtil {

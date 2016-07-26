@@ -11,8 +11,8 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Route } from './route.decorator';
 import { Controller } from '../../common/registry/decorators';
-import { AuthServiceMock } from '../services/authService.service.mock';
-import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 @Controller({

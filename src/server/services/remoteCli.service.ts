@@ -16,7 +16,7 @@ import { AbstractService } from '../../common/services/service';
 const table: Table = require('table').default;
 
 import Socket = SocketIO.Socket;
-import { AuthService } from './authService.service';
+import { AuthService } from './auth.service';
 import { jwtAuthStrategyFactory } from './jwtAuthStrategy';
 
 export interface TableBorderTemplate {

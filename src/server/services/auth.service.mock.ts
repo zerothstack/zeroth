@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Service } from '../../common/registry/decorators';
 import * as jwt from 'jsonwebtoken';
-import { AuthService } from './authService.service';
+import { AuthService } from './auth.service';
 
 /**
  * Class allows developers to register custom commands that can be remote executed in a
@@ -20,7 +20,7 @@ export class AuthServiceMock extends AuthService {
     super(loggerBase);
   }
 
-  public verify(jwtToken: string, publicKeyPath: string, params: Object = {}): Promise<any> {
+  public verify(jwtToken: string, publicKeyPath: string = '', params: Object = {}): Promise<any> {
 
     return Promise.resolve(jwt.decode(jwtToken));
   }

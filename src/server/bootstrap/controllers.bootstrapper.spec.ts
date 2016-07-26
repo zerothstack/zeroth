@@ -12,8 +12,8 @@ import { AbstractController } from '../controllers/abstract.controller';
 import { Route } from '../controllers/route.decorator';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
-import { AuthServiceMock } from '../services/authService.service.mock';
-import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 const providers: any[] = [
   {provide: Logger, useClass: LoggerMock},

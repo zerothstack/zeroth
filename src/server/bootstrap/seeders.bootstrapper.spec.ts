@@ -10,8 +10,8 @@ import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
 import { AbstractSeeder } from '../seeders/index';
 import Spy = jasmine.Spy;
-import { AuthServiceMock } from '../services/authService.service.mock';
-import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 let loggerInstance: Logger = new LoggerMock();
 

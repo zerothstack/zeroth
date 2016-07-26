@@ -11,8 +11,8 @@ import { Response } from './response';
 import { AbstractController } from './abstract.controller';
 import { Route } from './route.decorator';
 import { UnavailableForLegalReasonsException } from '../../common/exeptions/exceptions';
-import { AuthServiceMock } from '../services/authService.service.mock';
-import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 class TestController extends AbstractController {

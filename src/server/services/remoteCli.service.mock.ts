@@ -7,7 +7,7 @@ import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Service } from '../../common/registry/decorators';
 
-import { AuthService } from './authService.service';
+import { AuthService } from './auth.service';
 
 /**
  * Provides no-side effect mock for RemoteCli for use in testing fixtures

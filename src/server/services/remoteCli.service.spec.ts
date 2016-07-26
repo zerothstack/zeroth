@@ -8,8 +8,8 @@ import { registry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCliMock } from './remoteCli.service.mock';
-import { AuthServiceMock } from './authService.service.mock';
-import { AuthService } from './authService.service';
+import { AuthServiceMock } from './auth.service.mock';
+import { AuthService } from './auth.service';
 import * as chalk from 'chalk';
 
 import Spy = jasmine.Spy;

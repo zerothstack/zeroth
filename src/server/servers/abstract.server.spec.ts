@@ -7,8 +7,8 @@ import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Response } from '../controllers/response';
 import Spy = jasmine.Spy;
-import { AuthService } from '../services/authService.service';
-import { AuthServiceMock } from '../services/authService.service.mock';
+import { AuthService } from '../services/auth.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
 
 @Injectable()
 export class ServerMock extends Server {

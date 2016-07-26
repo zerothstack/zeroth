@@ -12,8 +12,8 @@ import { AbstractMigration } from '../migrations/index';
 import { Database } from '../services/database.service';
 import { DatabaseMock } from '../services/database.service.mock';
 import Spy = jasmine.Spy;
-import { AuthServiceMock } from '../services/authService.service.mock';
-import { AuthService } from '../services/authService.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 let loggerInstance: Logger = new LoggerMock();
 let databaseInstance: Database;
