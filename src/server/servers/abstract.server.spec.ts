@@ -7,6 +7,8 @@ import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Response } from '../controllers/response';
 import Spy = jasmine.Spy;
+import { AuthService } from '../services/auth.service';
+import { AuthServiceMock } from '../services/auth.service.mock';
 
 @Injectable()
 export class ServerMock extends Server {
@@ -39,6 +41,7 @@ describe('Server', () => {
     {provide: Server, useClass: ServerMock},
     {provide: Logger, useClass: LoggerMock},
     {provide: RemoteCli, useClass: RemoteCliMock},
+    {provide: AuthService, useClass: AuthServiceMock},
   ];
 
   let cliSpy: Spy;
@@ -116,7 +119,7 @@ describe('Server', () => {
 
   })));
 
-  it('starts the server running and returns promise', inject([Server], (server: Server) => {
+  it('gets default response object from server', inject([Server], (server: Server) => {
     const response: Response = (<any>server).getDefaultResponse();
 
     expect(response instanceof Response)

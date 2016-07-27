@@ -10,6 +10,8 @@ import { RemoteCliMock } from './remoteCli.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import * as SQL from 'sql-template-strings';
 import Spy = jasmine.Spy;
+import { AuthServiceMock } from './auth.service.mock';
+import { AuthService } from './auth.service';
 
 @Injectable()
 class ExampleUtil {
@@ -41,6 +43,7 @@ describe('Database', () => {
   const providers = [
     {provide: Logger, useClass: LoggerMock},
     {provide: RemoteCli, useClass: RemoteCliMock},
+    {provide: AuthService, useClass: AuthServiceMock},
     Database,
     ExampleUtil
   ];

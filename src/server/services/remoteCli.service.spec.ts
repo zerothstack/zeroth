@@ -8,13 +8,16 @@ import { registry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { ServerMock } from '../servers/abstract.server.spec';
 import { RemoteCliMock } from './remoteCli.service.mock';
+import { AuthServiceMock } from './auth.service.mock';
+import { AuthService } from './auth.service';
+import * as chalk from 'chalk';
 
 import Spy = jasmine.Spy;
 
-describe('Remote Commands', () => {
+describe('Remote CLI Commands', () => {
 
   const vantageSpy = jasmine.createSpyObj('vantage', [
-    'delimiter', 'banner', 'command', 'description', 'action', 'listen'
+    'delimiter', 'banner', 'command', 'description', 'action', 'listen', 'auth'
   ]);
 
   //support chaining
@@ -28,20 +31,21 @@ describe('Remote Commands', () => {
   const tableSpy              = jasmine.createSpy('table');
 
   const mockedModule = proxyquire('./remoteCli.service', {
-    vantage: vantageConstructorSpy,
+    ['@xiphiaz/vantage']: vantageConstructorSpy,
     table: tableSpy,
   });
 
   const providers = [
     {
       provide: RemoteCli,
-      deps: [Logger, Injector],
-      useFactory: (logger: Logger, injector: Injector) => {
-        return new mockedModule.RemoteCli(logger, injector).initialize();
+      deps: [Logger, Injector, AuthService],
+      useFactory: (logger: Logger, injector: Injector, authService: AuthService) => {
+        return new mockedModule.RemoteCli(logger, injector, authService).initialize();
       }
     },
     {provide: Logger, useClass: LoggerMock},
     {provide: Server, useClass: ServerMock},
+    {provide: AuthService, useClass: AuthServiceMock},
   ];
 
   beforeEach(() => {
@@ -58,9 +62,14 @@ describe('Remote Commands', () => {
     expect(vantageConstructorSpy)
       .toHaveBeenCalled();
     expect(vantageSpy.delimiter)
-      .toHaveBeenCalledWith('ubiquits-runtime~$');
+      .toHaveBeenCalledWith(chalk.magenta('ubiquits-runtime~$'));
+    //the banner is not called on init otherwise it would be output pre-initialization
     expect(vantageSpy.banner)
-      .toHaveBeenCalledWith(jasmine.stringMatching('Welcome to Ubiquits runtime cli'));
+      .not
+      .toHaveBeenCalled();
+
+    expect(vantageSpy.auth)
+      .toHaveBeenCalled();
 
   }));
 
@@ -73,7 +82,9 @@ describe('Remote Commands', () => {
 
     const callbackLogFunction = vantageSpy.listen.calls.mostRecent().args[1];
 
-    const loggerSpy = spyOn((cli as any).logger, 'persistLog').and.callThrough();
+    const loggerSpy = spyOn((cli as any).logger, 'persistLog')
+      .and
+      .callThrough();
     callbackLogFunction({conn: {remoteAddress: '127.0.0.1'}});
 
     expect(loggerSpy)
@@ -140,6 +151,7 @@ describe('Remote Command Mock', () => {
     RemoteCliMock,
     {provide: Logger, useClass: LoggerMock},
     {provide: Server, useClass: ServerMock},
+    {provide: AuthService, useClass: AuthServiceMock},
   ];
 
   beforeEach(() => {

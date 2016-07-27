@@ -3,19 +3,21 @@
  */
 /** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
-import { banner } from '../../common/util/banner';
+import { bannerBg } from '../../common/util/banner';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
 import { Response } from '../controllers/response';
 import { PromiseFactory } from '../../common/util/serialPromise';
-import * as Vantage from 'vantage';
+import * as Vantage from '@xiphiaz/vantage';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
 
 const table: Table = require('table').default;
 
 import Socket = SocketIO.Socket;
+import { AuthService } from './auth.service';
+import { jwtAuthStrategyFactory } from './jwtAuthStrategy';
 
 export interface TableBorderTemplate {
 
@@ -72,6 +74,28 @@ export interface ConnectedSocketCallback {
   (socket: Socket): void;
 }
 
+
+export interface RemoteCliContext {
+  logger: Logger;
+  authService: AuthService;
+}
+
+export interface AuthenticationStrategyFactory {
+  (remoteCliContext: RemoteCliContext): AuthenticationStrategy;
+}
+
+export interface Authenticator {
+  (args: any, cb: Function): void;
+}
+
+export interface AuthenticationStrategy {
+  (vantage: any, options?: any): Authenticator;
+}
+
+export interface AuthenticationCallback {
+  (errorMessage: string, isSuccessful: boolean): void;
+}
+
 /**
  * Class allows developers to register custom commands that can be remote executed in a
  * shell environment. Useful for things like migrations and debugging.
@@ -87,9 +111,9 @@ export class RemoteCli extends AbstractService {
   /**
    * Logger instance for the class, initialized with `remote-cli` source
    */
-  private logger: Logger;
+  protected logger: Logger;
 
-  constructor(loggerBase: Logger, private injector: Injector) {
+  constructor(loggerBase: Logger, private injector: Injector, protected authService: AuthService) {
     super();
     this.logger = loggerBase.source('remote-cli');
   }
@@ -101,14 +125,9 @@ export class RemoteCli extends AbstractService {
   public initialize(): this {
     this.vantage = new Vantage();
 
-    this.vantage.delimiter('ubiquits-runtime~$');
+    this.vantage.delimiter(chalk.magenta('ubiquits-runtime~$'));
 
-    let displayBanner = `Welcome to Ubiquits runtime cli. Type 'help' for commands`;
-    if ((<any>process.stdout).columns > 68) {
-      displayBanner = `${banner}\n${displayBanner}`;
-    }
-
-    this.vantage.banner(displayBanner);
+    this.registerAuthenticationStrategy();
 
     this.logger.debug('Remote cli initialized');
 
@@ -164,6 +183,8 @@ export class RemoteCli extends AbstractService {
       };
     }
 
+    this.logger.debug('Auth function', this.vantage._authFn);
+
     this.vantage.listen(port, callback);
     this.logger.info(`Vantage server started on ${port}`);
 
@@ -181,4 +202,16 @@ export class RemoteCli extends AbstractService {
     return table(data, config);
   }
 
+  /**
+   * Register the authentication strategy with vantage
+   */
+  protected registerAuthenticationStrategy(): void {
+
+    //when more auth strategies exist this should be refactored to injected class
+    const strategy:AuthenticationStrategy = jwtAuthStrategyFactory(this as any);
+
+    this.vantage.auth(strategy);
+
+    this.logger.debug('Registered vantage authentication strategy');
+  }
 }

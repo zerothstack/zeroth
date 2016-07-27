@@ -7,7 +7,7 @@ import { RemoteCli, ConnectedSocketCallback } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Service } from '../../common/registry/decorators';
 
-import Spy = jasmine.Spy;
+import { AuthService } from './auth.service';
 
 /**
  * Provides no-side effect mock for RemoteCli for use in testing fixtures
@@ -16,8 +16,8 @@ import Spy = jasmine.Spy;
 @Service()
 export class RemoteCliMock extends RemoteCli {
 
-  constructor(loggerBase: Logger, injector: Injector) {
-    super(loggerBase, injector)
+  constructor(loggerBase: Logger, injector: Injector, authService:AuthService) {
+    super(loggerBase, injector, authService);
   }
 
   /**

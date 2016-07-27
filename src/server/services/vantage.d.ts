@@ -40,3 +40,7 @@ declare module 'vantage' {
   import alias = require('~vantage/index');
   export = alias;
 }
+declare module '@xiphiaz/vantage' {
+  import alias = require('~vantage/index');
+  export = alias;
+}

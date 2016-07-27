@@ -11,6 +11,8 @@ import { Response } from './response';
 import { AbstractController } from './abstract.controller';
 import { Route } from './route.decorator';
 import { UnavailableForLegalReasonsException } from '../../common/exeptions/exceptions';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 class TestController extends AbstractController {
@@ -41,6 +43,7 @@ const providers = [
   {provide: Logger, useClass: LoggerMock},
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
+  {provide: AuthService, useClass: AuthServiceMock},
 ];
 
 describe('Controller', () => {

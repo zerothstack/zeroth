@@ -10,6 +10,8 @@ import { bootstrap, BootstrapResponse } from './index';
 import { registry } from '../../common/registry/entityRegistry';
 import { AbstractSeeder } from '../seeders/index';
 import Spy = jasmine.Spy;
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 let loggerInstance: Logger = new LoggerMock();
 
@@ -21,6 +23,7 @@ const providers: any[] = [
   },
   {provide: Server, useClass: ServerMock},
   {provide: RemoteCli, useClass: RemoteCliMock},
+  {provide: AuthService, useClass: AuthServiceMock},
 ];
 
 @Injectable()

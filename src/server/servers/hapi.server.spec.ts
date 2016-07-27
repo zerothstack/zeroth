@@ -7,6 +7,8 @@ import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import * as proxyquire from 'proxyquire';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
+import { AuthServiceMock } from '../services/auth.service.mock';
+import { AuthService } from '../services/auth.service';
 
 describe('Hapi Server', () => {
 
@@ -29,6 +31,7 @@ describe('Hapi Server', () => {
     },
     {provide: Logger, useClass: LoggerMock},
     {provide: RemoteCli, useClass: RemoteCliMock},
+    {provide: AuthService, useClass: AuthServiceMock},
   ];
 
   beforeEach(() => {
