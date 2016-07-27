@@ -42,6 +42,7 @@
     "@types/express-serve-static-core": "^4.0.29",
     "@types/hapi": "^13.0.28",
     "@types/jasmine": "^2.2.29",
+    "@types/jsonwebtoken": "^5.7.28",
     "@types/lodash": "0.0.27",
     "@types/moment": "^2.11.28",
     "@types/node": "^4.0.29",
