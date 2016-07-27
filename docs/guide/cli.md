@@ -209,6 +209,59 @@ project.registerCommand((cli, projectInstance) => {
 module.exports = project;
 ```
 
+## Remote CLI
+The cli is capable of connecting to the remote runtime to execute commands defined in the server context
+ and have access to runtime variables of that server. This connection is used to run migrations, seeders,
+ tail logs, view loaded route configuration etc.
+ 
+### Connecting to the remote CLI
+To connect to the remote cli, simply run `remote` when in a ubiquits shell session
+```bash
+ubiquits~$ remote
+```
+You will have set up your authentication keys in the tour, which are used to generate a JSON Web Token
+which is signed with your private key, then passed through to the runtime server, which authenticates
+your key against it's copy of your public key in the `./keys/known_hosts` directory.
+
+This public/private key pattern will be familiar to those who use SSH authentication, but note that
+this is not SSH authentication so you won't be able to use any SSH client to run this process for you.
+
+### Adding custom commands to the remote cli
+Currently there is not API to add custom commands to the existing instance of `RemoteCli`, however
+until this feature is implemented you may simply `extends RemoteCli` and substitute your own class
+using the provider.
+
+```typescript
+export class MyRemoteCli extends RemoteCli {
+
+  constructor(logger: Logger, injector: Injector, authService: AuthService) {
+    super(logger, injector, authService);
+  }
+  
+  protected registerCommands(): this {
+    super.registerCommands();
+    
+    this.vantage.command('foo')
+      .description('outputs bar')
+      .action(function (args: any, callback: Function) {
+        this.log('bar');
+      });
+      
+    return this;
+  }
+  
+}
+```
+
+Like the local CLI, the remote cli uses [Vantage], so you can implement your own custom tasks with
+ the same syntax that you would for the local tasks. The only difference of course being that as
+ you are defining the task in the context of the server, you have access to all injected dependencies.
+
+```typescript
+// in your ./src/server/main.ts file
+{ provide: RemoteCli, useClass: MyRemoteCli, }
+```
+
 
 ## Uninstall
 To remove the cli, run the following command:
