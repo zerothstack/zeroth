@@ -1,8 +1,9 @@
-import * as chalk from 'chalk';
 /**
  * @module common
  */
 /** End Typedoc Module Declaration */
+
+import * as chalk from 'chalk';
 
 /**
  * Ubiquits Banner for usage in cli welcome
