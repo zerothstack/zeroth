@@ -47,9 +47,8 @@ export abstract class Server {
 
     this.logger = loggerBase.source('server');
 
-    //@todo pull this config from process.env via .env variables
-    this.host = 'localhost';
-    this.port = 3000;
+    this.host = process.env.APP_HOST || null; //usually should be null to default binding to localhost
+    this.port = process.env.APP_PORT || 3000;
 
     this.initialize();
 
@@ -101,7 +100,7 @@ export abstract class Server {
    * @returns {string}
    */
   public getHost(): string {
-    return `http://${this.host}:${this.port}`;
+    return `http://${this.host || '(localhost)'}:${this.port}`;
   }
 
   /**
