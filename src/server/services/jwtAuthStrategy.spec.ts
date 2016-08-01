@@ -15,6 +15,8 @@ describe('JWT Authentication Strategy', () => {
   };
   authService.verify.and.returnValue(Promise.resolve(payload));
 
+  process.env.PATH_ROOT = '/tmp'; //tmp for testing
+
   const context: RemoteCliContext = {
     logger: loggerMock,
     authService: authService,
@@ -49,10 +51,10 @@ describe('JWT Authentication Strategy', () => {
 
     authenticator({client: {jwt, publicKeyPath, columns: 100}}, (message:string, isSuccess:boolean) => {
 
-      expect(authService.verify).toHaveBeenCalledWith(jwt, publicKeyPath);
+      expect(authService.verify).toHaveBeenCalledWith(jwt, '/tmp/path/to/key');
 
       expect(vantageScope.log)
-        .toHaveBeenCalledWith(chalk.grey(`You were authenticated with a JSON Web token verified against the public key at ${publicKeyPath}`));
+        .toHaveBeenCalledWith(chalk.grey(`You were authenticated with a JSON Web token verified against the public key at /tmp/path/to/key`));
 
       expect(isSuccess).toBe(true);
       expect(message).toBe(null);

@@ -63,7 +63,7 @@ describe('Server', () => {
       .toHaveBeenCalledWith(3001);
 
     expect(server.getHost())
-      .toEqual('http://localhost:3000');
+      .toEqual('http://(localhost):3000');
 
   }));
 

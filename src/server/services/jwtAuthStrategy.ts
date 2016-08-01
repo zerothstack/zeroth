@@ -4,6 +4,7 @@
 /** End Typedoc Module Declaration */
 import { bannerBg } from '../../common/util/banner';
 import * as chalk from 'chalk';
+import * as path from 'path';
 import {
   AuthenticationStrategy,
   RemoteCliContext,
@@ -19,10 +20,14 @@ export const jwtAuthStrategyFactory:AuthenticationStrategyFactory = (remoteCliCo
         remoteCliContext.logger.silly.debug('Passed client arguments: ', args);
 
         const token: string   = args.client.jwt;
-        const keyPath: string = args.client.publicKeyPath;
+        let keyPath: string = args.client.publicKeyPath;
 
         if (!token) {
           return cb("JWT was not passed in connection request", false);
+        }
+
+        if (process.env.PATH_ROOT){
+          keyPath = path.resolve(process.env.PATH_ROOT, keyPath);
         }
 
         remoteCliContext.logger.info(`Authenticating JSON web token against public key [${keyPath}]`);
