@@ -9,6 +9,7 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
+import { NotImplementedException } from '../../common/exeptions/exceptions';
 
 @Injectable()
 export class HapiServer extends Server {
@@ -112,9 +113,19 @@ export class HapiServer extends Server {
 
   /**
    * @inheritdoc
+   */
+  public registerStaticLoader(webroot?: string): this {
+    if (webroot) {
+      throw new NotImplementedException('Static file listing is not implemented for hapi');
+    }
+    return this;
+  }
+
+  /**
+   * @inheritdoc
    * @returns {Promise<HapiServer>}
    */
-  public start(): Promise<this> {
+  public startEngine(): Promise<this> {
 
     return new Promise((resolve, reject) => {
       this.engine.start((err) => {

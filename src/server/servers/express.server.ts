@@ -12,10 +12,20 @@ import * as express from 'express';
 import { Application, Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import * as http from 'http';
 
+// import {
+//   expressEngine,
+//   BASE_URL,
+//   REQUEST_URL,
+//   ORIGIN_URL,
+//   NODE_LOCATION_PROVIDERS,
+//   NODE_HTTP_PROVIDERS,
+//   ExpressEngineConfig
+// } from 'angular2-universal';
+
 @Injectable()
 export class ExpressServer extends Server {
 
-  protected engine: Application;
+  protected app: Application;
 
   constructor(logger: Logger, remoteCli: RemoteCli) {
     super(logger, remoteCli);
@@ -26,7 +36,7 @@ export class ExpressServer extends Server {
    * @returns {Application}
    */
   public getEngine(): Application {
-    return this.engine;
+    return this.app;
   }
 
   /**
@@ -34,8 +44,8 @@ export class ExpressServer extends Server {
    * @returns {Express}
    */
   protected initialize() {
-    this.engine     = express();
-    this.httpServer = http.createServer(<any>(this.engine));
+    this.app        = express();
+    this.httpServer = http.createServer(<any>(this.app));
 
     return this;
   }
@@ -47,7 +57,7 @@ export class ExpressServer extends Server {
    */
   protected registerRouteWithEngine(routeConfig: RouteConfig): this {
 
-    this.engine[routeConfig.method.toLowerCase()](routeConfig.path, (req: ExpressRequest, res: ExpressResponse) => {
+    this.app[routeConfig.method.toLowerCase()](routeConfig.path, (req: ExpressRequest, res: ExpressResponse) => {
 
       let request = new Request(req,
         Request.extractMapFromDictionary<string, string>(req.params),
@@ -59,9 +69,60 @@ export class ExpressServer extends Server {
         .then((response: Response) => {
           return this.send(response, res);
         })
-        .catch((err:Error) => this.sendErr(err, res));
+        .catch((err: Error) => this.sendErr(err, res));
 
     });
+
+    return this;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public registerStaticLoader(webroot?: string): this {
+    if (webroot) {
+      this.app.use(express.static(webroot, {index: ['index.html']}));
+    }
+
+    //@todo resolve how to load webpacked modules with angular/universal
+
+    // const ngApp = (req:ExpressRequest, res:ExpressResponse) => {
+    //   let baseUrl = '/';
+    //   let url = req.originalUrl || '/';
+    //
+    //   let config: ExpressEngineConfig = {
+    //     directives: frontendComponents,//[ App ],
+    //
+    //     // dependencies shared among all requests to server
+    //     platformProviders: [
+    //       {provide: ORIGIN_URL, useValue: this.getHost()},
+    //       {provide: BASE_URL, useValue: baseUrl},
+    //     ],
+    //
+    //     // dependencies re-created for each request
+    //     providers: [
+    //       {provide: REQUEST_URL, useValue: url},
+    //       // provideRouter(routes),
+    //       NODE_LOCATION_PROVIDERS,
+    //       NODE_HTTP_PROVIDERS,
+    //     ],
+    //
+    //     // if true, server will wait for all async to resolve before returning response
+    //     async: true,
+    //
+    //     // if you want preboot, you need to set selector for the app root
+    //     // you can also include various preboot options here (explained in separate document)
+    //     preboot: false // { appRoot: 'app' }
+    //   };
+    //
+    //   res.render('index', config);
+    // };
+    //
+    // this.app.engine('.html', expressEngine);
+    // this.app.set('views', process.env.WEB_ROOT);
+    // this.app.set('view engine', 'html');
+    // this.app.use(express.static(process.env.WEB_ROOT, {index: false}));
+    // this.app.get('/', ngApp);
 
     return this;
   }
@@ -70,7 +131,7 @@ export class ExpressServer extends Server {
    * @inheritdoc
    * @returns {Promise<ExpressServer>}
    */
-  public start(): Promise<this> {
+  public startEngine(): Promise<this> {
     return new Promise((resolve, reject) => {
       this.httpServer.listen(this.port, this.host, resolve);
     })
