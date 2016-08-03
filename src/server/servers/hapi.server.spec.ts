@@ -38,6 +38,10 @@ describe('Hapi Server', () => {
     addProviders(providers);
   });
 
+  afterEach(() => {
+    delete process.env.WEB_ROOT;
+  });
+
   it('initialized http server with new hapi instance', inject([Server], (server: Server) => {
 
     expect(hapiConstructorSpy)
@@ -48,6 +52,15 @@ describe('Hapi Server', () => {
     expect(server.getEngine())
       .toEqual(hapiSpy);
 
+  }));
+
+  it('throws error when webroot is defined as static file listing is not yet implemented', inject([Server], (server: Server) => {
+
+    process.env.WEB_ROOT = '/tmp/example';
+
+    const fixture = () => server.start();
+
+    expect(fixture).toThrowError('Static file listing is not implemented for hapi');
   }));
 
   it('kicks off an http server when started', async(inject([Server], (server: Server) => {

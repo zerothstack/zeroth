@@ -29,8 +29,12 @@ export class ServerMock extends Server {
     return this;
   }
 
-  public start(): Promise<this> {
+  public startEngine(): Promise<this> {
     return Promise.resolve(this);
+  }
+
+  public registerStaticLoader(webroot?: string): this {
+    return this;
   }
 
 }

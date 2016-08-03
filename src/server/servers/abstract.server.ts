@@ -77,9 +77,25 @@ export abstract class Server {
   protected abstract initialize(): this;
 
   /**
+   * Kicks off the server using the specific underlying engine
+   */
+  public abstract startEngine(): Promise<this>;
+
+  /**
+   * Register loader with engine to handle static loading of frontend assets
+   * @param webroot
+   */
+  public abstract registerStaticLoader(webroot:string):this;
+
+  /**
    * Kicks off the server
    */
-  public abstract start(): Promise<this>;
+  public start(): Promise<this> {
+
+    this.registerStaticLoader(process.env.WEB_ROOT);
+
+    return this.startEngine();
+  };
 
   /**
    * Retrieves the underlying engine for custom calls

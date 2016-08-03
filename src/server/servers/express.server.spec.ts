@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
 describe('Express Server', () => {
 
   const expressConstructorSpy = jasmine.createSpy('expressConstructor');
-  const expressSpy            = jasmine.createSpyObj('express', ['get']);
+  const expressSpy            = jasmine.createSpyObj('express', ['get', 'use']);
 
   expressConstructorSpy.and.returnValue(expressSpy);
 
@@ -45,6 +45,10 @@ describe('Express Server', () => {
 
   beforeEach(() => {
     addProviders(providers);
+  });
+
+  afterEach(() => {
+    delete process.env.WEB_ROOT;
   });
 
   it('initialized http server with new express instance', inject([Server], (server: Server) => {
@@ -172,6 +176,29 @@ describe('Express Server', () => {
         expect(resSpy.send)
           .toHaveBeenCalledWith(responseFixture);
       });
+
+  })));
+
+  it('registers static file loader when started', async(inject([Server], (server: Server) => {
+
+    process.env.WEB_ROOT = '/tmp/example';
+
+    expressConstructorSpy['static'] = jasmine.createSpy('express_static');
+
+    const startPromise = server.start()
+      .then((res) => {
+
+        expect(res)
+          .toEqual(server);
+
+        expect(expressConstructorSpy['static'])
+          .toHaveBeenCalledWith('/tmp/example', {index: ['index.html']});
+
+      });
+
+    const startedCallback = httpServerSpy.listen.calls.mostRecent().args[2];
+    startedCallback(); //resolve the promise
+    return startPromise;
 
   })));
 
