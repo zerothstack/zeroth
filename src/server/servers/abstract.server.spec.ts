@@ -2,7 +2,7 @@ import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Injectable } from '@angular/core';
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Response } from '../controllers/response';
@@ -51,7 +51,7 @@ describe('Server', () => {
   let cliSpy: Spy;
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
     spyOn(ServerMock.prototype, 'initialize')
       .and
       .callThrough();

@@ -1,4 +1,4 @@
-import { inject, addProviders } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { AbstractController } from '../controllers/abstract.controller';
@@ -41,7 +41,7 @@ const providers = [
 describe('@Route decorator', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Registers a route definition with the server ',

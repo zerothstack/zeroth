@@ -1,4 +1,3 @@
-import { it, expect, describe } from '@angular/core/testing';
 import { ConsoleLogger, isBrowser } from './consoleLogger.service';
 import { stripColor, hasColor } from 'chalk';
 import { LogLevel, LogVerbosity, LogVerbosityType } from './logger.service';

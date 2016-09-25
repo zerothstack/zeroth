@@ -1,6 +1,6 @@
 import { Logger } from '../../common/services/logger.service';
 import { Database } from './database.service';
-import { addProviders, inject, async } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import * as typeorm from 'typeorm';
 import { Driver } from 'typeorm';
 import { Injectable } from '@angular/core';
@@ -75,7 +75,7 @@ describe('Database', () => {
   };
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
 
     registry.clearAll();
     Object.assign(process.env, envMap);

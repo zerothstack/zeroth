@@ -1,6 +1,6 @@
 import { Logger } from '../../common/services/logger.service';
 import { Injectable, Injector } from '@angular/core';
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Database } from '../services/database.service';
 import { DatabaseStore } from './db.store';
@@ -42,7 +42,7 @@ describe('Database Store', () => {
   ];
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('initializes the store with a reference to the static model', inject([TestDatabaseStore], (store: TestDatabaseStore) => {

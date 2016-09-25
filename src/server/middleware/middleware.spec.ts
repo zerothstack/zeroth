@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { IsolatedMiddlewareFactory } from './index';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
@@ -57,7 +57,7 @@ describe('Middleware Decorators', () => {
   let controller: MiddlewareController;
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('defines registeredMiddleware on the controller',

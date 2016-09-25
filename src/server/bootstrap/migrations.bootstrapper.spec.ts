@@ -1,4 +1,4 @@
-import { addProviders } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -64,7 +64,7 @@ export class TestMigration extends AbstractMigration {
 describe('Migration Bootstrapper', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
     registry.clearAll();
 
     registry.register('migration', TestMigration);

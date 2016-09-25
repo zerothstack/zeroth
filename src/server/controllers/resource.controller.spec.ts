@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { ResourceController } from './resource.controller';
 import { Logger } from '../../common/services/logger.service';
@@ -69,7 +69,7 @@ const providers = [
 describe('Resource Controller', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Registers a route to retrieve an entity', async(inject([TestController, Server],

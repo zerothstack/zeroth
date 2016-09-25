@@ -88,9 +88,11 @@ describe('Exceptions', () => {
     let errors:ValidationError[] = [{
       target: null,
       property: 'name',
-      type: 'max_length',
-      message: 'too long',
+      constraints: {
+        max_length: 'too long',
+      },
       value: 10,
+      children: undefined,
     }];
 
     let exception = new ValidationException(null, errors);

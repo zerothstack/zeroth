@@ -1,4 +1,4 @@
-import { addProviders } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
@@ -48,7 +48,7 @@ export class TestService extends AbstractService {
 describe('Service Bootstrapper', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
     registry.clearAll();
 
     registry.register('service', TestService);

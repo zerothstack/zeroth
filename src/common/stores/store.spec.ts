@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
 import { AbstractModel, identifier } from '../models/model';
@@ -124,7 +124,7 @@ const providers: any[] = [
 describe('Mock Store', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('is injected with the store instance token', inject([TestClass], (c: TestClass) => {

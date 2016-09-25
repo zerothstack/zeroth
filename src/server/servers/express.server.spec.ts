@@ -1,7 +1,7 @@
 import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
-import { addProviders, inject, async } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import * as proxyquire from 'proxyquire';
 import { Response } from '../controllers/response';
@@ -44,7 +44,7 @@ describe('Express Server', () => {
   ];
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   afterEach(() => {

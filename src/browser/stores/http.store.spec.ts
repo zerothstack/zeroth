@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { Http, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 import { Injectable, Injector } from '@angular/core';
@@ -39,7 +39,9 @@ const providers = [
 describe('Http store', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({
+      providers
+    });
   });
 
   it('Retrieves a collection of models from http', async(inject([TestHttpStore, MockBackend], (s: TestHttpStore, b: MockBackend) => {

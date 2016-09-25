@@ -1,6 +1,6 @@
 import { Logger } from './logger.service';
 import { Injectable } from '@angular/core';
-import { inject, addProviders } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { LoggerMock } from './logger.service.mock';
 
 @Injectable()
@@ -20,7 +20,7 @@ const providers = [
 describe('Logger mock', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Can be injected with the Logger token', inject([TestClass], (c: TestClass) => {

@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { Route } from '../controllers/route.decorator';
@@ -63,7 +63,7 @@ describe('debugLog middleware', () => {
   let controller: MiddlewareController;
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Calls debug.log on the passed value to the middleware decorator',
