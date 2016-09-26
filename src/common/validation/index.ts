@@ -10,14 +10,13 @@ interface InjectableClass<T> {
 }
 /**
  * class-validator has a basic inversion container that handles classes without constructor arguments
- * This hybric class re-implements that injector, and extends it to be able to use the core angular
+ * This hybrid class re-implements that injector, and extends it to be able to use the core angular
  * injector when available.
  */
 class HybridInjector {
 
   public injector: Injector;
 
-  // private instances: any[] = [];
   private instances: WeakMap<InjectableClass<any>, any> = new WeakMap();
 
   /**
@@ -47,7 +46,7 @@ class HybridInjector {
   }
 }
 
-let hybridInjectorInstance: HybridInjector = new HybridInjector();
+const hybridInjectorInstance: HybridInjector = new HybridInjector();
 useContainer(hybridInjectorInstance);
 
 /**

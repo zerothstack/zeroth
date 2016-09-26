@@ -12,16 +12,6 @@ import * as express from 'express';
 import { Application, Request as ExpressRequest, Response as ExpressResponse } from 'express';
 import * as http from 'http';
 
-// import {
-//   expressEngine,
-//   BASE_URL,
-//   REQUEST_URL,
-//   ORIGIN_URL,
-//   NODE_LOCATION_PROVIDERS,
-//   NODE_HTTP_PROVIDERS,
-//   ExpressEngineConfig
-// } from 'angular2-universal';
-
 @Injectable()
 export class ExpressServer extends Server {
 
