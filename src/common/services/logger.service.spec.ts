@@ -3,12 +3,11 @@ import { Injectable } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { LoggerMock } from './logger.service.mock';
 
+
 @Injectable()
 class TestClass {
 
-  constructor(public logger: Logger) {
-
-  }
+  constructor(public logger: Logger) {}
 
 }
 
@@ -18,6 +17,11 @@ const providers = [
 ];
 
 describe('Logger mock', () => {
+
+  // // @todo extract this to the toolchain, here for POC due to PeerDependencies causing separate module instances
+  // beforeAll(() => {
+  //   TestBed.initTestEnvironment(ServerTestingModule, platformServerTesting());
+  // });
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });

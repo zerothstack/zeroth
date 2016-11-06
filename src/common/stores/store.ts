@@ -6,7 +6,7 @@ import { identifier, ModelStatic, AbstractModel } from '../models/model';
 import { Injector } from '@angular/core';
 import { Collection } from '../models/collection';
 import { ValidatorOptions, ValidationError, getValidator, Validator } from '../validation';
-import { ValidationException } from '../exeptions/exceptions';
+import { ValidationException } from '../exceptions/exceptions';
 
 export interface Query {
 }
@@ -81,7 +81,7 @@ export abstract class AbstractStore<T extends AbstractModel> {
    * @param validatorOptions
    * @returns {Promise<T>}
    */
-  public validate(model: T, validatorOptions?: ValidatorOptions): Promise<T> {
+  public validate(model: T, validatorOptions?: ValidatorOptions): Promise<T> | never {
 
     return this.validator.validate(model, validatorOptions)
       .then((errors: ValidationError[]) => {

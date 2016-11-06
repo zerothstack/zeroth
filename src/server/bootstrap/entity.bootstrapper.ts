@@ -2,8 +2,6 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-import 'core-js';
-import 'reflect-metadata';
 import { ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import {

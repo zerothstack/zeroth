@@ -64,9 +64,8 @@ describe('Exceptions', () => {
     it(`creates instance of ${check.exception.prototype.constructor.name} with status code ${check.code}`, () => {
 
       const exceptionInstance = new check.exception;
-
-      expect(exceptionInstance instanceof Error).toBe(true);
-      expect(exceptionInstance instanceof HttpException).toBe(true);
+      expect(exceptionInstance instanceof HttpException).toBe(true, 'instanceof HttpException');
+      expect(exceptionInstance instanceof Error).toBe(true, 'instanceof Error');
       expect(exceptionInstance.getStatusCode()).toEqual(check.code);
       expect(exceptionInstance.name).toEqual(exceptionInstance.constructor.name);
 

@@ -10,7 +10,7 @@ import { Request } from './request';
 import { Response } from './response';
 import { AbstractController } from './abstract.controller';
 import { Route } from './route.decorator';
-import { UnavailableForLegalReasonsException } from '../../common/exeptions/exceptions';
+import { UnavailableForLegalReasonsException } from '../../common/exceptions/exceptions';
 import { AuthServiceMock } from '../services/auth.service.mock';
 import { AuthService } from '../services/auth.service';
 

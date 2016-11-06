@@ -10,7 +10,7 @@ import { StoredProperty } from '../../common/models/types/storedProperty.decorat
 import { Collection } from '../../common/models/collection';
 import { DatabaseMock } from '../services/database.service.mock';
 import Spy = jasmine.Spy;
-import { NotFoundException } from '../../common/exeptions/exceptions';
+import { NotFoundException } from '../../common/exceptions/exceptions';
 
 class TestModel extends AbstractModel {
 

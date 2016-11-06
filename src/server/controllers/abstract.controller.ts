@@ -12,7 +12,7 @@ import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 import { RegistryEntityStatic, RegistryEntity } from '../../common/registry/entityRegistry';
 import { ControllerMetadata } from '../../common/metadata/metadata';
-import { InternalServerErrorException, HttpException } from '../../common/exeptions/exceptions';
+import { InternalServerErrorException, HttpException } from '../../common/exceptions/exceptions';
 
 export interface MethodDefinition {
   method: HttpMethod;

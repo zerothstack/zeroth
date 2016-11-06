@@ -9,7 +9,7 @@ import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { Response } from '../controllers/response';
 import { Request } from '../controllers/request';
-import { NotImplementedException } from '../../common/exeptions/exceptions';
+import { NotImplementedException } from '../../common/exceptions/exceptions';
 
 @Injectable()
 export class HapiServer extends Server {

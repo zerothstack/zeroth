@@ -7,7 +7,7 @@ import EventEmitter = NodeJS.EventEmitter;
 import {
   PayloadTooLargeException,
   UnprocessableEntityException
-} from '../../common/exeptions/exceptions';
+} from '../../common/exceptions/exceptions';
 
 /**
  * Request class that is passed into all middleware and controller methods to extract data from the

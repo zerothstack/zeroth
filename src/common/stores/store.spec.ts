@@ -12,7 +12,7 @@ import {
 import { Primary } from '../models/types/primary.decorator';
 import Spy = jasmine.Spy;
 import { Collection } from '../models/collection';
-import { ValidationException } from '../exeptions/exceptions';
+import { ValidationException } from '../exceptions/exceptions';
 
 @Injectable()
 class StubService {
@@ -261,8 +261,8 @@ describe('Mock Store', () => {
         expect(e instanceof ValidationException)
           .toBe(true);
 
-        expect(e.getData()[0].type)
-          .toEqual('min_length');
+        expect(e.getData()[0].constraints.minLength).not
+          .toBeNull();
       });
 
   })));
@@ -310,8 +310,8 @@ describe('Mock Store', () => {
         expect(e instanceof ValidationException)
           .toBe(true);
 
-        expect(e.getData()[0].type)
-          .toEqual('CustomValidatorAsync');
+        expect(e.getData()[0].constraints.CustomValidatorAsync)
+          .not.toBeNull();
       });
 
   })));

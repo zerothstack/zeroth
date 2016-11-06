@@ -9,7 +9,7 @@ import { Logger } from '../../common/services/logger.service';
 import { AbstractStore, Query } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { Repository, Connection } from 'typeorm';
-import { NotFoundException } from '../../common/exeptions/exceptions';
+import { NotFoundException } from '../../common/exceptions/exceptions';
 
 /**
  * Database store should be extended with a specific implementation for a model. Interacts with

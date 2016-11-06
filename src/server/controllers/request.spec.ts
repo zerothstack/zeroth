@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 import {
   UnprocessableEntityException,
   PayloadTooLargeException
-} from '../../common/exeptions/exceptions';
+} from '../../common/exceptions/exceptions';
 
 describe('Request', () => {
 
