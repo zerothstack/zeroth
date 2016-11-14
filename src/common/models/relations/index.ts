@@ -50,5 +50,5 @@ export function initializeRelationMap(target: ModelConstructor<any>, type: Relat
 
 }
 
-// export * from './hasOne.decorator';
-// export * from './belongsTo.decorator';
+export * from './hasOne.decorator';
+export * from './belongsTo.decorator';

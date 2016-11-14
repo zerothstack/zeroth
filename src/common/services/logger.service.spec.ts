@@ -16,7 +16,7 @@ const providers = [
   {provide: Logger, useClass: LoggerMock},
 ];
 
-fdescribe('Logger mock', () => {
+describe('Logger mock', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });

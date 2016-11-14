@@ -14,4 +14,4 @@
  * @preferred
  */
 /** End Typedoc Module Declaration */
-// export * from './stores';
+export * from './stores';

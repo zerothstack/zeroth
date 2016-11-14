@@ -9,7 +9,9 @@ import {
   RegistryEntityStatic
 } from '../registry/entityRegistry';
 import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
-import { MiddlewareRegistry } from '../../server/controllers/abstract.controller';
+
+// @todo normalise to avoid circ dep of import MiddlewareRegistry
+type MiddlewareRegistry = any;
 
 export interface PropertyDefinition {
   type: any;

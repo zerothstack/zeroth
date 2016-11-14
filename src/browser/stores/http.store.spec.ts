@@ -221,8 +221,8 @@ describe('Http store', () => {
     const testPromise = s.saveOne(mock)
       .then((res) => {
 
-        expect(connection.request.getBody())
-          .toEqual(JSON.stringify(modelData));
+        expect(connection.request.json())
+          .toEqual(jasmine.objectContaining(modelData));
         expect(res instanceof TestModel)
           .toBe(true);
         expect(res.id)

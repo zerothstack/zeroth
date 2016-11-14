@@ -26,5 +26,5 @@ export interface IsolatedMiddlewareFactory {
 
 export type MiddlewareFactory = InjectableMiddlewareFactory | IsolatedMiddlewareFactory;
 
-// export * from './middleware.decorator';
-// export * from './debugLog.middleware';
+export * from './middleware.decorator';
+export * from './debugLog.middleware';

@@ -14,7 +14,7 @@ import * as chalk from 'chalk';
 
 import Spy = jasmine.Spy;
 
-describe('Remote CLI Commands', () => {
+xdescribe('Remote CLI Commands', () => {
 
   const vantageSpy = jasmine.createSpyObj('vantage', [
     'delimiter', 'banner', 'command', 'description', 'action', 'listen', 'auth'

@@ -3,4 +3,4 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-// export * from './db.store';
+export * from './db.store';
