@@ -6,7 +6,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCliMock } from './remoteCli.service.mock';
 import { AuthServiceMock } from './auth.service.mock';
 import { AuthService } from './auth.service';

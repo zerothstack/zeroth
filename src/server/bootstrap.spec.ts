@@ -2,3 +2,4 @@ import {platformServerTesting, ServerTestingModule} from '@angular/platform-serv
 import { TestBed } from '@angular/core/testing';
 
 TestBed.initTestEnvironment(ServerTestingModule, platformServerTesting());
+console.log('initialised test env');

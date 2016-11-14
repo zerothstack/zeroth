@@ -1,12 +1,11 @@
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
-import { bootstrap, BootstrapResponse, deferredLog } from './index';
 import { registry } from '../../common/registry/entityRegistry';
-import { ClassDictionary } from './bootstrap';
+import { ClassDictionary, BootstrapResponse, bootstrap, deferredLog } from './bootstrap';
 import Spy = jasmine.Spy;
 import { AuthService } from '../services/auth.service';
 import { AuthServiceMock } from '../services/auth.service.mock';

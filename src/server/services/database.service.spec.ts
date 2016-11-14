@@ -9,9 +9,9 @@ import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from './remoteCli.service.mock';
 import { registry } from '../../common/registry/entityRegistry';
 import * as SQL from 'sql-template-strings';
-import Spy = jasmine.Spy;
 import { AuthServiceMock } from './auth.service.mock';
 import { AuthService } from './auth.service';
+import Spy = jasmine.Spy;
 
 @Injectable()
 class ExampleUtil {
@@ -41,9 +41,9 @@ describe('Database', () => {
   const connectionSpy: any = {};
 
   const providers = [
-    {provide: Logger, useClass: LoggerMock},
-    {provide: RemoteCli, useClass: RemoteCliMock},
-    {provide: AuthService, useClass: AuthServiceMock},
+    { provide: Logger, useClass: LoggerMock },
+    { provide: RemoteCli, useClass: RemoteCliMock },
+    { provide: AuthService, useClass: AuthServiceMock },
     Database,
     ExampleUtil
   ];

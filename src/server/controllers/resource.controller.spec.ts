@@ -5,7 +5,7 @@ import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { AbstractModel, identifier } from '../../common/models/model';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { MockStore } from '../../common/stores/mock.store';
 import { AbstractStore } from '../../common/stores/store';
 import { RemoteCli } from '../services/remoteCli.service';

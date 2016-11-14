@@ -2,17 +2,20 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-import { Server } from './servers/abstract.server';
-import { Database } from './services/database.service';
-import { RemoteCli } from './services/remoteCli.service';
-import { Logger } from '../common/services/logger.service';
-import { ConsoleLogger } from '../common/services/consoleLogger.service';
-import { DebugLogMiddleware } from './middleware/debugLog.middleware';
-import { ExpressServer } from './servers/express.server';
+// import { Server } from './servers/abstract.server';
+// import { Database } from './services/database.service';
+// import { RemoteCli } from './services/remoteCli.service';
+// import { Logger } from '../common/services/logger.service';
+// import { ConsoleLogger } from '../common/services/consoleLogger.service';
+// import { DebugLogMiddleware } from './middleware/debugLog.middleware';
+// import { ExpressServer } from './servers/express.server';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as _ from 'lodash';
 import { ProviderDefinition } from './bootstrap/bootstrap';
+import { platformServer, ServerModule } from '@angular/platform-server';
+import { NgModule } from '@angular/core';
+
 
 // Load .env variables into process.env.*
 dotenv.config({
@@ -27,10 +30,24 @@ process.env = _.mapKeys(process.env, (value: any, key: string) => key.replace(/^
  * @type {ProviderDefinition[]}
  */
 export const CORE_PROVIDERS: ProviderDefinition[] = [
-  Database,
-  RemoteCli,
-  DebugLogMiddleware,
-  // {provide: Server, useClass: HapiServer},
-  {provide: Server, useClass: ExpressServer},
-  {provide: Logger, useClass: ConsoleLogger},
+  // Database,
+  // RemoteCli,
+  // DebugLogMiddleware,
+  // // {provide: Server, useClass: HapiServer},
+  // {provide: Server, useClass: ExpressServer},
+  // {provide: Logger, useClass: ConsoleLogger},
 ];
+
+//
+// @NgModule({
+//   declarations: [],
+//   imports: [
+//     ServerModule,
+//   ],
+//   providers: [Database],
+// })
+// export class MainModule {
+//   ngDoBootstrap() {}
+// }
+//
+// platformServer().bootstrapModule(MainModule)
