@@ -6,7 +6,7 @@ description: Full stack isomorphic typescript framework.
 
 ## Roadmap
 
-### First [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) release (feature complete) [August 26]
+### First [beta](https://en.wikipedia.org/wiki/Software_release_life_cycle#Beta) release (feature complete)
 - [ ] Angular Universal (server side prerendering) integration
 - [ ] Docker deployment
 - [ ] Email sending
@@ -15,7 +15,8 @@ description: Full stack isomorphic typescript framework.
 - [ ] on initialization generate passwords and certificate for auth
 - [ ] Integrate code generation methods from Angular CLI 
 - [ ] Docker integration into toolchain for local dev
-- [ ] CLI handled migrations & seeding
+- [ ] CLI handled migrations
+- [x] CLI handled seeding
 - [x] Database migrations
 - [x] Database seeding from `MockModelProvider`s
 - [x] Full validation decorator complement
