@@ -8,17 +8,19 @@ import { ModelMetadata, initializeMetadata } from '../metadata/metadata';
 export type EntityType = 'model' | 'controller' | 'seeder' | 'migration' | 'store' | 'service';
 export type EntityMetadata = any//ModelMetadata | ControllerMetadata;
 
-export interface RegistryEntityConstructor<M>{
-  constructor:RegistryEntityStatic<M>;
+export interface RegistryEntityConstructor<M> {
+  constructor: RegistryEntityStatic<M>;
 }
 
 export interface RegistryEntityStatic<M> extends Function {
-  __metadata?:M;
-  getMetadata?():M;
+  __metadata?: M;
+  getMetadata?(): M;
 }
 
 export class RegistryEntity<M extends EntityMetadata> {
-  constructor(){}
+  constructor() {
+  }
+
   /** The metadata associated with the class instance */
   public static __metadata: EntityMetadata;
   /** The default metadata associated with the class instance */
@@ -31,7 +33,7 @@ export class RegistryEntity<M extends EntityMetadata> {
   public static getMetadata(): EntityMetadata {
 
     const metadata = this.__metadata;
-    if (metadata || !this.__metadataDefault){
+    if (metadata || !this.__metadataDefault) {
       return metadata;
     }
 
@@ -59,14 +61,26 @@ export class RegistryEntity<M extends EntityMetadata> {
  * * [[Store|@Store]]
  * * [[Service|@Service]]
  *
- * Both the static classes and any associated metatadata are assigned to the registry by the decorators
+ * Both the static classes and any associated metatadata are assigned to the registry by the
+ * decorators
  */
 export class EntityRegistry {
+
+  // Global root registry
+  public static root = new EntityRegistry();
 
   /** The internal registry */
   protected registry: Map<EntityType, Map<string, RegistryEntityStatic<EntityMetadata>>> = new Map();
 
   constructor() {
+  }
+
+  public static register(type: EntityType, entity: RegistryEntityStatic<EntityMetadata>, metadata?: any): EntityRegistry {
+    return this.root.register(type, entity, metadata);
+  }
+
+  public static clearAll(): EntityRegistry {
+    return this.root.clearAll();
   }
 
   /**
@@ -76,7 +90,7 @@ export class EntityRegistry {
    * @param metadata
    * @returns {EntityRegistry}
    */
-  public register(type: EntityType, entity: RegistryEntityStatic<EntityMetadata>, metadata?:any): this {
+  public register(type: EntityType, entity: RegistryEntityStatic<EntityMetadata>, metadata?: any): this {
 
     if (!this.registry.get(type)) {
       this.registry.set(type, new Map());
@@ -84,7 +98,7 @@ export class EntityRegistry {
 
     let typeRegistry = this.registry.get(type);
 
-    if (metadata){
+    if (metadata) {
       initializeMetadata(entity);
       _.merge(entity.__metadata, metadata);
     }
@@ -181,10 +195,5 @@ export class EntityRegistry {
     return found;
   }
 
-}
 
-/**
- * Export default registry as singleton so any implementer gets the same instance
- * @type {EntityRegistry}
- */
-export const registry = new EntityRegistry();
+}

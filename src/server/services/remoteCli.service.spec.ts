@@ -4,7 +4,7 @@ import { RemoteCli } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
 import { TestBed, inject } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCliMock } from './remoteCli.service.mock';
@@ -53,7 +53,7 @@ describe('Remote CLI Commands', () => {
   });
 
   beforeEach(() => {
-    registry.clearAll();
+    EntityRegistry.clearAll();
     (process.stdout as any).columns = 90;
   });
 

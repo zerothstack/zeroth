@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 import { Logger, LogLevel } from '../../common/services/logger.service';
 import { createConnection, ConnectionOptions, Connection, Driver } from 'typeorm';
 import { QueryRunner } from 'typeorm/query-runner/QueryRunner';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
 import * as SQL from 'sql-template-strings';
@@ -92,7 +92,7 @@ export class Database extends AbstractService {
       },
       autoSchemaSync: false, // if set to true, then database schema will be automatically
       entities: [
-        ...registry.getAllOfType('model')
+        ...EntityRegistry.root.getAllOfType('model')
           .values()
       ],
     };

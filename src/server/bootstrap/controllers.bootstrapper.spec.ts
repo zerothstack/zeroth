@@ -7,7 +7,7 @@ import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './bootstrap';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Route } from '../controllers/route.decorator';
 import { Request } from '../controllers/request';
@@ -39,9 +39,9 @@ describe('Controller Bootstrapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });
-    registry.clearAll();
+    EntityRegistry.clearAll();
 
-    registry.register('controller', TestController);
+    EntityRegistry.register('controller', TestController);
 
   });
 

@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { RemoteCli } from './remoteCli.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { RemoteCliMock } from './remoteCli.service.mock';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import * as SQL from 'sql-template-strings';
 import { AuthServiceMock } from './auth.service.mock';
 import { AuthService } from './auth.service';
@@ -79,7 +79,7 @@ describe('Database', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({providers});
 
-    registry.clearAll();
+    EntityRegistry.clearAll();
     Object.assign(process.env, envMap);
     createConnectionSpy = spyOn(typeorm, 'createConnection')
       .and

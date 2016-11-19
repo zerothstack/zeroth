@@ -1,9 +1,9 @@
-import { EntityRegistry, EntityType, registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry, EntityType } from '../../common/registry/entityRegistry';
 import { Model, Store, Service } from '../../common/registry/decorators';
 import { AbstractModel } from '../../common/models/model';
 import { Controller, Seeder, Migration } from './decorators';
 
-fdescribe('Entity registry', () => {
+describe('Entity registry', () => {
 
   class Foo {
   }
@@ -160,28 +160,32 @@ fdescribe('Entity registry', () => {
 
   describe('decorators', () => {
 
-    afterAll(() => {
-      testRegistry.clearAll();
+    beforeAll(() => {
+
+      @Model()
+      class FooModel {
+      }
+      @Controller()
+      class FooController {
+      }
+      @Seeder()
+      class FooSeeder {
+      }
+      @Migration()
+      class FooMigration {
+      }
+      @Store()
+      class FooStore {
+      }
+      @Service()
+      class FooService {
+      }
+
     });
 
-    @Model()
-    class FooModel {
-    }
-    @Controller()
-    class FooController {
-    }
-    @Seeder()
-    class FooSeeder {
-    }
-    @Migration()
-    class FooMigration {
-    }
-    @Store()
-    class FooStore {
-    }
-    @Service()
-    class FooService {
-    }
+    afterAll(() => {
+      EntityRegistry.root.clearAll();
+    });
 
     [
       'Model',
@@ -197,7 +201,7 @@ fdescribe('Entity registry', () => {
       it(`decorates class with @${decorator} to register class as type '${type}'`, () => {
 
         let className  = 'Foo' + decorator;
-        let foundClass = registry.getAllOfType(type)
+        let foundClass = EntityRegistry.root.getAllOfType(type)
           .get(className);
 
         expect(foundClass instanceof Function)
@@ -216,7 +220,7 @@ fdescribe('Entity registry', () => {
       class BarModel extends AbstractModel {
       }
 
-      let foundClass = registry.findByType('model', BarModel.name);
+      let foundClass = EntityRegistry.root.findByType('model', BarModel.name);
       expect(foundClass.getMetadata()).toEqual({storageKey: 'example'});
 
     });

@@ -7,7 +7,7 @@ import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './bootstrap';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractMigration } from '../migrations/index';
 import { Database } from '../services/database.service';
 import { DatabaseMock } from '../services/database.service.mock';
@@ -65,9 +65,9 @@ describe('Migration Bootstrapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });
-    registry.clearAll();
+    EntityRegistry.clearAll();
 
-    registry.register('migration', TestMigration);
+    EntityRegistry.register('migration', TestMigration);
 
   });
 

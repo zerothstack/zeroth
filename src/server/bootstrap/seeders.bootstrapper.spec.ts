@@ -7,7 +7,7 @@ import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './bootstrap';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractSeeder } from '../seeders/index';
 import Spy = jasmine.Spy;
 import { AuthServiceMock } from '../services/auth.service.mock';
@@ -44,9 +44,9 @@ describe('Seeder Bootstrapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });
-    registry.clearAll();
+    EntityRegistry.clearAll();
 
-    registry.register('seeder', TestSeeder);
+    EntityRegistry.register('seeder', TestSeeder);
 
   });
 

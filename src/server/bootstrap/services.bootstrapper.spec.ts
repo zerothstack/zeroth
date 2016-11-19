@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { bootstrap, BootstrapResponse } from './bootstrap';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractService } from '../../common/services/service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -49,9 +49,9 @@ describe('Service Bootstrapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });
-    registry.clearAll();
+    EntityRegistry.clearAll();
 
-    registry.register('service', TestService);
+    EntityRegistry.register('service', TestService);
 
     INIT_SUCCESS = true;
 

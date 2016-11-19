@@ -4,7 +4,7 @@ import { ServerMock } from '../servers/abstract.server.mock';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { ClassDictionary, BootstrapResponse, bootstrap, deferredLog } from './bootstrap';
 import Spy = jasmine.Spy;
 import { AuthService } from '../services/auth.service';
@@ -31,7 +31,7 @@ const providers: any[] = [
 describe('Bootstrap', () => {
 
   beforeEach(() => {
-    registry.clearAll();
+    EntityRegistry.clearAll();
   });
 
   it('resolves server, logger and injector from providers', (done: Function) => {

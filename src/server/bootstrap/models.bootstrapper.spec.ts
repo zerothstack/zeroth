@@ -7,7 +7,7 @@ import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
 import { bootstrap, BootstrapResponse } from './bootstrap';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
@@ -44,9 +44,9 @@ describe('Model Bootstrapper', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers });
-    registry.clearAll();
+    EntityRegistry.clearAll();
 
-    registry.register('model', TestModel);
+    EntityRegistry.register('model', TestModel);
 
   });
 

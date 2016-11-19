@@ -2,7 +2,7 @@
  * @module common
  */
 /** End Typedoc Module Declaration */
-import { registry, EntityType, EntityMetadata } from './entityRegistry';
+import { EntityType, EntityMetadata, EntityRegistry } from './entityRegistry';
 import { ModelMetadata } from '../metadata/metadata';
 
 /**
@@ -13,7 +13,7 @@ import { ModelMetadata } from '../metadata/metadata';
  */
 export function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): ClassDecorator {
   return function <TFunction extends Function>(target: TFunction): void {
-    registry.register(type, target, metadata);
+    EntityRegistry.register(type, target, metadata);
   }
 }
 
