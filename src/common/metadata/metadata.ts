@@ -6,7 +6,6 @@ import { TableOptions } from 'typeorm/decorator/options/TableOptions';
 import { RelationType, Relation } from '../models/relations/index';
 import { EntityMetadata, RegistryEntityStatic } from '../registry/entityRegistry';
 import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
-import { MiddlewareRegistry } from '../../server/controllers/abstract.controller';
 
 export interface PropertyDefinition {
   type: any;
@@ -22,14 +21,6 @@ export interface ModelMetadata {
   timestamps?: {
     created?: string
     updated?: string
-  }
-}
-
-export interface ControllerMetadata {
-  routeBase?:string;
-  middleware?: {
-    methods: Map<string, MiddlewareRegistry>
-    all: MiddlewareRegistry
   }
 }
 

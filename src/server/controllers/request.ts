@@ -3,7 +3,6 @@
  */
 /** End Typedoc Module Declaration */
 import { IncomingMessage } from 'http';
-import EventEmitter = NodeJS.EventEmitter;
 import {
   PayloadTooLargeException,
   UnprocessableEntityException

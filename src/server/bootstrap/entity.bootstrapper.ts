@@ -76,10 +76,7 @@ export abstract class EntityBootstrapper {
    * @returns {any[]}
    */
   protected getFromRegistry(type: EntityType): RegistryEntityStatic<EntityMetadata>[] {
-    return [
-      ...registry.getAllOfType(type)
-        .values()
-    ];
+    return [...registry.getAllOfType(type).values()];
   }
 
   /**

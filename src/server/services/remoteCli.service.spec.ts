@@ -14,7 +14,7 @@ import * as chalk from 'chalk';
 
 import Spy = jasmine.Spy;
 
-xdescribe('Remote CLI Commands', () => {
+describe('Remote CLI Commands', () => {
 
   const vantageSpy = jasmine.createSpyObj('vantage', [
     'delimiter', 'banner', 'command', 'description', 'action', 'listen', 'auth'
@@ -31,7 +31,7 @@ xdescribe('Remote CLI Commands', () => {
   const tableSpy              = jasmine.createSpy('table');
 
   const mockedModule = proxyquire('./remoteCli.service', {
-    ['@xiphiaz/vantage']: vantageConstructorSpy,
+    ['vantage']: vantageConstructorSpy,
     table: tableSpy,
   });
 
@@ -49,7 +49,7 @@ xdescribe('Remote CLI Commands', () => {
   ];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers });
+    TestBed.configureTestingModule({providers});
   });
 
   beforeEach(() => {
@@ -155,7 +155,7 @@ describe('Remote Command Mock', () => {
   ];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers });
+    TestBed.configureTestingModule({providers});
   });
 
   it('mocks the interfaces of RemoteCli', inject([RemoteCliMock], (cli: RemoteCliMock) => {

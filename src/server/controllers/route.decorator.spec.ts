@@ -10,9 +10,9 @@ import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Route } from './route.decorator';
-import { Controller } from '../../common/registry/decorators';
 import { AuthServiceMock } from '../services/auth.service.mock';
 import { AuthService } from '../services/auth.service';
+import { Controller } from '../registry/decorators';
 
 @Injectable()
 @Controller({

@@ -3,10 +3,10 @@
  */
 /** End Typedoc Module Declaration */
 import * as _ from 'lodash';
-import { ModelMetadata, initializeMetadata, ControllerMetadata } from '../metadata/metadata';
+import { ModelMetadata, initializeMetadata } from '../metadata/metadata';
 
 export type EntityType = 'model' | 'controller' | 'seeder' | 'migration' | 'store' | 'service';
-export type EntityMetadata = ModelMetadata | ControllerMetadata;
+export type EntityMetadata = any//ModelMetadata | ControllerMetadata;
 
 export interface RegistryEntityConstructor<M>{
   constructor:RegistryEntityStatic<M>;
@@ -17,7 +17,7 @@ export interface RegistryEntityStatic<M> extends Function {
   getMetadata?():M;
 }
 
-export class RegistryEntity<M> {
+export class RegistryEntity<M extends EntityMetadata> {
   constructor(){}
   /** The metadata associated with the class instance */
   public static __metadata: EntityMetadata;
@@ -132,7 +132,7 @@ export class EntityRegistry {
    * @param name
    * @returns {boolean}
    */
-  removeByType(type: EntityType, name: string): boolean {
+  public removeByType(type: EntityType, name: string): boolean {
     return this.getAllOfType(type)
       .delete(name);
   }
