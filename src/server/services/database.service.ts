@@ -4,7 +4,8 @@
 /** End Typedoc Module Declaration */
 import { Injectable } from '@angular/core';
 import { Logger, LogLevel } from '../../common/services/logger.service';
-import { createConnection, CreateConnectionOptions, Connection, Driver } from 'typeorm';
+import { createConnection, ConnectionOptions, Connection, Driver } from 'typeorm';
+import { QueryRunner } from 'typeorm/query-runner/QueryRunner';
 import { registry } from '../../common/registry/entityRegistry';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
@@ -70,26 +71,26 @@ export class Database extends AbstractService {
 
     logFunction('info', 'Connecting to database');
 
-    const options: CreateConnectionOptions = {
-      driver: process.env.DB_DRIVER, // Right now only "mysql" is supported
-      connection: {
+    const options: ConnectionOptions = {
+      driver: {
+        type: process.env.DB_DRIVER, // Right now only "mysql" is supported
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        autoSchemaCreate: false, // if set to true, then database schema will be automatically
-        // created on each application start
-        logging: {
-          logger: (message: any, level: 'log'|'debug'|'info'|'error'): void => {
-            if (level == 'log') {
-              level = 'info';
-            }
-            logFunction((level as LogLevel), message)
-          },
-          logQueries: true,
-        }
       },
+      // created on each application start
+      logging: {
+        logger: (message: any, level: 'log'|'debug'|'info'|'error'): void => {
+          if (level == 'log') {
+            level = 'info';
+          }
+          logFunction((level as LogLevel), message)
+        },
+        logQueries: true,
+      },
+      autoSchemaSync: false, // if set to true, then database schema will be automatically
       entities: [
         ...registry.getAllOfType('model')
           .values()
@@ -113,8 +114,8 @@ export class Database extends AbstractService {
    * @returns {Promise<any>}
    */
   public query(sql: string): Promise<any> {
-    return this.getDriver()
-      .then((driver: Driver) => driver.query(sql));
+    return this.getQueryRunner()
+      .then((qr: QueryRunner) => qr.query(sql));
   }
 
   /**
@@ -123,6 +124,14 @@ export class Database extends AbstractService {
    */
   public getDriver(): Promise<Driver> {
     return this.initialized.then(() => this.connection.driver);
+  }
+
+  /**
+   * Get current query runner from current driver for direct database interaction
+   * @returns {Promise<QueryRunner>}
+   */
+  public getQueryRunner(): Promise<QueryRunner> {
+    return this.getDriver().then((d) => d.createQueryRunner());
   }
 
   /**

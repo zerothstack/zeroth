@@ -3,6 +3,7 @@ import { Database } from './database.service';
 import { TestBed, inject, async } from '@angular/core/testing';
 import * as typeorm from 'typeorm';
 import { Driver } from 'typeorm';
+import { QueryRunner } from 'typeorm/query-runner/QueryRunner';
 import { Injectable } from '@angular/core';
 import { RemoteCli } from './remoteCli.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
@@ -21,15 +22,16 @@ class ExampleUtil {
 
   public flagLongUsernames(role: string, length: number): Promise<void> {
 
-    let driver: Driver;
+    let queryRunner: QueryRunner;
     return this.database.getDriver()
-      .then((d: Driver) => {
-        driver = d;
-        return driver.beginTransaction();
+      .then((driver: Driver) => driver.createQueryRunner())
+      .then((qr) => {
+        queryRunner = qr;
+        return qr.beginTransaction();
       })
       .then(() => this.database.query(Database.prepare`UPDATE users SET flagged = LENGTH(username) > ${length} WHERE role = ${role}`))
-      .then(() => driver.commitTransaction())
-      .catch(() => driver.rollbackTransaction());
+      .then(() => queryRunner.commitTransaction())
+      .catch(() => queryRunner.rollbackTransaction());
 
   }
 
@@ -41,9 +43,9 @@ describe('Database', () => {
   const connectionSpy: any = {};
 
   const providers = [
-    { provide: Logger, useClass: LoggerMock },
-    { provide: RemoteCli, useClass: RemoteCliMock },
-    { provide: AuthService, useClass: AuthServiceMock },
+    {provide: Logger, useClass: LoggerMock},
+    {provide: RemoteCli, useClass: RemoteCliMock},
+    {provide: AuthService, useClass: AuthServiceMock},
     Database,
     ExampleUtil
   ];
@@ -58,24 +60,24 @@ describe('Database', () => {
   };
 
   const connectionConfigFixture: any = {
-    driver: envMap.DB_DRIVER,
-    connection: {
+    driver: {
+      type: envMap.DB_DRIVER,
       host: envMap.DB_HOST,
       port: envMap.DB_PORT,
       username: envMap.DB_USERNAME,
       password: envMap.DB_PASSWORD,
       database: envMap.DB_DATABASE,
-      autoSchemaCreate: false,
-      logging: {
-        logger: jasmine.any(Function),
-        logQueries: true,
-      }
+    },
+    autoSchemaSync: false,
+    logging: {
+      logger: jasmine.any(Function),
+      logQueries: true,
     },
     entities: [],
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers });
+    TestBed.configureTestingModule({providers});
 
     registry.clearAll();
     Object.assign(process.env, envMap);
@@ -119,7 +121,8 @@ describe('Database', () => {
     expect(createConnectionSpy)
       .toHaveBeenCalledWith(connectionConfigFixture);
 
-    const logFunction = createConnectionSpy.calls.mostRecent().args[0].connection.logging.logger;
+
+    const logFunction = createConnectionSpy.calls.mostRecent().args[0].logging.logger;
 
     logFunction('log with level log', 'log');
     expect(logFunctionSpy)
@@ -158,11 +161,18 @@ describe('Database', () => {
 
   it('executes a raw query on the database', async(inject([Database], (database: Database) => {
 
-    const resultMock     = [{foo: 'bar'}];
-    connectionSpy.driver = {
+    const resultMock = [{foo: 'bar'}];
+
+    const queryRunnerMock = {
       query: jasmine.createSpy('query')
         .and
         .returnValue(resultMock)
+    };
+
+    connectionSpy.driver = {
+      createQueryRunner: jasmine.createSpy('createQueryRunner')
+        .and
+        .returnValue(Promise.resolve(queryRunnerMock))
     };
 
     const queryString = 'SELECT * FROM table';
@@ -170,7 +180,7 @@ describe('Database', () => {
     return database.query(queryString)
       .then((result) => {
 
-        expect(connectionSpy.driver.query)
+        expect(queryRunnerMock.query)
           .toHaveBeenCalledWith(queryString);
         expect(result)
           .toEqual(resultMock);
@@ -184,43 +194,59 @@ describe('Database', () => {
 
       const resultMock = [{foo: 'bar'}];
 
-      const driverMock = {
+      const queryRunnerMock = {
         beginTransaction: jasmine.createSpy('beginTransaction').and.returnValue(Promise.resolve()),
-        commitTransaction: jasmine.createSpy('commitTransaction').and.returnValue(Promise.resolve()),
-        query: jasmine.createSpy('query').and.returnValue(resultMock),
+        commitTransaction: jasmine.createSpy('commitTransaction')
+          .and
+          .returnValue(Promise.resolve()),
+        query: jasmine.createSpy('query')
+          .and
+          .returnValue(resultMock)
       };
 
-      connectionSpy.driver = driverMock;
+      connectionSpy.driver = {
+        createQueryRunner: jasmine.createSpy('createQueryRunner')
+          .and
+          .returnValue(Promise.resolve(queryRunnerMock))
+      };
 
       return util.flagLongUsernames('admin', 5)
         .then(() => {
 
-          expect(connectionSpy.driver.beginTransaction).toHaveBeenCalled();
-          expect(connectionSpy.driver.query)
+          expect(queryRunnerMock.beginTransaction).toHaveBeenCalled();
+          expect(queryRunnerMock.query)
             .toHaveBeenCalledWith((SQL as any)`UPDATE users SET flagged = LENGTH(username) > ${5} WHERE role = ${'admin'}`);
-          expect(connectionSpy.driver.commitTransaction).toHaveBeenCalled();
+          expect(queryRunnerMock.commitTransaction).toHaveBeenCalled();
         });
 
     })));
 
     it('runs complex queries with exceptions rolling back transactions', async(inject([ExampleUtil, Database], (util: ExampleUtil, database: Database) => {
 
-      const driverMock = {
+      const queryRunnerMock = {
         beginTransaction: jasmine.createSpy('beginTransaction').and.returnValue(Promise.resolve()),
-        commitTransaction: jasmine.createSpy('commitTransaction').and.returnValue(Promise.resolve()),
-        rollbackTransaction: jasmine.createSpy('rollbackTransaction').and.returnValue(Promise.resolve()),
+        commitTransaction: jasmine.createSpy('commitTransaction')
+          .and
+          .returnValue(Promise.resolve()),
+        rollbackTransaction: jasmine.createSpy('rollbackTransaction')
+          .and
+          .returnValue(Promise.resolve()),
         query: jasmine.createSpy('query').and.returnValue(Promise.reject(new Error('DB Error'))),
       };
 
-      connectionSpy.driver = driverMock;
+      connectionSpy.driver = {
+        createQueryRunner: jasmine.createSpy('createQueryRunner')
+          .and
+          .returnValue(Promise.resolve(queryRunnerMock))
+      };
 
       return util.flagLongUsernames('admin', 5)
         .then(() => {
 
-          expect(connectionSpy.driver.beginTransaction).toHaveBeenCalled();
-          expect(connectionSpy.driver.query).toHaveBeenCalled();
-          expect(connectionSpy.driver.commitTransaction).not.toHaveBeenCalled();
-          expect(connectionSpy.driver.rollbackTransaction).toHaveBeenCalled();
+          expect(queryRunnerMock.beginTransaction).toHaveBeenCalled();
+          expect(queryRunnerMock.query).toHaveBeenCalled();
+          expect(queryRunnerMock.commitTransaction).not.toHaveBeenCalled();
+          expect(queryRunnerMock.rollbackTransaction).toHaveBeenCalled();
         });
 
     })));

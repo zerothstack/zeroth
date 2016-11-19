@@ -4,14 +4,9 @@
 /** End Typedoc Module Declaration */
 import { TableOptions } from 'typeorm/decorator/options/TableOptions';
 import { RelationType, Relation } from '../models/relations/index';
-import {
-  RegistryEntityConstructor, EntityMetadata,
-  RegistryEntityStatic
-} from '../registry/entityRegistry';
+import { EntityMetadata, RegistryEntityStatic } from '../registry/entityRegistry';
 import { ColumnOptions } from 'typeorm/decorator/options/ColumnOptions';
-
-// @todo normalise to avoid circ dep of import MiddlewareRegistry
-type MiddlewareRegistry = any;
+import { MiddlewareRegistry } from '../../server/controllers/abstract.controller';
 
 export interface PropertyDefinition {
   type: any;

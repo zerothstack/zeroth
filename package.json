@@ -65,7 +65,7 @@
     "sql-template-strings": "^2.0.3",
     "table": "^3.7.8",
     "timestamp": "0.0.1",
-    "typeorm": "0.0.2-alpha.43",
+    "typeorm": "0.0.2-alpha.70",
     "vantage": "dthree/vantage#master",
     "zone.js": "^0.6.23"
   },

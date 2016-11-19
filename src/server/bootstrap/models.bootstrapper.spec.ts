@@ -11,11 +11,11 @@ import { registry } from '../../common/registry/entityRegistry';
 import { AbstractModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
-import * as typeormColumns from 'typeorm/columns';
+import * as typeorm from 'typeorm';
 import { CreatedDate, UpdatedDate } from '../../common/models/types/timestamp.decorator';
-import Spy = jasmine.Spy;
 import { AuthServiceMock } from '../services/auth.service.mock';
 import { AuthService } from '../services/auth.service';
+import Spy = jasmine.Spy;
 
 const providers: any[] = [
   {provide: Logger, useClass: LoggerMock},
@@ -62,10 +62,10 @@ describe('Model Bootstrapper', () => {
       return {invoked, registered};
     };
 
-    const primaryColumnSpy = decoratorSpy(typeormColumns, 'PrimaryColumn');
-    const columnSpy        = decoratorSpy(typeormColumns, 'Column');
-    const createDateSpy    = decoratorSpy(typeormColumns, 'CreateDateColumn');
-    const updateDateSpy    = decoratorSpy(typeormColumns, 'UpdateDateColumn');
+    const primaryColumnSpy = decoratorSpy(typeorm, 'PrimaryColumn');
+    const columnSpy        = decoratorSpy(typeorm, 'Column');
+    const createDateSpy    = decoratorSpy(typeorm, 'CreateDateColumn');
+    const updateDateSpy    = decoratorSpy(typeorm, 'UpdateDateColumn');
 
     return result.then((res: BootstrapResponse) => {
 
