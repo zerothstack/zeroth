@@ -50,9 +50,9 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * @inheritdoc
    */
-  public initialized(): Promise<this> {
-    return this.getRepository()
-      .then(() => this);
+  public async initialized(): Promise<this> {
+    await this.getRepository();
+    return this;
   }
 
   /**

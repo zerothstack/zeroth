@@ -60,6 +60,7 @@ describe('Database', () => {
   };
 
   const connectionConfigFixture: any = {
+    name: 'default',
     driver: {
       type: envMap.DB_DRIVER,
       host: envMap.DB_HOST,
@@ -89,6 +90,10 @@ describe('Database', () => {
 
   });
 
+  afterEach(() => {
+    Database.clearConnections();
+  });
+
   it('initializes database with connection', async(inject([Database], (database: Database) => {
 
     expect(createConnectionSpy)
@@ -116,11 +121,10 @@ describe('Database', () => {
 
     const logFunctionSpy = jasmine.createSpy('logFunction');
 
-    Database.connect(logFunctionSpy);
+    Database.connect('default', logFunctionSpy);
 
     expect(createConnectionSpy)
       .toHaveBeenCalledWith(connectionConfigFixture);
-
 
     const logFunction = createConnectionSpy.calls.mostRecent().args[0].logging.logger;
 
@@ -136,20 +140,17 @@ describe('Database', () => {
 
   describe('Connection error', () => {
 
-    beforeEach(() => {
+    it('rejects connection if connection fails', async(inject([Database], (database: Database) => {
 
+      // clear cached default connection
+      Database.clearConnections();
+
+      // force failure
       createConnectionSpy.and.callFake(() => {
         return Promise.reject(new Error('Connection error'));
-      })
+      });
 
-    });
-
-    it('rejects initialization promise if connection fails', async(inject([Database], (database: Database) => {
-
-      expect(createConnectionSpy)
-        .toHaveBeenCalledWith(connectionConfigFixture);
-
-      return database.getConnection()
+      return database.initialize()
         .catch((error: Error) => {
           expect(error.message)
             .toEqual('Connection error');

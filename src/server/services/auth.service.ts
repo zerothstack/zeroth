@@ -9,6 +9,7 @@ import { AbstractService } from '../../common/services/service';
 import { readFileSync } from 'fs';
 import * as jwt from 'jsonwebtoken';
 
+
 /**
  * Class allows developers to register custom commands that can be remote executed in a
  * shell environment. Useful for things like migrations and debugging.
