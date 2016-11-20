@@ -26,6 +26,13 @@
   },
   "homepage": "https://github.com/ubiquits/ubiquits#readme",
   "dependencies": {
+    "@angular/common": "2.1.2",
+    "@angular/core": "2.1.2",
+    "@angular/compiler": "2.1.2",
+    "@angular/http": "2.1.2",
+    "@angular/platform-browser": "2.1.2",
+    "@angular/platform-browser-dynamic": "2.1.2",
+    "@angular/platform-server": "2.1.2",
     "@types/chalk": "^0.4.28",
     "@types/chance": "^0.7.28",
     "@types/dotenv": "^2.0.17",
@@ -49,7 +56,6 @@
     "jsonwebtoken": "^7.1.6",
     "lodash": "^4.12.0",
     "moment": "^2.13.0",
-    "mysql": "^2.11.1",
     "pg": "^6.1.0",
     "pg-hstore": "^2.3.2",
     "reflect-metadata": "^0.1.3",
@@ -63,23 +69,7 @@
   },
   "devDependencies": {
     "@ubiquits/toolchain": "2.0.1-0",
-    "proxyquire": "^1.7.10",
-    "@angular/common": "^2.1.2",
-    "@angular/core": "^2.1.2",
-    "@angular/http": "^2.1.2",
-    "@angular/platform-browser": "^2.1.2",
-    "@angular/platform-browser-dynamic": "^2.1.2",
-    "@angular/platform-server": "^2.1.2"
-  },
-  "peerDependencies": {
-    "@angular/common": "^2.1.2",
-    "@angular/compiler": "^2.1.2",
-    "@angular/core": "^2.1.2",
-    "@angular/http": "^2.1.2",
-    "@angular/platform-browser": "^2.1.2",
-    "@angular/platform-browser-dynamic": "^2.1.2",
-    "@angular/platform-server": "^2.1.2",
-    "@angular/router": "^3.1.2"
+    "proxyquire": "^1.7.10"
   },
   "directories": {
     "doc": "docs"
