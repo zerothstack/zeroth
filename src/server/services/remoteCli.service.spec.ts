@@ -2,11 +2,11 @@ import * as proxyquire from 'proxyquire';
 import { Injector } from '@angular/core';
 import { RemoteCli } from './remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
-import { addProviders, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
-import { registry } from '../../common/registry/entityRegistry';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { Server, RouteConfig } from '../servers/abstract.server';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCliMock } from './remoteCli.service.mock';
 import { AuthServiceMock } from './auth.service.mock';
 import { AuthService } from './auth.service';
@@ -31,7 +31,7 @@ describe('Remote CLI Commands', () => {
   const tableSpy              = jasmine.createSpy('table');
 
   const mockedModule = proxyquire('./remoteCli.service', {
-    ['@xiphiaz/vantage']: vantageConstructorSpy,
+    ['vantage']: vantageConstructorSpy,
     table: tableSpy,
   });
 
@@ -49,11 +49,11 @@ describe('Remote CLI Commands', () => {
   ];
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({providers});
   });
 
   beforeEach(() => {
-    registry.clearAll();
+    EntityRegistry.clearAll();
     (process.stdout as any).columns = 90;
   });
 
@@ -155,7 +155,7 @@ describe('Remote Command Mock', () => {
   ];
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({providers});
   });
 
   it('mocks the interfaces of RemoteCli', inject([RemoteCliMock], (cli: RemoteCliMock) => {

@@ -2,8 +2,6 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-import 'core-js';
-import 'reflect-metadata';
 import { Server } from './servers/abstract.server';
 import { Database } from './services/database.service';
 import { RemoteCli } from './services/remoteCli.service';
@@ -14,6 +12,9 @@ import { ExpressServer } from './servers/express.server';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import * as _ from 'lodash';
+// import { ProviderDefinition } from './bootstrap/bootstrap';
+// import { platformServer, ServerModule } from '@angular/platform-server';
+// import { NgModule } from '@angular/core';
 import { ProviderDefinition } from './bootstrap/bootstrap';
 
 // Load .env variables into process.env.*

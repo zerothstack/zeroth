@@ -3,21 +3,21 @@
  */
 /** End Typedoc Module Declaration */
 import { Injectable, Injector } from '@angular/core';
-import { bannerBg } from '../../common/util/banner';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import * as chalk from 'chalk';
 import { Response } from '../controllers/response';
 import { PromiseFactory } from '../../common/util/serialPromise';
-import * as Vantage from '@xiphiaz/vantage';
+import * as Vantage from 'vantage';
 import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
+import { AuthService } from './auth.service';
+import { jwtAuthStrategyFactory } from './jwtAuthStrategy';
 
 const table: Table = require('table').default;
 
+
 import Socket = SocketIO.Socket;
-import { AuthService } from './auth.service';
-import { jwtAuthStrategyFactory } from './jwtAuthStrategy';
 
 export interface TableBorderTemplate {
 

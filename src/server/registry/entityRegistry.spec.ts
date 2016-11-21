@@ -1,6 +1,7 @@
-import { EntityRegistry, EntityType, registry } from './entityRegistry';
-import { Model, Controller, Seeder, Migration, Store, Service } from './decorators';
-import { AbstractModel } from '../models/model';
+import { EntityRegistry, EntityType } from '../../common/registry/entityRegistry';
+import { Model, Store, Service } from '../../common/registry/decorators';
+import { AbstractModel } from '../../common/models/model';
+import { Controller, Seeder, Migration } from './decorators';
 
 describe('Entity registry', () => {
 
@@ -159,28 +160,32 @@ describe('Entity registry', () => {
 
   describe('decorators', () => {
 
-    afterAll(() => {
-      testRegistry.clearAll();
+    beforeAll(() => {
+
+      @Model()
+      class FooModel {
+      }
+      @Controller()
+      class FooController {
+      }
+      @Seeder()
+      class FooSeeder {
+      }
+      @Migration()
+      class FooMigration {
+      }
+      @Store()
+      class FooStore {
+      }
+      @Service()
+      class FooService {
+      }
+
     });
 
-    @Model()
-    class FooModel {
-    }
-    @Controller()
-    class FooController {
-    }
-    @Seeder()
-    class FooSeeder {
-    }
-    @Migration()
-    class FooMigration {
-    }
-    @Store()
-    class FooStore {
-    }
-    @Service()
-    class FooService {
-    }
+    afterAll(() => {
+      EntityRegistry.root.clearAll();
+    });
 
     [
       'Model',
@@ -193,14 +198,14 @@ describe('Entity registry', () => {
 
       let type = (decorator.toLowerCase() as EntityType);
 
-      it(`decorates class with @${decorator} to register class as tye '${type}'`, () => {
+      it(`decorates class with @${decorator} to register class as type '${type}'`, () => {
 
         let className  = 'Foo' + decorator;
-        let foundClass = registry.getAllOfType(type)
+        let foundClass = EntityRegistry.root.getAllOfType(type)
           .get(className);
 
         expect(foundClass instanceof Function)
-          .toBe(true);
+          .toBe(true, typeof foundClass);
         expect(foundClass.name)
           .toEqual(className);
 
@@ -215,7 +220,7 @@ describe('Entity registry', () => {
       class BarModel extends AbstractModel {
       }
 
-      let foundClass = registry.findByType('model', BarModel.name);
+      let foundClass = EntityRegistry.root.findByType('model', BarModel.name);
       expect(foundClass.getMetadata()).toEqual({storageKey: 'example'});
 
     });

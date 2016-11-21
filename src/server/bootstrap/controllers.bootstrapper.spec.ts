@@ -1,13 +1,13 @@
-import { addProviders } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
-import { bootstrap, BootstrapResponse } from './index';
-import { registry } from '../../common/registry/entityRegistry';
+import { bootstrap, BootstrapResponse } from './bootstrap';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractController } from '../controllers/abstract.controller';
 import { Route } from '../controllers/route.decorator';
 import { Request } from '../controllers/request';
@@ -38,10 +38,10 @@ class TestController extends AbstractController {
 describe('Controller Bootstrapper', () => {
 
   beforeEach(() => {
-    addProviders(providers);
-    registry.clearAll();
+    TestBed.configureTestingModule({ providers });
+    EntityRegistry.clearAll();
 
-    registry.register('controller', TestController);
+    EntityRegistry.register('controller', TestController);
 
   });
 

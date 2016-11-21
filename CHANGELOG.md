@@ -1,3 +1,117 @@
+<a name="1.0.0-3"></a>
+# [1.0.0-3](https://github.com/ubiquits/ubiquits/compare/v1.0.0-2...v1.0.0-3) (2016-11-21)
+
+
+
+<a name="1.0.0-2"></a>
+# [1.0.0-2](https://github.com/ubiquits/ubiquits/compare/v1.0.0-1...v1.0.0-2) (2016-11-21)
+
+
+
+<a name="1.0.0-1"></a>
+# [1.0.0-1](https://github.com/ubiquits/ubiquits/compare/v1.0.0-0...v1.0.0-1) (2016-11-20)
+
+
+
+<a name="1.0.0-0"></a>
+# [1.0.0-0](https://github.com/ubiquits/ubiquits/compare/v0.8.5...v1.0.0-0) (2016-11-19)
+
+
+### Bug Fixes
+
+* **api docs:** Fix typedoc module allocation ([0d780c4](https://github.com/ubiquits/ubiquits/commit/0d780c4))
+* **deployment:** Fix typedoc documentation not deploying ([c0c2305](https://github.com/ubiquits/ubiquits/commit/c0c2305))
+* **lib:** fixed missing imports ([6608432](https://github.com/ubiquits/ubiquits/commit/6608432))
+* **server:** Update server implementations to be more docker-friendly ([cae672a](https://github.com/ubiquits/ubiquits/commit/cae672a))
+
+
+### Features
+
+* **app:** Implement server side static file delivery with express.static ([98e880a](https://github.com/ubiquits/ubiquits/commit/98e880a))
+* **auth service:** Add tests for jwt auth service ([087fd48](https://github.com/ubiquits/ubiquits/commit/087fd48))
+* **cli:** Add documentation for remote cli connection ([65172a2](https://github.com/ubiquits/ubiquits/commit/65172a2))
+* **remote cli:** Extracted jwtAuthStrategy and added tests ([db3a366](https://github.com/ubiquits/ubiquits/commit/db3a366))
+
+
+
+<a name="0.8.5"></a>
+## [0.8.5](https://github.com/ubiquits/ubiquits/compare/v0.8.4...v0.8.5) (2016-07-21)
+
+
+### Features
+
+* **remote cli:** Implement basic remote passthrough of credentials ([15a8095](https://github.com/ubiquits/ubiquits/commit/15a8095))
+* **remote cli:** Implement jwt authentication strategy with verification against user's public key ([96778a1](https://github.com/ubiquits/ubiquits/commit/96778a1))
+* **remote cli:** Implemented a truly ridiculously complex banner for remote login welcome ([33e91f1](https://github.com/ubiquits/ubiquits/commit/33e91f1))
+
+
+
+<a name="0.8.4"></a>
+## [0.8.4](https://github.com/ubiquits/ubiquits/compare/v0.8.3...v0.8.4) (2016-07-20)
+
+
+
+<a name="0.8.3"></a>
+## [0.8.3](https://github.com/ubiquits/ubiquits/compare/v0.8.2...v0.8.3) (2016-07-20)
+
+
+### Bug Fixes
+
+* **deploy:** Fix npmignore to include the root lib dirs ([5dab13f](https://github.com/ubiquits/ubiquits/commit/5dab13f))
+
+
+
+<a name="0.8.2"></a>
+## [0.8.2](https://github.com/ubiquits/ubiquits/compare/v0.8.1...v0.8.2) (2016-07-19)
+
+
+### Bug Fixes
+
+* **deploy:** Fixed overwrite causing preparepublish to vanish ([500351c](https://github.com/ubiquits/ubiquits/commit/500351c))
+* **deploy:** Moved prepublish to preparepublish ([b70bbf4](https://github.com/ubiquits/ubiquits/commit/b70bbf4))
+
+
+
+<a name="0.8.1"></a>
+## [0.8.1](https://github.com/ubiquits/ubiquits/compare/v0.8.0...v0.8.1) (2016-07-19)
+
+
+### Bug Fixes
+
+* **npm:** Fix incorrect paths, prepare for update to handle the new publishing pattern ([bfa602b](https://github.com/ubiquits/ubiquits/commit/bfa602b))
+
+
+### Features
+
+* **deploy:** Update to have flattened module structure ([6a7082f](https://github.com/ubiquits/ubiquits/commit/6a7082f))
+
+
+
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/ubiquits/ubiquits/compare/v0.7.14...v0.8.0) (2016-07-19)
+
+
+### Bug Fixes
+
+* **npm:** Fix incorrectly placed dependencies ([06e85a1](https://github.com/ubiquits/ubiquits/commit/06e85a1))
+
+
+### Features
+
+* **typescript:** Upgrad to typescript 2.0, extract execeptions to common to stop browser linking server modules, remove typings, remove ([4aa3446](https://github.com/ubiquits/ubiquits/commit/4aa3446))
+
+
+### BREAKING CHANGES
+
+* typescript: You typescript 2.0 lands with this release, with it comes a total refactor on how tsconfig is used. To see the recommended implementation, review the changes in https://github.com/ubiquits/quickstart/pull/22
+
+
+
+<a name="0.7.14"></a>
+## [0.7.14](https://github.com/ubiquits/ubiquits/compare/v0.7.13...v0.7.14) (2016-07-19)
+
+
+
 <a name="0.7.13"></a>
 ## [0.7.13](https://github.com/ubiquits/ubiquits/compare/v0.7.12...v0.7.13) (2016-07-18)
 

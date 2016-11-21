@@ -1,6 +1,6 @@
 import { Logger } from '../../common/services/logger.service';
 import { Injectable, Injector } from '@angular/core';
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Database } from '../services/database.service';
 import { DatabaseStore } from './db.store';
@@ -10,7 +10,7 @@ import { StoredProperty } from '../../common/models/types/storedProperty.decorat
 import { Collection } from '../../common/models/collection';
 import { DatabaseMock } from '../services/database.service.mock';
 import Spy = jasmine.Spy;
-import { NotFoundException } from '../../common/exeptions/exceptions';
+import { NotFoundException } from '../../common/exceptions/exceptions';
 
 class TestModel extends AbstractModel {
 
@@ -31,8 +31,8 @@ class TestDatabaseStore extends DatabaseStore<TestModel> {
 
 describe('Database Store', () => {
 
-  const repositorySpy   = jasmine.createSpyObj('repository', ['findOneById', 'find', 'persist', 'remove']);
   const dbConnectionSpy = jasmine.createSpyObj('dbConnection', ['getRepository']);
+  const repositorySpy   = jasmine.createSpyObj('repository', ['findOneById', 'find', 'persist', 'remove']);
   dbConnectionSpy.getRepository.and.returnValue(repositorySpy);
 
   const providers = [
@@ -42,19 +42,17 @@ describe('Database Store', () => {
   ];
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('initializes the store with a reference to the static model', inject([TestDatabaseStore], (store: TestDatabaseStore) => {
 
-    expect((store as any).modelStatic)
-      .toEqual(TestModel);
-
+    expect((store as any).modelStatic).toEqual(TestModel);
   }));
 
   it('retrieves a reference to the orm repository', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     return store.getRepository()
       .then((repo) => {
@@ -78,7 +76,7 @@ describe('Database Store', () => {
 
   it('provides initialized method so callees can defer actions', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     return store.initialized()
       .then((res) => {
@@ -90,7 +88,7 @@ describe('Database Store', () => {
 
   it('retrieves a single entity from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     const testModelFixture = new TestModel({id: 10});
 
@@ -108,7 +106,7 @@ describe('Database Store', () => {
 
   it('rejects retrieval with not found exception when there is no model', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     repositorySpy.findOneById.and.returnValue(Promise.resolve(null));
 
@@ -124,7 +122,7 @@ describe('Database Store', () => {
 
   it('deletes a single entity from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     const testModelFixture = new TestModel({id: 10});
 
@@ -142,7 +140,7 @@ describe('Database Store', () => {
 
   it('retrieves collection of entities from the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     const testModelsFixture = [new TestModel({id: 12})];
 
@@ -162,7 +160,7 @@ describe('Database Store', () => {
 
   it('rejects retrieval with not found exception when there is no models', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     repositorySpy.find.and.returnValue(Promise.resolve([]));
 
@@ -181,7 +179,7 @@ describe('Database Store', () => {
 
   it('persists a single entity to the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     const testModelFixture = new TestModel({id: 10});
 
@@ -199,7 +197,7 @@ describe('Database Store', () => {
 
   it('checks if entity exists in the orm', async(inject([TestDatabaseStore, Database], (store: TestDatabaseStore, db: Database) => {
 
-    (db as any).connection = dbConnectionSpy;
+    (Database as any).connections.set('default', dbConnectionSpy);
 
     const testModelFixture = new TestModel({id: 10});
 

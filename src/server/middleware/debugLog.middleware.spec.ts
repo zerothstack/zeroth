@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
 import { Route } from '../controllers/route.decorator';
@@ -8,7 +8,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.mock';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { debugLog, DebugLogMiddleware } from './debugLog.middleware';
@@ -63,7 +63,7 @@ describe('debugLog middleware', () => {
   let controller: MiddlewareController;
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Calls debug.log on the passed value to the middleware decorator',

@@ -20,7 +20,7 @@ export abstract class HttpException extends Error {
     return this.statusCode;
   }
 
-  public getData():any {
+  public getData(): any {
     return this.data;
   }
 

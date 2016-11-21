@@ -1,21 +1,21 @@
-import { addProviders } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { Server } from '../servers/abstract.server';
-import { bootstrap, BootstrapResponse } from './index';
-import { registry } from '../../common/registry/entityRegistry';
+import { bootstrap, BootstrapResponse } from './bootstrap';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractModel } from '../../common/models/model';
 import { Primary } from '../../common/models/types/primary.decorator';
 import { StoredProperty } from '../../common/models/types/storedProperty.decorator';
-import * as typeormColumns from 'typeorm/columns';
+import * as typeorm from 'typeorm';
 import { CreatedDate, UpdatedDate } from '../../common/models/types/timestamp.decorator';
-import Spy = jasmine.Spy;
 import { AuthServiceMock } from '../services/auth.service.mock';
 import { AuthService } from '../services/auth.service';
+import Spy = jasmine.Spy;
 
 const providers: any[] = [
   {provide: Logger, useClass: LoggerMock},
@@ -43,10 +43,10 @@ class TestModel extends AbstractModel {
 describe('Model Bootstrapper', () => {
 
   beforeEach(() => {
-    addProviders(providers);
-    registry.clearAll();
+    TestBed.configureTestingModule({ providers });
+    EntityRegistry.clearAll();
 
-    registry.register('model', TestModel);
+    EntityRegistry.register('model', TestModel);
 
   });
 
@@ -62,10 +62,10 @@ describe('Model Bootstrapper', () => {
       return {invoked, registered};
     };
 
-    const primaryColumnSpy = decoratorSpy(typeormColumns, 'PrimaryColumn');
-    const columnSpy        = decoratorSpy(typeormColumns, 'Column');
-    const createDateSpy    = decoratorSpy(typeormColumns, 'CreateDateColumn');
-    const updateDateSpy    = decoratorSpy(typeormColumns, 'UpdateDateColumn');
+    const primaryColumnSpy = decoratorSpy(typeorm, 'PrimaryColumn');
+    const columnSpy        = decoratorSpy(typeorm, 'Column');
+    const createDateSpy    = decoratorSpy(typeorm, 'CreateDateColumn');
+    const updateDateSpy    = decoratorSpy(typeorm, 'UpdateDateColumn');
 
     return result.then((res: BootstrapResponse) => {
 

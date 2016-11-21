@@ -1,13 +1,13 @@
-import { addProviders } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { LoggerMock } from '../../common/services/logger.service.mock';
-import { bootstrap, BootstrapResponse } from './index';
-import { registry } from '../../common/registry/entityRegistry';
+import { bootstrap, BootstrapResponse } from './bootstrap';
+import { EntityRegistry } from '../../common/registry/entityRegistry';
 import { AbstractService } from '../../common/services/service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { RemoteCli } from '../services/remoteCli.service';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { Server } from '../servers/abstract.server';
 import Spy = jasmine.Spy;
 import { AuthServiceMock } from '../services/auth.service.mock';
@@ -48,10 +48,10 @@ export class TestService extends AbstractService {
 describe('Service Bootstrapper', () => {
 
   beforeEach(() => {
-    addProviders(providers);
-    registry.clearAll();
+    TestBed.configureTestingModule({ providers });
+    EntityRegistry.clearAll();
 
-    registry.register('service', TestService);
+    EntityRegistry.register('service', TestService);
 
     INIT_SUCCESS = true;
 

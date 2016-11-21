@@ -11,18 +11,14 @@ import { Response } from './response';
 import { Request } from './request';
 import { initializeMiddlewareRegister } from '../middleware/middleware.decorator';
 import { RegistryEntityStatic, RegistryEntity } from '../../common/registry/entityRegistry';
-import { ControllerMetadata } from '../../common/metadata/metadata';
-import { InternalServerErrorException, HttpException } from '../../common/exeptions/exceptions';
+import { InternalServerErrorException, HttpException } from '../../common/exceptions/exceptions';
+import { MiddlewareRegistry, ControllerMetadata } from '../registry/decorators';
 
 export interface MethodDefinition {
   method: HttpMethod;
   route: string;
 }
 
-export interface MiddlewareRegistry {
-  before: InjectableMiddlewareFactory[];
-  after: InjectableMiddlewareFactory[];
-}
 
 export interface MethodDictionary {
   [methodSignature: string]: MethodDefinition;

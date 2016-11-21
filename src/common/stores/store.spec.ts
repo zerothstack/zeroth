@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Injectable, Injector } from '@angular/core';
 import { MockStore } from './mock.store';
 import { AbstractModel, identifier } from '../models/model';
@@ -12,7 +12,7 @@ import {
 import { Primary } from '../models/types/primary.decorator';
 import Spy = jasmine.Spy;
 import { Collection } from '../models/collection';
-import { ValidationException } from '../exeptions/exceptions';
+import { ValidationException } from '../exceptions/exceptions';
 
 @Injectable()
 class StubService {
@@ -124,7 +124,7 @@ const providers: any[] = [
 describe('Mock Store', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('is injected with the store instance token', inject([TestClass], (c: TestClass) => {
@@ -261,8 +261,8 @@ describe('Mock Store', () => {
         expect(e instanceof ValidationException)
           .toBe(true);
 
-        expect(e.getData()[0].type)
-          .toEqual('min_length');
+        expect(e.getData()[0].constraints.minLength).not
+          .toBeNull();
       });
 
   })));
@@ -310,8 +310,8 @@ describe('Mock Store', () => {
         expect(e instanceof ValidationException)
           .toBe(true);
 
-        expect(e.getData()[0].type)
-          .toEqual('CustomValidatorAsync');
+        expect(e.getData()[0].constraints.CustomValidatorAsync)
+          .not.toBeNull();
       });
 
   })));

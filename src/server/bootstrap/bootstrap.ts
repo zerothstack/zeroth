@@ -2,7 +2,6 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-import 'core-js';
 import 'reflect-metadata';
 import { ReflectiveInjector, Type } from '@angular/core';
 import { Server } from '../servers/abstract.server';
@@ -17,7 +16,7 @@ import { MigrationBootstrapper } from './migrations.bootstrapper';
 import { ServiceBootstrapper } from './services.bootstrapper';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 
-export type ProviderType = Type | {
+export type ProviderType = Type<any> | {
   [k: string]: any;
 } | any[];
 

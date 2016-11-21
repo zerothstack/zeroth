@@ -1,11 +1,11 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { ResourceController } from './resource.controller';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.mock';
 import { AbstractModel, identifier } from '../../common/models/model';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { MockStore } from '../../common/stores/mock.store';
 import { AbstractStore } from '../../common/stores/store';
 import { RemoteCli } from '../services/remoteCli.service';
@@ -69,7 +69,7 @@ const providers = [
 describe('Resource Controller', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Registers a route to retrieve an entity', async(inject([TestController, Server],

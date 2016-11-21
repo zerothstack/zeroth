@@ -1,4 +1,4 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { IsolatedMiddlewareFactory } from './index';
 import { Request } from '../controllers/request';
 import { Response } from '../controllers/response';
@@ -9,7 +9,7 @@ import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.mock';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { PromiseFactory } from '../../common/util/serialPromise';
@@ -57,7 +57,7 @@ describe('Middleware Decorators', () => {
   let controller: MiddlewareController;
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('defines registeredMiddleware on the controller',

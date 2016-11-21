@@ -3,15 +3,14 @@
  */
 /** End Typedoc Module Declaration */
 import {
-  AbstractController, MiddlewareRegistry,
-  ControllerConstructor, ControllerStatic
+  AbstractController,
+  ControllerConstructor,
+  ControllerStatic
 } from '../controllers/abstract.controller';
 import { MiddlewareFactory } from './index';
-import { initializeMetadata, ControllerMetadata } from '../../common/metadata/metadata';
-import {
-  RegistryEntityStatic,
-  RegistryEntityConstructor
-} from '../../common/registry/entityRegistry';
+import { initializeMetadata } from '../../common/metadata/metadata';
+import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
+import { MiddlewareRegistry, ControllerMetadata } from '../registry/decorators';
 
 /**
  * Decorator for assigning before middleware method in a controller

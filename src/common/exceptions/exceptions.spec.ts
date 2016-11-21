@@ -64,9 +64,8 @@ describe('Exceptions', () => {
     it(`creates instance of ${check.exception.prototype.constructor.name} with status code ${check.code}`, () => {
 
       const exceptionInstance = new check.exception;
-
-      expect(exceptionInstance instanceof Error).toBe(true);
-      expect(exceptionInstance instanceof HttpException).toBe(true);
+      expect(exceptionInstance instanceof HttpException).toBe(true, 'instanceof HttpException');
+      expect(exceptionInstance instanceof Error).toBe(true, 'instanceof Error');
       expect(exceptionInstance.getStatusCode()).toEqual(check.code);
       expect(exceptionInstance.name).toEqual(exceptionInstance.constructor.name);
 
@@ -88,9 +87,11 @@ describe('Exceptions', () => {
     let errors:ValidationError[] = [{
       target: null,
       property: 'name',
-      type: 'max_length',
-      message: 'too long',
+      constraints: {
+        max_length: 'too long',
+      },
       value: 10,
+      children: undefined,
     }];
 
     let exception = new ValidationException(null, errors);

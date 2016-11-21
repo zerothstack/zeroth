@@ -5,8 +5,8 @@
 import { EntityBootstrapper } from './entity.bootstrapper';
 import { AbstractController } from '../controllers/abstract.controller';
 import { RegistryEntityStatic } from '../../common/registry/entityRegistry';
-import { ControllerMetadata } from '../../common/metadata/metadata';
 import { Server } from '../servers/abstract.server';
+import { ControllerMetadata } from '../registry/decorators';
 
 /**
  * Provides bootstrapping of the @[[Controller]] entities

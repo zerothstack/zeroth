@@ -9,7 +9,7 @@ import { Logger } from '../../common/services/logger.service';
 import { AbstractStore, Query } from '../../common/stores/store';
 import { Collection } from '../../common/models/collection';
 import { Repository, Connection } from 'typeorm';
-import { NotFoundException } from '../../common/exeptions/exceptions';
+import { NotFoundException } from '../../common/exceptions/exceptions';
 
 /**
  * Database store should be extended with a specific implementation for a model. Interacts with
@@ -50,23 +50,24 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * @inheritdoc
    */
-  public initialized(): Promise<this> {
-    return this.getRepository()
-      .then(() => this);
+  public async initialized(): Promise<this> {
+    await this.getRepository();
+    return this;
   }
 
   /**
    * @inheritdoc
    */
-  public findOne(id: identifier): Promise<T> {
-    return this.getRepository()
-      .then((repo) => repo.findOneById(id))
-      .then((model: T) => {
-        if (!model) {
-          throw new NotFoundException(`${this.modelStatic.name} not found with id [${id}]`);
-        }
-        return model;
-      });
+  public async findOne(id: identifier): Promise<T> {
+
+    const repo = await this.getRepository();
+    const model: T = await repo.findOneById(id);
+
+    if (!model) {
+      throw new NotFoundException(`${this.modelStatic.name} not found with id [${id}]`);
+    }
+
+    return model;
   }
 
   /**

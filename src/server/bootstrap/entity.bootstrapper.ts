@@ -2,13 +2,11 @@
  * @module server
  */
 /** End Typedoc Module Declaration */
-import 'core-js';
-import 'reflect-metadata';
 import { ReflectiveInjector } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import {
-  registry, EntityType, RegistryEntityStatic,
-  EntityMetadata
+  EntityType, RegistryEntityStatic,
+  EntityMetadata, EntityRegistry
 } from '../../common/registry/entityRegistry';
 
 /**
@@ -78,10 +76,7 @@ export abstract class EntityBootstrapper {
    * @returns {any[]}
    */
   protected getFromRegistry(type: EntityType): RegistryEntityStatic<EntityMetadata>[] {
-    return [
-      ...registry.getAllOfType(type)
-        .values()
-    ];
+    return [...EntityRegistry.root.getAllOfType(type).values()];
   }
 
   /**

@@ -1,16 +1,16 @@
-import { inject, addProviders, async } from '@angular/core/testing';
+import { inject, TestBed, async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { Logger } from '../../common/services/logger.service';
 import { Server, RouteConfig } from '../servers/abstract.server';
 import { LoggerMock } from '../../common/services/logger.service.mock';
-import { ServerMock } from '../servers/abstract.server.spec';
+import { ServerMock } from '../servers/abstract.server.mock';
 import { RemoteCli } from '../services/remoteCli.service';
 import { RemoteCliMock } from '../services/remoteCli.service.mock';
 import { Request } from './request';
 import { Response } from './response';
 import { AbstractController } from './abstract.controller';
 import { Route } from './route.decorator';
-import { UnavailableForLegalReasonsException } from '../../common/exeptions/exceptions';
+import { UnavailableForLegalReasonsException } from '../../common/exceptions/exceptions';
 import { AuthServiceMock } from '../services/auth.service.mock';
 import { AuthService } from '../services/auth.service';
 
@@ -49,7 +49,7 @@ const providers = [
 describe('Controller', () => {
 
   beforeEach(() => {
-    addProviders(providers);
+    TestBed.configureTestingModule({ providers });
   });
 
   it('Registers a route that returns a response', async(inject([TestController, Server],

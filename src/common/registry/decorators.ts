@@ -2,8 +2,8 @@
  * @module common
  */
 /** End Typedoc Module Declaration */
-import { registry, EntityType, EntityMetadata } from './entityRegistry';
-import { ModelMetadata, ControllerMetadata } from '../metadata/metadata';
+import { EntityType, EntityMetadata, EntityRegistry } from './entityRegistry';
+import { ModelMetadata } from '../metadata/metadata';
 
 /**
  * Common decorator factory function to simplify decorator declarations
@@ -11,9 +11,9 @@ import { ModelMetadata, ControllerMetadata } from '../metadata/metadata';
  * @param metadata
  * @returns {function(TFunction): void}
  */
-function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): ClassDecorator {
+export function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): ClassDecorator {
   return function <TFunction extends Function>(target: TFunction): void {
-    registry.register(type, target, metadata);
+    EntityRegistry.register(type, target, metadata);
   }
 }
 
@@ -33,61 +33,6 @@ function entityRegistryFunction(type: EntityType, metadata?: EntityMetadata): Cl
  */
 export function Model(metadata?: ModelMetadata): ClassDecorator {
   return entityRegistryFunction('model', metadata);
-}
-
-/**
- *  @Controller class decorator for registering class with the [[EntityRegistry]]
- *
- * Example:
- * ```typescript
- *  import { Controller } from '@ubiquits/core/common';
- *  import { AbstractController } from '@ubiquits/core/server';
- *
- *  @Controller()
- *  export class ExampleController extends AbstractController {}
- * ```
- * @param metadata
- * @returns {ClassDecorator}
- * @constructor
- */
-export function Controller(metadata?: ControllerMetadata): ClassDecorator {
-  return entityRegistryFunction('controller', metadata);
-}
-
-/**
- *  @Seeder class decorator for registering class with the [[EntityRegistry]]
- *
- * Example:
- * ```typescript
- *  import { Seeder } from '@ubiquits/core/common';
- *  import { AbstractSeeder } from '@ubiquits/core/server';
- *
- *  @Seeder()
- *  export class ExampleSeeder extends AbstractSeeder {}
- * ```
- * @returns {ClassDecorator}
- * @constructor
- */
-export function Seeder(): ClassDecorator {
-  return entityRegistryFunction('seeder');
-}
-
-/**
- *  @Migration class decorator for registering class with the [[EntityRegistry]]
- *
- * Example:
- * ```typescript
- *  import { Migration } from '@ubiquits/core/common';
- *  import { AbstractMigration } from '@ubiquits/core/server';
- *
- *  @Migration()
- *  export class ExampleMigration extends AbstractMigration {}
- * ```
- * @returns {ClassDecorator}
- * @constructor
- */
-export function Migration(): ClassDecorator {
-  return entityRegistryFunction('migration');
 }
 
 /**

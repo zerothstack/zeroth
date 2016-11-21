@@ -13,7 +13,8 @@
     "outDir": "dist/browser",
     "skipLibCheck": true,
     "types": [
-      "jasmine"
+      "jasmine",
+      "node"
     ]
   },
   "exclude": [
