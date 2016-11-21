@@ -37,17 +37,3 @@ export const CORE_PROVIDERS: ProviderDefinition[] = [
   {provide: Server, useClass: ExpressServer},
   {provide: Logger, useClass: ConsoleLogger},
 ];
-
-//
-// @NgModule({
-//   declarations: [],
-//   imports: [
-//     ServerModule,
-//   ],
-//   providers: [Database],
-// })
-// export class MainModule {
-//   ngDoBootstrap() {}
-// }
-//
-// platformServer().bootstrapModule(MainModule)

@@ -132,6 +132,10 @@ describe('Database', () => {
     expect(logFunctionSpy)
       .toHaveBeenCalledWith('info', 'log with level log');
 
+    logFunction('log with level warn', 'warn');
+    expect(logFunctionSpy)
+      .toHaveBeenCalledWith('warning', 'log with level warn');
+
     logFunction('log with level error', 'error');
     expect(logFunctionSpy)
       .toHaveBeenCalledWith('error', 'log with level error');

@@ -58,15 +58,16 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * @inheritdoc
    */
-  public findOne(id: identifier): Promise<T> {
-    return this.getRepository()
-      .then((repo) => repo.findOneById(id))
-      .then((model: T) => {
-        if (!model) {
-          throw new NotFoundException(`${this.modelStatic.name} not found with id [${id}]`);
-        }
-        return model;
-      });
+  public async findOne(id: identifier): Promise<T> {
+
+    const repo = await this.getRepository();
+    const model: T = await repo.findOneById(id);
+
+    if (!model) {
+      throw new NotFoundException(`${this.modelStatic.name} not found with id [${id}]`);
+    }
+
+    return model;
   }
 
   /**

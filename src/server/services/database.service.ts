@@ -11,6 +11,8 @@ import { Service } from '../../common/registry/decorators';
 import { AbstractService } from '../../common/services/service';
 import * as SQL from 'sql-template-strings';
 
+export type TypeormLogLevel = "log" | "info" | "warn" | "error";
+
 export interface DatabaseLogFunction {
   (level: LogLevel, ...messages: any[]): void;
 }
@@ -75,23 +77,32 @@ export class Database extends AbstractService {
     if (logFunction) {
       logFunction('info', 'Connecting to database');
 
-      logger = (message: any, level: 'log'|'debug'|'info'|'error'): void => {
-        if (level == 'log') {
-          level = 'info';
+      //remap log levels to ubiquits' keys
+      logger = (level: TypeormLogLevel | LogLevel, message: any): void => {
+
+        switch (level) {
+          case 'log':
+            level = 'info';
+            break;
+
+          case 'warn':
+            level = 'warning';
+            break;
         }
-        logFunction((level as LogLevel), message)
+        logFunction(level, message)
       };
     }
 
     const options: ConnectionOptions = {
       name,
       driver: {
-        type: process.env.DB_DRIVER, // Right now only "mysql" is supported
+        type: process.env.DB_DRIVER, // Right now only 'mysql' is supported
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
+        usePool: false,
       },
       // created on each application start
       logging: {
@@ -108,6 +119,8 @@ export class Database extends AbstractService {
     const connection = await createConnection(options);
 
     this.connections.set(name, connection);
+
+    // await connection.driver.createQueryRunner();
 
     return connection;
   }
