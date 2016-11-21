@@ -68,6 +68,7 @@ describe('Database', () => {
       username: envMap.DB_USERNAME,
       password: envMap.DB_PASSWORD,
       database: envMap.DB_DATABASE,
+      usePool: false,
     },
     autoSchemaSync: false,
     logging: {
@@ -128,15 +129,15 @@ describe('Database', () => {
 
     const logFunction = createConnectionSpy.calls.mostRecent().args[0].logging.logger;
 
-    logFunction('log with level log', 'log');
+    logFunction('log', 'log with level log');
     expect(logFunctionSpy)
       .toHaveBeenCalledWith('info', 'log with level log');
 
-    logFunction('log with level warn', 'warn');
+    logFunction('warn', 'log with level warn');
     expect(logFunctionSpy)
       .toHaveBeenCalledWith('warning', 'log with level warn');
 
-    logFunction('log with level error', 'error');
+    logFunction('error', 'log with level error');
     expect(logFunctionSpy)
       .toHaveBeenCalledWith('error', 'log with level error');
 
