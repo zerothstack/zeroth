@@ -7,6 +7,8 @@
 
 # Core Module
 
+[![Join the chat at https://gitter.im/zerothstack/zeroth](https://badges.gitter.im/zerothstack/zeroth.svg)](https://gitter.im/zerothstack/zeroth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Overview
 Ubiquits is a full stack Angular 2 framework. It uses the Angular 2 dependency injection pattern to bring good design patterns
  to the backend. Ubiquits is an isomorphic framework, which means that components can be built to be shared between the frontend
