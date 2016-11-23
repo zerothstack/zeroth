@@ -13,11 +13,11 @@ Validation is provided by [class-validator] (built by [Umed Khudoiberdiev][@plee
 side and server side, and is invoked with the `Store.validate` method.
 
 ## Usage
-You can use any of the methods in [class-validator], but make sure to import the methods from `@ubiquits/core/validation`.
+You can use any of the methods in [class-validator], but make sure to import the methods from `@zerothstack/core/validation`.
 This is for two reasons:
 1. You are importing from a location common to the core and your modules. This allows them to use the same `MetadataStorage` singleton
  and custom functions register to the same store. 
-2. Any custom methods defined in `@ubiquits/core` will be available from the same source.
+2. Any custom methods defined in `@zerothstack/core` will be available from the same source.
 
 If you don't do this - property validation **will not register** and validation will pass on any field without a validator
 listed, so don't forget!
@@ -33,7 +33,7 @@ For example:
 ```typescript
 import { Injectable } from '@angular/core';
 import { Model } from '../models/model';
-import { Validate, ValidatorConstraint, ValidatorConstraintInterface } from '@ubiquits/core/validation';
+import { Validate, ValidatorConstraint, ValidatorConstraintInterface } from '@zerothstack/core/validation';
 
 @Injectable()
 class TruthyService {
@@ -75,7 +75,7 @@ it can fail quietly if there is no registered injectable class.
 Make sure to return true in the `validate` function if the injector is not available:
 ```typescript
 import { Injectable, Optional } from '@angular/core';
-import { ValidatorConstraint, ValidatorConstraintInterface } from '@ubiquits/core/validation';
+import { ValidatorConstraint, ValidatorConstraintInterface } from '@zerothstack/core/validation';
 
 @Injectable()
 @ValidatorConstraint()
@@ -106,7 +106,7 @@ Example:
 ```typescript
 import { Injectable, Optional } from '@angular/core';
 import { UserStore } from '../path/to/stores';
-import { ValidatorConstraint, ValidatorConstraintInterface } from '@ubiquits/core/validation';
+import { ValidatorConstraint, ValidatorConstraintInterface } from '@zerothstack/core/validation';
 
 @Injectable()
 @ValidatorConstraint()

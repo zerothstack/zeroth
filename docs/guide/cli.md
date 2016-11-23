@@ -7,52 +7,52 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-![CLI Screenshot](/assets/image/ubiquits-cli.png)
+![CLI Screenshot](/assets/image/zeroth-cli.png)
 ## Introduction
-Ubiquits provides a commandline environment that has two major parts - the build tools and the runtime tools. The build
-tools are programs that build the various components of a Ubiquits app; typescript compilation, webpack building, 
+Zeroth provides a commandline environment that has two major parts - the build tools and the runtime tools. The build
+tools are programs that build the various components of a Zeroth app; typescript compilation, webpack building, 
 livereload handling etc. The runtime tools are provided by your application (or the core) at runtime, and are custom 
 tools that affect the runtime of your server instance. This could include tools like running migrations, reindexing
 Elastic search, creating users, batch database operations etc - the possibilities are endless.
 
-The ubiquits cli operates within it's own pseudo shell, so the commands available are limited to Ubiquits specific
+The zeroth cli operates within it's own pseudo shell, so the commands available are limited to Zeroth specific
  commands, or ones you have created yourself.
 
 ## Installation
 To install the cli if you haven't done so in the [quickstart](/guide/quick-start), run the following:
 
 ```bash
-npm install -g @ubiquits/toolchain
+npm install -g @zerothstack/toolchain
 ```
 
 This will install the cli tool globally, which will allow you to initialize new project/modules outside of your current project.
 
-The installation process symlinks both `ubiquits` and `u` to your `$prefix/bin` location so you can start the ubiquits cli with just `u` if you prefer (it's easier to type!).
+The installation process symlinks both `zeroth` and `u` to your `$prefix/bin` location so you can start the zeroth cli with just `u` if you prefer (it's easier to type!).
 
 Once you've installed the cli, create a new empty directory and run 
 ```bash
-ubiquits
+zeroth
 ```
 This will prompt you to initialize a new project, then take you on a tour of the features.
 
-If you already have a Ubiquits project up and running and want to take the tour again, simply run `ubiquits` (or `u`!) to enter 
+If you already have a Zeroth project up and running and want to take the tour again, simply run `zeroth` (or `u`!) to enter 
 the shell, then run `tour` to start the tour. (Note this command is hidden from the `help` output as you won't need it often) 
 
-*Note that the quickstart requires `@ubiquits/toolchain` as a `devDependency` so if you don't want the cli installed globally it will still work just fine when you are executing from your project directory.*
+*Note that the quickstart requires `@zerothstack/toolchain` as a `devDependency` so if you don't want the cli installed globally it will still work just fine when you are executing from your project directory.*
 
-## `ubiquits.js` file configuration
-You will notice in the root of your project there is a `ubiquits.js` file. This is akin to a `gulpfile` or `karma.conf.js` file. It is used to set the configuration for the toolchain cli.
+## `zeroth.js` file configuration
+You will notice in the root of your project there is a `zeroth.js` file. This is akin to a `gulpfile` or `karma.conf.js` file. It is used to set the configuration for the toolchain cli.
 
 Note that this is a javascript file - unfortunately you cant use typescript here as it is not pre-compiled by the toolchain - that would be too slow.
 
 If this is not present, the cli will still work with default values applied.
 
-### `new UbiquitsProject(__dirname)`
+### `new ZerothProject(__dirname)`
 A new project can be created with
 ```javascript
-let {UbiquitsProject} = require('@ubiquits/toolchain');
+let {ZerothProject} = require('@zerothstack/toolchain');
 
-const project = new UbiquitsProject(__dirname);
+const project = new ZerothProject(__dirname);
 
 // it is critical that the project is exported as the  
 // toolchain `requires` this file to get the configuration
@@ -160,7 +160,7 @@ config is merged with the defaults:
     star: true // show the stars count badge
   },
   twitter: false, //twitter username to add "Follow @username" badge
-  gitter: false //gitter user/repo to link to eg ubiquits/ubiquits
+  gitter: false //gitter user/repo to link to eg zeroth/zeroth
 })
 
 ```
@@ -185,14 +185,14 @@ Visit the Vorpal documentation for instructions on how to define your own comman
 ```
  
 An instance of Gulp is attached to the `projectInstance` too, so you can create gulp commands and register them
- to the ubiquits cli.
+ to the zeroth cli.
   
-Example `ubiquits.js` file that adds custom Sass gulp command:
+Example `zeroth.js` file that adds custom Sass gulp command:
 ```javascript
 const sass = require('gulp-sass');
-let {UbiquitsProject} = require('@ubiquits/toolchain');
+let {ZerothProject} = require('@zerothstack/toolchain');
 
-const project = new UbiquitsProject(__dirname);
+const project = new ZerothProject(__dirname);
 
 project.registerCommand((cli, projectInstance) => {
 
@@ -215,9 +215,9 @@ The cli is capable of connecting to the remote runtime to execute commands defin
  tail logs, view loaded route configuration etc.
  
 ### Connecting to the remote CLI
-To connect to the remote cli, simply run `remote` when in a ubiquits shell session
+To connect to the remote cli, simply run `remote` when in a zeroth shell session
 ```bash
-ubiquits~$ remote
+zeroth~$ remote
 ```
 You will have set up your authentication keys in the tour, which are used to generate a JSON Web Token
 which is signed with your private key, then passed through to the runtime server, which authenticates
@@ -266,7 +266,7 @@ Like the local CLI, the remote cli uses [Vantage], so you can implement your own
 ## Uninstall
 To remove the cli, run the following command:
 ```bash
-npm rm -g @ubiquits/toolchain
+npm rm -g @zerothstack/toolchain
 ```
 
 *Sorry to see you go!*

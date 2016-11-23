@@ -3,11 +3,11 @@
  * across all platforms
  *
  * Any of the types (classes, functions etc) defined under this module can be imported from
- * `@ubiquits/core/common`
+ * `@zerothstack/core/common`
  *
  * Example:
  * ```typescript
- * import { Logger } from 'ubiquits/core/common';
+ * import { Logger } from 'zeroth/core/common';
  * ```
  *
  * @module common

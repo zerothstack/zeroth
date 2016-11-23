@@ -10,13 +10,13 @@ layout: guide.hbs
 ## Unit Testing
 ### Overview
 
-Unit testing in Ubiquits follows the exact same pattern as Angular 2. As such, it uses the [Jasmine] BDD framework, with
+Unit testing in Zeroth follows the exact same pattern as Angular 2. As such, it uses the [Jasmine] BDD framework, with
 extra methods for dependency injection and handling of providers.
 
 ### Example with dependency injection
 
 ```typescript
-import { Logger, LoggerMock } from '@ubiquits/core/common';
+import { Logger, LoggerMock } from '@zerothstack/core/common';
 import { addProviders, inject, async } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import Spy = jasmine.Spy;

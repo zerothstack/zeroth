@@ -3,11 +3,11 @@
  * browser implementations to use
  *
  * Any of the types (classes, functions etc) defined under this module can be imported from
- * `@ubiquits/core/browser`
+ * `@zerothstack/core/browser`
  *
  * Example:
  * ```typescript
- * import { HttpStore } from 'ubiquits/core/browser';
+ * import { HttpStore } from 'zeroth/core/browser';
  * ```
  *
  * @module browser

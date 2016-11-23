@@ -1,7 +1,7 @@
 **I'm submitting a ...**
 - [ ] bug report
 - [ ] feature request
-- [ ] support request => Please do not submit support request here, post your question in the [gitter channel](https://gitter.im/ubiquits/ubiquits/)
+- [ ] support request => Please do not submit support request here, post your question in the [gitter channel](https://gitter.im/zerothstack/zeroth/)
 
 **What features are related to this issue**
 - [ ] Quick Start
@@ -51,7 +51,7 @@
 
 **Please tell us about your environment:**
 
-- Ubiquits version: 0.x.x
+- Zeroth version: 0.x.x
 - NodeJS version: x.x.x
 - Browser: [all | Chrome xx | Firefox xx | IE xx | Safari xx ]
 - OS:  [all | Mac OS X | Windows | Linux ]

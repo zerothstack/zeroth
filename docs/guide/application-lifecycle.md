@@ -7,7 +7,7 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-This guide outlines the lifecycle of the backend side of a Ubiquits application, as the frontend lifecycle is just standard
+This guide outlines the lifecycle of the backend side of a Zeroth application, as the frontend lifecycle is just standard
 Angular 2. 
 
 ## Startup
@@ -106,7 +106,7 @@ to defer to the error handler.
 1. On successful resolution of the call stack, the response is dispatched to the `Server` to handle sending back to the client.
 
 ### Remote Sessions
-All Ubiquits applications have remote connection capabilities provided by the `RemoteCli` service. When a connection is
+All Zeroth applications have remote connection capabilities provided by the `RemoteCli` service. When a connection is
 established using the [CLI](/guide/cli), depending on the task that is executed, define commands can interact with the
 running server.
 

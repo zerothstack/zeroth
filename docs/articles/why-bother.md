@@ -1,6 +1,6 @@
 ---
 title: Why bother?
-description: A high-level overview of Zak's motivations behind building the Ubiquits framework 
+description: A high-level overview of Zak's motivations behind building the Zeroth framework 
 date: 2016-06-09
 author: Zak Henry (https://twitter.com/zak)
 collection: articles
@@ -23,7 +23,7 @@ I'm not leaving Angular behind though - by directly using Angular for it's core 
 
 I find myself effectively racing to get a first beta version out at around the same time Angular will release v2, so that I
  can effectively attract developers that are falling in love with the dependency injection pattern, and can transfer that
- knowledge directly to Ubiquits.
+ knowledge directly to Zeroth.
  
 ### I want a node framework like I was used to with PHP.
 
@@ -33,17 +33,17 @@ Until recently I've been writing most of my JavaScript for the frontend. I used 
  the PHP world. I'm seeking to fix that.
 
 The biggest framework in the Node world would have to be [Meteor][meteor] and I would consider Meteor to
- be a major competitor to Ubiquits. Meteor suffers from a few issues that are symptomatic of their long history, and the
- obvious need to avoid breaking changes. With Ubiquits, I have the advantage of being able to start from scratch with TypeScript
+ be a major competitor to Zeroth. Meteor suffers from a few issues that are symptomatic of their long history, and the
+ obvious need to avoid breaking changes. With Zeroth, I have the advantage of being able to start from scratch with TypeScript
  and therefore utilise all of the design-time features TypeScript offers like 
  [decorators][ts-decorators], 
  [metadata reflection][ts-reflection] etc. 
 
-Additionally, there are some fundamental differences between Ubiquits and Meteor.
+Additionally, there are some fundamental differences between Zeroth and Meteor.
 
 Meteor uses Remote Procedure Call ([`methods`][meteor-methods] in their nomenclature). While this may be a suitable choice for the
- specific implementation of Meteor, it encourages coupling between the frontend and backend. With a Ubiquits application,
- the API is completely decoupled from the frontend via the REST interface, which means a Ubiquits application can easily
+ specific implementation of Meteor, it encourages coupling between the frontend and backend. With a Zeroth application,
+ the API is completely decoupled from the frontend via the REST interface, which means a Zeroth application can easily
  support other clients like native mobile, desktop etc.
 
 The choice between [NoSQL][wiki-nosql] or [relational databases][wiki-rdbms]

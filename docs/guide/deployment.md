@@ -8,7 +8,7 @@ layout: guide.hbs
 ---
 
 ## Overview
-Deployment of a Ubiquits application is not constrained by it's implementation. You can deploy it however you are used
+Deployment of a Zeroth application is not constrained by it's implementation. You can deploy it however you are used
 to deploying NodeJS & SPA applications, be it a bare metal server or a cloud provider like Heroku or your own large scale
 cloud data centre. 
 
@@ -32,5 +32,5 @@ It is [currently planned][docker-deployment-issue] to implement integration with
 to cloud services.
 
 [forever]:https://github.com/foreverjs/forever
-[docker-deployment-issue]: https://github.com/ubiquits/ubiquits/issues/107
+[docker-deployment-issue]: https://github.com/zeroth/zeroth/issues/107
 [docker-cloud]: https://cloud.docker.com

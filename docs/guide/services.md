@@ -22,7 +22,7 @@ Example:
 `./src/common/services/example.service.ts`
 ```typescript
 import { Injectable } from '@angular/core';
-import { Logger } from '@ubiquits/core/common';
+import { Logger } from '@zerothstack/core/common';
 
 @Injectable()
 export class ExampleService {
@@ -57,7 +57,7 @@ the `initialized()` method.
 An (extremely contrived) example:
 ```typescript
 import { Injectable } from '@angular/core';
-import { Logger, Service, AbstractService } from '@ubiquits/core/common';
+import { Logger, Service, AbstractService } from '@zerothstack/core/common';
 import { lookup } from 'dns';
 
 @Injectable()

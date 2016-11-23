@@ -83,7 +83,7 @@ function handleBootstrapError(e: Error, logger: Logger) {
  * This function resolves all of the providers, invokes all boostrappers, and finally returns the
  * [[Server]] instance for the bootstrapping start file to call [[Server.start]] on to start the
  * server running
- * @see http://ubiquits.com/guide/application-lifecycle/#startup for detailed documentation
+ * @see http://zeroth.io/guide/application-lifecycle/#startup for detailed documentation
  * @param loadClasses
  * @param providers
  * @param afterBootstrap

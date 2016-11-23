@@ -1,7 +1,7 @@
 {
-  "name": "@ubiquits/core",
-  "version": "2.0.0",
-  "description": "ubiquits core",
+  "name": "@zerothstack/core",
+  "version": "0.0.0",
+  "description": "zeroth core",
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
@@ -14,17 +14,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ubiquits/ubiquits.git"
+    "url": "git+https://github.com/zerothstack/zeroth.git"
   },
   "keywords": [
-    "ubiquits"
+    "zeroth"
   ],
-  "author": "Zak Henry <zak@ubiquits.com> (http://twitter.com/zak)",
+  "author": "Zak Henry <zak@zeroth.io> (http://twitter.com/zak)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ubiquits/ubiquits/issues"
+    "url": "https://github.com/zerothstack/zeroth/issues"
   },
-  "homepage": "https://github.com/ubiquits/ubiquits#readme",
+  "homepage": "https://github.com/zerothstack/zeroth#readme",
   "dependencies": {
     "@angular/common": "2.1.2",
     "@angular/core": "2.1.2",
@@ -68,7 +68,7 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
-    "@ubiquits/toolchain": "2.0.1-0",
+    "@zerothstack/toolchain": "2.0.1-0",
     "proxyquire": "^1.7.10"
   },
   "directories": {

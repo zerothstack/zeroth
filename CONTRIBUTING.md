@@ -1,6 +1,6 @@
-# Contributing to Ubiquits
+# Contributing to Zeroth
 
-We would love for you to contribute to Ubiquits and help make it even better than it is
+We would love for you to contribute to Zeroth and help make it even better than it is
 today! As a contributor, here are the guidelines we would like you to follow:
 
  - [Question or Problem?](#question)
@@ -11,8 +11,8 @@ today! As a contributor, here are the guidelines we would like you to follow:
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to *use* Ubiquits, please ask in the [Gitter Channel][gitter]
-discussion list or [StackOverflow][stackoverflow] with the tag `ubiquits`. Please note that Ubiquits is still in early developer preview, and the core team's capacity to answer usage questions is limited.
+If you have questions about how to *use* Zeroth, please ask in the [Gitter Channel][gitter]
+discussion list or [StackOverflow][stackoverflow] with the tag `zeroth`. Please note that Zeroth is still in early developer preview, and the core team's capacity to answer usage questions is limited.
 
 ## <a name="issue"></a> Found an Issue?
 If you find a bug in the source code or a mistake in the documentation, you can help us by
@@ -41,20 +41,20 @@ features, by not reporting duplicate issues.  Providing the following informatio
 chances of your issue being dealt with quickly:
 
 * **Overview of the Issue** - if an error is being thrown a non-minified stack trace helps
-* **Ubiquits Version** - what version of Ubiquits is affected (e.g. 0.3.21)
+* **Zeroth Version** - what version of Zeroth is affected (e.g. 0.3.21)
 * **Motivation for or Use Case** - explain what are you trying to do and why the current behavior is a bug for you
 * **Browsers and Operating System** - is this a problem with all browsers?
 * **Related Issues** - has a similar issue been reported before?
 * **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
   causing the problem (line of code or commit)
 
-You can file new issues by providing the above information [here](https://github.com/ubiquits/ubiquits/issues/new).
+You can file new issues by providing the above information [here](https://github.com/zeroth/zeroth/issues/new).
 
 
 ### <a name="submit-pr"></a> Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
-* Search [GitHub](https://github.com/ubiquits/ubiquits/pulls) for an open or closed PR
+* Search [GitHub](https://github.com/zeroth/zeroth/pulls) for an open or closed PR
   that relates to your submission. You don't want to duplicate effort.
 * Make your changes in a new git branch:
 
@@ -64,7 +64,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
-* Run the full Ubiquits test suite, as described in the [developer documentation][dev-doc],
+* Run the full Zeroth test suite, as described in the [developer documentation][dev-doc],
   and ensure that all tests pass.
 * Commit your changes using a descriptive commit message that follows the
   [Angular commit message conventions](#commit). Adherence to these conventions
@@ -81,10 +81,10 @@ Before you submit your Pull Request (PR) consider the following guidelines:
     git push origin my-fix-branch
     ```
 
-* In GitHub, send a pull request to `ubiquits:master`.
+* In GitHub, send a pull request to `zeroth:master`.
 * If we suggest changes then:
   * Make the required updates.
-  * Re-run the Ubiquits test suites for JS and Dart to ensure tests are still passing.
+  * Re-run the Zeroth test suites for JS and Dart to ensure tests are still passing.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
 
     ```shell
@@ -130,8 +130,8 @@ We follow the Angular 2 commit message format. See the details [here][commit-mes
 *This document is modified from the [Angular 2 contribution guide](https://github.com/angular/angular/blob/master/CONTRIBUTING.md)*
 
 [commit-message-format]: https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#
-[dev-doc]: https://github.com/ubiquits/ubiquits/blob/master/DEVELOPER.md
-[github]: https://github.com/ubiquits/ubiquits
-[gitter]: https://gitter.im/ubiquits/ubiquits
-[stackoverflow]: http://stackoverflow.com/questions/tagged/ubiquits
+[dev-doc]: https://github.com/zeroth/zeroth/blob/master/DEVELOPER.md
+[github]: https://github.com/zeroth/zeroth
+[gitter]: https://gitter.im/zeroth/zeroth
+[stackoverflow]: http://stackoverflow.com/questions/tagged/zeroth
 

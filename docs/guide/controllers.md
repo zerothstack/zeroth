@@ -7,7 +7,7 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Controllers in the Ubiquits backend serve basically the same purpose as controllers in the frontend - they are the 
+Controllers in the Zeroth backend serve basically the same purpose as controllers in the frontend - they are the 
  interface between services and the view layer. The difference being that in the backend, the view laye is the JSON 
  serializer.
 
@@ -18,8 +18,8 @@ method:
 
 Example `./src/server/controller/test.controller.ts`:
 ```typescript
-import { Controller } from '@ubiquits/core/common';
-import { AbstractController } from '@ubiquits/core/server';
+import { Controller } from '@zerothstack/core/common';
+import { AbstractController } from '@zerothstack/core/server';
 
 @Controller({
   routeBase: 'test',
@@ -35,7 +35,7 @@ export { TestController } from './test.controller';
 
 Example `./src/server/main.ts`:
 ```typescript
-import { bootstrap } from '@ubiquits/core/server';
+import { bootstrap } from '@zerothstack/core/server';
 import * as controllers from './controllers';
 
 export { BootstrapResponse };
@@ -51,8 +51,8 @@ This defines the starting route segment for all method routes to start with.
 
 Example `./src/server/controller/test.controller.ts`:
 ```typescript
-import { Controller } from '@ubiquits/core/common';
-import { AbstractController } from '@ubiquits/core/server';
+import { Controller } from '@zerothstack/core/common';
+import { AbstractController } from '@zerothstack/core/server';
 
 @Controller({
   routeBase: 'test',
@@ -65,7 +65,7 @@ With the above controller, all routes will start with `/test`
 For more info on routing see the [routing] guide
 
 ## REST Methods
-As Ubiquits is designed around the principles of good REST API patterns, the base `ResourceController` provides a number
+As Zeroth is designed around the principles of good REST API patterns, the base `ResourceController` provides a number
 of methods for interacting with the resource that controller provides.
 
 ### `getOne`

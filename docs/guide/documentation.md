@@ -7,12 +7,12 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Ubiquits comes with documentation generation tools out of the box, so all you need to do is start writing.
+Zeroth comes with documentation generation tools out of the box, so all you need to do is start writing.
 
-Under the hood of `@ubiquits/toolchain` is the awesome tool  [Metalsmith] which allows for the 
+Under the hood of `@zerothstack/toolchain` is the awesome tool  [Metalsmith] which allows for the 
  automatic generation of static sites using simple markdown source files and handlebars templates.
   
-Ubiquits ["eats it's own dogfood"][dogfood] as such so this documentation
+Zeroth ["eats it's own dogfood"][dogfood] as such so this documentation
  is generated using the same tooling. 
 
 ## Getting started
@@ -21,21 +21,21 @@ To start writing documentation, first start up the documentation watcher:
 Example:
 ```
 $ u
-[ubiquits] Loaded 12 commands. Type 'help' to see available commands
-ubiquits~$ doc watch
+[zeroth] Loaded 12 commands. Type 'help' to see available commands
+zeroth~$ doc watch
 [doc] Removing directory ./dist-docs
 [doc] Done.
 [metalsmith-watch] ✓ Live reload server started on port: 35729
-[metalsmith-serve] serving /Users/zak/ubiquits/ubiquits/dist-docs at http://localhost:8080
+[metalsmith-serve] serving /Users/zak/zeroth/zeroth/dist-docs at http://localhost:8080
 [doc] Copying doc assets from toolchain
 [metalsmith-watch] ✔︎ Watching **/*
-[doc] [ubiquits] Doc watcher started at https://localhost:8080
+[doc] [zeroth] Doc watcher started at https://localhost:8080
 Run 'doc stop' to stop the watch server
 ```
 
 Now all you need to do is open your browser to http://localhost:8080
 
-Note that you can still run other commands within the ubiquits console. To stop the watch server, just run `doc stop`
+Note that you can still run other commands within the zeroth console. To stop the watch server, just run `doc stop`
  or `CTRL+C` (twice) to close the entire console.
  
 ## Adding pages
@@ -55,7 +55,7 @@ layout: guide.hbs
 
 ### Collections
 Collections are groups of pages, and can be used to generate listings or navigation automatically.
-By default, the ubiquits toolchain processes three collections:
+By default, the zeroth toolchain processes three collections:
 * `main` - the top-level items that should appear in the navigation
 * `guide` - pages to go under the guide page
 * `articles` - all pages for the articles section
@@ -87,7 +87,7 @@ Any file that matches the same name as the toolchain will override the default.
 ### Variables
 The `./package.json` file content is available globally to handlebars templates at `{{pkg}}`
 
-Any additional variables that you would like to add can be defined by [configuring the `meta` object of `configureDocs()` in the `ubiquits.js` file](/guide/cli/#-configuredocs-config-)
+Any additional variables that you would like to add can be defined by [configuring the `meta` object of `configureDocs()` in the `zeroth.js` file](/guide/cli/#-configuredocs-config-)
 
 ## TypeDoc
 To document your API in it's full detail, [TypeDoc][] is used to automatically generate documentation.
@@ -101,13 +101,13 @@ The toolchain is configured to be able to automatically deploy to github pages o
 If you want to deploy to a different destination see the configuration options below:
 
 ### Config
-Configuration of the deployment is handled in the `ubiquits.js` file. 
+Configuration of the deployment is handled in the `zeroth.js` file. 
 By default, the documentation will deploy to the `gh-pages` branch at your repositories `origin`.
 
-If you have different requirements, see the [`UbiquitsProject.configureDeployment()`][configure-deployment] section for configuration options.
+If you have different requirements, see the [`ZerothProject.configureDeployment()`][configure-deployment] section for configuration options.
 
 ### Google Analytics
-You can add tracking with [Google Analytics][ga] to your documentation by [configuring the `meta.gaCode` property of `configureDocs()` in the `ubiquits.js` file][configure-docs] 
+You can add tracking with [Google Analytics][ga] to your documentation by [configuring the `meta.gaCode` property of `configureDocs()` in the `zeroth.js` file][configure-docs] 
 
 ### Travis CI
 To automate deployment fully, you can use TravisCI to run the deployment process, however you will need to configure
@@ -148,12 +148,12 @@ At this time adding new plugins is not configurable. If you'd like this capabili
 [metalsmith]: http://metalsmith.io
 [dogfood]: https://en.wikipedia.org/wiki/Eating_your_own_dog_food
 [frontmatter]: https://jekyllrb.com/docs/frontmatter/
-[template-dir]: https://github.com/ubiquits/toolchain/tree/master/docs/templates
+[template-dir]: https://github.com/zeroth/toolchain/tree/master/docs/templates
 [typedoc]: http://typedoc.io
 [configure-deployment]: /guide/cli/#-configuredeployment-config-
 [configure-docs]: /guide/cli/#-configuredocs-config-
 [ga]:https://analytics.google.com
-[issues]:https://github.com/ubiquits/toolchain/issues
+[issues]:https://github.com/zeroth/toolchain/issues
 
 [metalsmith-markdown]:https://github.com/segmentio/metalsmith-markdown
 [metalsmith-layouts]:https://github.com/zakhenry/metalsmith-layouts

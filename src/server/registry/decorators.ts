@@ -20,8 +20,8 @@ export interface ControllerMetadata {
  *
  * Example:
  * ```typescript
- *  import { Controller } from '@ubiquits/core/common';
- *  import { AbstractController } from '@ubiquits/core/server';
+ *  import { Controller } from '@zerothstack/core/common';
+ *  import { AbstractController } from '@zerothstack/core/server';
  *
  *  @Controller()
  *  export class ExampleController extends AbstractController {}
@@ -42,8 +42,8 @@ export function Controller(metadata?: ControllerMetadata): ClassDecorator {
  *
  * Example:
  * ```typescript
- *  import { Seeder } from '@ubiquits/core/common';
- *  import { AbstractSeeder } from '@ubiquits/core/server';
+ *  import { Seeder } from '@zerothstack/core/common';
+ *  import { AbstractSeeder } from '@zerothstack/core/server';
  *
  *  @Seeder()
  *  export class ExampleSeeder extends AbstractSeeder {}
@@ -60,8 +60,8 @@ export function Seeder(): ClassDecorator {
  *
  * Example:
  * ```typescript
- *  import { Migration } from '@ubiquits/core/common';
- *  import { AbstractMigration } from '@ubiquits/core/server';
+ *  import { Migration } from '@zerothstack/core/common';
+ *  import { AbstractMigration } from '@zerothstack/core/server';
  *
  *  @Migration()
  *  export class ExampleMigration extends AbstractMigration {}

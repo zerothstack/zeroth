@@ -1,6 +1,6 @@
-# Building and Testing Ubiquits
+# Building and Testing Zeroth
 
-This document describes how to set up your development environment to build and test Ubiquits. 
+This document describes how to set up your development environment to build and test Zeroth. 
 
 
 * [Prerequisite Software](#prerequisite-software)
@@ -15,12 +15,12 @@ This document describes how to set up your development environment to build and 
 * [Transforming Dart code](#transforming-dart-code)
 * [Debugging](#debugging)
 
-See the [contribution guidelines](https://github.com/ubiquits/ubiquits/blob/master/CONTRIBUTING.md)
-if you'd like to contribute to Ubiquits.
+See the [contribution guidelines](https://github.com/zeroth/zeroth/blob/master/CONTRIBUTING.md)
+if you'd like to contribute to Zeroth.
 
 ## Prerequisite Software
 
-Before you can build and test Ubiquits, you must install and configure the
+Before you can build and test Zeroth, you must install and configure the
 following products on your development machine:
 
 * [Git](http://git-scm.com) and/or the **GitHub app** (for [Mac](http://mac.github.com) or
@@ -33,38 +33,38 @@ following products on your development machine:
 
 ## Getting the Sources
 
-Fork and clone the Ubiquits repository:
+Fork and clone the Zeroth repository:
 
 1. Login to your GitHub account or create one by following the instructions given
    [here](https://github.com/signup/free).
-2. [Fork](http://help.github.com/forking) the [main Ubiquits
-   repository](https://github.com/ubiquits/ubiquits).
-3. Clone your fork of the Ubiquits repository and define an `upstream` remote pointing back to
-   the Ubiquits repository that you forked in the first place.
+2. [Fork](http://help.github.com/forking) the [main Zeroth
+   repository](https://github.com/zeroth/zeroth).
+3. Clone your fork of the Zeroth repository and define an `upstream` remote pointing back to
+   the Zeroth repository that you forked in the first place.
 
 ```shell
 # Clone your GitHub repository:
-git clone git@github.com:<github username>/ubiquits.git
+git clone git@github.com:<github username>/zeroth.git
 
-# Go to the Ubiquits directory:
-cd ubiquits
+# Go to the Zeroth directory:
+cd zeroth
 
-# Add the main Ubiquits repository as an upstream remote to your repository:
-git remote add upstream https://github.com/ubiquits/ubiquits.git
+# Add the main Zeroth repository as an upstream remote to your repository:
+git remote add upstream https://github.com/zeroth/zeroth.git
 ```
 
 ## Installing NPM Modules and Dart Packages
 
-Next, install the JavaScript modules and Dart packages needed to build and test Ubiquits:
+Next, install the JavaScript modules and Dart packages needed to build and test Zeroth:
 
 ```shell
-# Install Ubiquits project dependencies (package.json)
+# Install Zeroth project dependencies (package.json)
 npm install
 ```
 
 ## Build commands
 
-To build Ubiquits and prepare tests, run:
+To build Zeroth and prepare tests, run:
 
 ```shell
 u build
@@ -88,7 +88,7 @@ u clean
 
 ### Full test suite
 
-* `u test`: full test suite for both browser and server of Ubiquits. These are the same tests
+* `u test`: full test suite for both browser and server of Zeroth. These are the same tests
   that run on Travis.
 
 You can selectively run either environment as follows:
@@ -117,7 +117,7 @@ The following gulp task will generate the API docs in the `dist-docs` directory:
 $ u doc build 
 ```
 
-You can serve the generated documentation to check how it would render on [ubiquits.com](https://ubiquits.com):
+You can serve the generated documentation to check how it would render on [zeroth.io](https://zeroth.io):
 ```shell
 $ u doc watch 
 ```

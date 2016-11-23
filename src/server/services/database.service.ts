@@ -77,7 +77,7 @@ export class Database extends AbstractService {
     if (logFunction) {
       logFunction('info', 'Connecting to database');
 
-      //remap log levels to ubiquits' keys
+      //remap log levels to zeroth' keys
       logger = (level: TypeormLogLevel | LogLevel, message: any): void => {
 
         switch (level) {
