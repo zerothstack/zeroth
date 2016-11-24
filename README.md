@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/zeroth/zeroth.svg?branch=master)](https://travis-ci.org/zeroth/zeroth)
-[![Coverage Status](https://coveralls.io/repos/github/zeroth/zeroth/badge.svg?branch=master)](https://coveralls.io/github/zeroth/zeroth?branch=master)
+[![Build Status](https://travis-ci.org/zerothstack/zeroth.svg?branch=master)](https://travis-ci.org/zeroth/zeroth)
+[![Coverage Status](https://coveralls.io/repos/github/zerothstack/zeroth/badge.svg?branch=master)](https://coveralls.io/github/zerothstack/zeroth?branch=master)
 [![npm (scoped)](https://img.shields.io/npm/v/@zerothstack/core.svg?maxAge=2592000)](https://www.npmjs.com/package/@zerothstack/core)
 [![Join the chat at https://gitter.im/zerothstack/zeroth](https://badges.gitter.im/zerothstack/zeroth.svg)](https://gitter.im/zerothstack/zeroth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
