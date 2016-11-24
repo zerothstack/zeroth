@@ -24,7 +24,7 @@ For the backend side, it is a standard NodeJS application, so use [forever] or s
 Remember that the configuration uses `.env` files *OR* global environment variables to manage runtime configuration.
 When deploying remember to export the appropriate variables or generate a `.env` file specially for production.
 
-The `.env` file is `.gitignored` so you shouldn't make the mistake of committing sensitive data like database passwords
+The `.env` file is `.gitignore`d so you shouldn't make the mistake of committing sensitive data like database passwords
 to it.
 
 ## Future

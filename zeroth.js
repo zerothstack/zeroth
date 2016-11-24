@@ -9,12 +9,12 @@ const project = new ZerothProject(__dirname)
   })
   .configureDocs({
     meta: {
-      gaCode: 'UA-79131526-1'
+      gaCode: 'UA-88015201-1'
     }
   })
   .configureSocial({
     twitter: 'zeroth',
-    gitter: 'zeroth/zeroth'
+    gitter: 'zerothstack/zeroth'
   })
 ;
 

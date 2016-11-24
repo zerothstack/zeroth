@@ -27,7 +27,7 @@ npm install -g @zerothstack/toolchain
 
 This will install the cli tool globally, which will allow you to initialize new project/modules outside of your current project.
 
-The installation process symlinks both `zeroth` and `u` to your `$prefix/bin` location so you can start the zeroth cli with just `u` if you prefer (it's easier to type!).
+The installation process symlinks both `zeroth` and `z` to your `$prefix/bin` location so you can start the zeroth cli with just `z` if you prefer (it's easier to type!).
 
 Once you've installed the cli, create a new empty directory and run 
 ```bash
@@ -35,7 +35,7 @@ zeroth
 ```
 This will prompt you to initialize a new project, then take you on a tour of the features.
 
-If you already have a Zeroth project up and running and want to take the tour again, simply run `zeroth` (or `u`!) to enter 
+If you already have a Zeroth project up and running and want to take the tour again, simply run `zeroth` (or `z`!) to enter 
 the shell, then run `tour` to start the tour. (Note this command is hidden from the `help` output as you won't need it often) 
 
 *Note that the quickstart requires `@zerothstack/toolchain` as a `devDependency` so if you don't want the cli installed globally it will still work just fine when you are executing from your project directory.*

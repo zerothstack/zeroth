@@ -1,16 +1,16 @@
 {
   "name": "@zerothstack/core",
   "version": "0.0.0",
-  "description": "zeroth core",
+  "description": "Zeroth core",
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "start": "u",
-    "test": "u test -s",
-    "coveralls": "u coveralls",
-    "build": "u build",
-    "preparepublish": "u build && cp -r lib/* .",
-    "postpublish": "u changelog && u doc build && u typedoc && u deploy docs"
+    "start": "z",
+    "test": "z test -s",
+    "coveralls": "z coveralls",
+    "build": "z build",
+    "preparepublish": "z build && cp -r lib/* .",
+    "postpublish": "z changelog && z doc build && z typedoc && z deploy docs"
   },
   "repository": {
     "type": "git",
@@ -68,7 +68,7 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
-    "@zerothstack/toolchain": "2.0.1-0",
+    "@zerothstack/toolchain": "1.0.0-0",
     "proxyquire": "^1.7.10"
   },
   "directories": {
