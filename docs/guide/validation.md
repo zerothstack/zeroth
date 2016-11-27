@@ -94,7 +94,7 @@ class RequiresServerValidator implements ValidatorConstraintInterface {
 }
 ```
 
-It is recommended that you structure you application to avoid this however, as in general, you should be able to validate
+It is recommended that you structure your application to avoid this however, as in general, you should be able to validate
 everything from the client side before sending data to the server. This makes for a significantly better user experience,
 as forms can show problems before they are submitted, not after.
 
