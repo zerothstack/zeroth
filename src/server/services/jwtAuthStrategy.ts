@@ -36,7 +36,7 @@ export const jwtAuthStrategyFactory:AuthenticationStrategyFactory = (remoteCliCo
           .then((payload: any) => {
             remoteCliContext.logger.info(`${payload.username} has been authenticated with token`)
               .debug('Token:', token);
-            let displayBanner = `Hi ${payload.username}, Welcome to Ubiquits runtime cli.`;
+            let displayBanner = `Hi ${payload.username}, Welcome to Zeroth runtime cli.`;
             if (args.client.columns >= 80) {
               displayBanner = bannerBg(undefined, token);
             }

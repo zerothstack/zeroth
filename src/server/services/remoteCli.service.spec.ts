@@ -62,7 +62,7 @@ describe('Remote CLI Commands', () => {
     expect(vantageConstructorSpy)
       .toHaveBeenCalled();
     expect(vantageSpy.delimiter)
-      .toHaveBeenCalledWith(chalk.magenta('ubiquits-runtime~$'));
+      .toHaveBeenCalledWith(chalk.magenta('zeroth-runtime~$'));
     //the banner is not called on init otherwise it would be output pre-initialization
     expect(vantageSpy.banner)
       .not

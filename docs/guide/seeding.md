@@ -30,8 +30,8 @@ This class provides the common interface that the `SeederBootstrapper` uses to s
 Example `./src/server/seeders/example.seeder.ts`:
 ```typescript
 import { UserStore } from '../../common/stores/user.store';
-import { Logger, Collection, Seeder } from '@ubiquits/core/common';
-import { AbstractSeeder } from '@ubiquits/core/server';
+import { Logger, Collection, Seeder } from '@zerothstack/core/common';
+import { AbstractSeeder } from '@zerothstack/core/server';
 import { User } from '../../common/models/user.model';
 import { UserMockStore } from '../../common/stores/user.mock.store';
 import { UserDatabaseStore } from '../stores/user.db.store';
@@ -63,7 +63,7 @@ export * from './example.seeder';
 
 Example `./src/server/main.ts`:
 ```typescript
-import { bootstrap } from '@ubiquits/core/server';
+import { bootstrap } from '@zerothstack/core/server';
 import * as seeders from './seeders';
 
 export { BootstrapResponse };

@@ -8,7 +8,7 @@ layout: guide.hbs
 ---
 
 ## Overview
-Deployment of a Ubiquits application is not constrained by it's implementation. You can deploy it however you are used
+Deployment of a Zeroth application is not constrained by it's implementation. You can deploy it however you are used
 to deploying NodeJS & SPA applications, be it a bare metal server or a cloud provider like Heroku or your own large scale
 cloud data centre. 
 
@@ -24,7 +24,7 @@ For the backend side, it is a standard NodeJS application, so use [forever] or s
 Remember that the configuration uses `.env` files *OR* global environment variables to manage runtime configuration.
 When deploying remember to export the appropriate variables or generate a `.env` file specially for production.
 
-The `.env` file is `.gitignored` so you shouldn't make the mistake of committing sensitive data like database passwords
+The `.env` file is `.gitignore`d so you shouldn't make the mistake of committing sensitive data like database passwords
 to it.
 
 ## Future
@@ -32,5 +32,5 @@ It is [currently planned][docker-deployment-issue] to implement integration with
 to cloud services.
 
 [forever]:https://github.com/foreverjs/forever
-[docker-deployment-issue]: https://github.com/ubiquits/ubiquits/issues/107
+[docker-deployment-issue]: https://github.com/zerothstack/zeroth/issues/107
 [docker-cloud]: https://cloud.docker.com

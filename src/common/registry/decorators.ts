@@ -25,7 +25,7 @@ export function entityRegistryFunction(type: EntityType, metadata?: EntityMetada
  *
  *  @Model()
  *  export class ExampleModel extends AbstractModel {}
- *  import { Model, AbstractModel } from '@ubiquits/core/common';
+ *  import { Model, AbstractModel } from '@zerothstack/core/common';
  * ```
  * @param metadata
  * @returns {ClassDecorator}
@@ -40,7 +40,7 @@ export function Model(metadata?: ModelMetadata): ClassDecorator {
  *
  * Example:
  * ```typescript
- *  import { Store, AbstractStore } from '@ubiquits/core/common';
+ *  import { Store, AbstractStore } from '@zerothstack/core/common';
  *
  *  @Store()
  *  export class ExampleStore extends AbstractStore<any> {}
@@ -57,7 +57,7 @@ export function Store(): ClassDecorator {
  *
  * Example:
  * ```typescript
- *  import { Service, AbstractService } from '@ubiquits/core/common';
+ *  import { Service, AbstractService } from '@zerothstack/core/common';
  *
  *  @Service()
  *  export class ExampleService extends AbstractService {}

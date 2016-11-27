@@ -7,13 +7,13 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Ubiquits provides an `@Injectable()` abstract service named `Logger`. This means that no matter what implementation you use,
+Zeroth provides an `@Injectable()` abstract service named `Logger`. This means that no matter what implementation you use,
  you can always inject the `Logger` service and the actual implementation will be determined by the service provider.
  
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { Logger } from '@ubiquits/core/server';
+import { Logger } from '@zerothstack/core/server';
 
 @Injectable()
 export class ExampleUtil {

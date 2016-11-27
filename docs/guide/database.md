@@ -8,7 +8,7 @@ layout: guide.hbs
 -----------------
 
 ## Intro
-Ubiquits makes connecting to and querying databases very simple. The connection configuration is all managed in the 
+Zeroth makes connecting to and querying databases very simple. The connection configuration is all managed in the 
 `.env` file. When working locally it is recommended to use Docker with Docker Compose to allow extremely simple startup
 and shutdown.
 
@@ -16,7 +16,7 @@ Working with docker locally [will be simplified greatly][docker-issue] soon, but
 getting Docker running locally with Docker for [Mac][dfm]/[Windows][dfw]/[Linux][dfl] then running `docker-compose up -d`
 
 Working locally shouldn't have to be a chore to get a database stood up with the table structure and relevant dummy data
-entered. Instead, the Ubiquits frameworks provides [migration] and [seeder] capabilities to manage building both your
+entered. Instead, the Zeroth frameworks provides [migration] and [seeder] capabilities to manage building both your
  localhost database, and manage live database schema changes.
 
 ## Queries
@@ -52,8 +52,8 @@ Prepared statement string processing is provided by the [sql-template-strings] l
 This is an obviously contrived example but it demonstrates the use of transactions and prepared statements.
 ```typescript
 import { Injectable } from '@angular/core';
-import { Database } from '@ubiquits/core/server';
-import { Logger } from '@ubiquits/core/common';
+import { Database } from '@zerothstack/core/server';
+import { Logger } from '@zerothstack/core/common';
 
 class ExampleUtil {
 
@@ -78,12 +78,12 @@ class ExampleUtil {
 ```
 
 ## NoSQL support
-Ubiquits is designed primarily to interact with a relational database. Support for NoSQL options like MongoDB are planned
+Zeroth is designed primarily to interact with a relational database. Support for NoSQL options like MongoDB are planned
  for the future, but not an immediate priority.
 
 [migration]: /guide/migrations
 [seeder]: /guide/seeders
-[docker-issue]: https://github.com/ubiquits/toolchain/issues/13
+[docker-issue]: https://github.com/zerothstack/toolchain/issues/13
 [dfm]: https://docs.docker.com/docker-for-mac/
 [dfw]: https://docs.docker.com/docker-for-windows/
 [dfl]: https://docs.docker.com/engine/installation/linux/

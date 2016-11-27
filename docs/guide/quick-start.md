@@ -1,6 +1,6 @@
 ---
 title: Quick Start
-description: Get up and running with your first Ubiquits application as quick as possible. What are you waiting for?
+description: Get up and running with your first Zeroth application as quick as possible. What are you waiting for?
 date: 2016-06-02
 collection: guide
 collectionSort: 0
@@ -8,16 +8,16 @@ layout: guide.hbs
 -----------------
 
 ## Prerequisites
-* Node installed (v6.2.0 is recommended)
+* Node installed (v6.9.1 is recommended)
 
 ## Installation
 
-Ubiquits uses a commandline tool `u` to initialize a new project, and manage the building/watching/deployment/debugging etc within it's own shell.
+Zeroth uses a commandline tool `z` to initialize a new project, and manage the building/watching/deployment/debugging etc within it's own shell.
 
 To get started, run the following command in your console *in an empty directory*:
 
 ```bash
-npm install -g @ubiquits/toolchain && u
+npm install -g @zerothstack/toolchain && z
 ```
 
 This will install the toolchain then initialize a new project by cloning the boilerplate, and running installation.

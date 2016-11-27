@@ -125,7 +125,7 @@ export class RemoteCli extends AbstractService {
   public initialize(): this {
     this.vantage = new Vantage();
 
-    this.vantage.delimiter(chalk.magenta('ubiquits-runtime~$'));
+    this.vantage.delimiter(chalk.magenta('zeroth-runtime~$'));
 
     this.registerAuthenticationStrategy();
 

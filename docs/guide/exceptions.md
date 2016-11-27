@@ -7,7 +7,7 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Ubiquits provides a number of built-in `HttpExceptions` that should be thrown rather than `Error` when an unexpected 
+Zeroth provides a number of built-in `HttpExceptions` that should be thrown rather than `Error` when an unexpected 
 event occurs. This allows the call stack handler to inspect the exception status code, and return that to the client so
 it can handle the error in a meaningful way.
 

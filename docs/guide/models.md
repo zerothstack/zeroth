@@ -7,7 +7,7 @@ collectionSort: 1
 layout: guide.hbs
 ---
 
-Models are the key shared components of the Ubiquits framework. 
+Models are the key shared components of the Zeroth framework. 
 Typically, models represent a single row of a table, but this is by no means a limitation as a model can be any 
 non-primitive data structure.
 
@@ -20,8 +20,8 @@ All models should extend `AbstractModel`, which provides a contract of methods s
  
 Example `./src/common/models/example.model.ts`:
 ```typescript
-import { Model, AbstractModel } from '@ubiquits/core/common';
-import { AbstractController } from '@ubiquits/core/server';
+import { Model, AbstractModel } from '@zerothstack/core/common';
+import { AbstractController } from '@zerothstack/core/server';
 
 @Model()
 export class ExampleModel extends AbstractModel {...}
@@ -35,7 +35,7 @@ export { TestController } from './test.controller';
 
 Example `./src/server/main.ts`:
 ```typescript
-import { bootstrap } from '@ubiquits/core/server';
+import { bootstrap } from '@zerothstack/core/server';
 import * as models from '../common/models';
 
 export { BootstrapResponse };

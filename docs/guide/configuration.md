@@ -8,7 +8,7 @@ layout: guide.hbs
 ---
 
 ## Runtime configuration
-Ubiquits uses a [dotenv] file to define configuration. This is exposed to `process.env.VAR_NAME` so you can easily access
+Zeroth uses a [dotenv] file to define configuration. This is exposed to `process.env.VAR_NAME` so you can easily access
 these variables anywhere.
 
 Only the variables that are prefixed with `PUBLIC_VAR_NAME` are exposed to `process.env.VAR_NAME` in the browser
@@ -22,4 +22,4 @@ See the [cli documentation][compile-config] for details on how to customize the 
 
 [dotenv]: https://www.npmjs.com/package/dotenv
 [define-plugin]: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-[compile-config]: /guide/cli/#-ubiquits-js-file-configuration
+[compile-config]: /guide/cli/#-zeroth-js-file-configuration

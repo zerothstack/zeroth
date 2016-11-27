@@ -5,7 +5,7 @@ date: 2016-06-09
 collection: guide
 collectionSort: 1
 layout: guide.hbs
-pendingTask: https://github.com/ubiquits/ubiquits/issues/25
+pendingTask: https://github.com/zerothstack/zeroth/issues/25
 ---
 
 ## Overview
@@ -27,8 +27,8 @@ with the `EntityRegistry`.
 
 Example `./src/server/migrations/updateUsersUsername.migration.ts`:
 ```typescript
-import { AbstractMigration, Database } from '@ubiquits/core/server';
-import { Migration, Logger } from '@ubiquits/core/common';
+import { AbstractMigration, Database } from '@zerothstack/core/server';
+import { Migration, Logger } from '@zerothstack/core/common';
 
 @Migration()
 export class UpdateUsersUsernameColumnMigration extends AbstractMigration {
@@ -55,7 +55,7 @@ export * from './updateUsersUsername.migration';
 
 Example `./src/server/main.ts`:
 ```typescript
-import { bootstrap } from '@ubiquits/core/server';
+import { bootstrap } from '@zerothstack/core/server';
 import * as migrations from './migrations';
 
 export { BootstrapResponse };
@@ -70,4 +70,4 @@ rapid development, but won't work in production.
 The plan is to have the migrations register then have the `RemoteCli` pick up which migrations need to be run, and when
 the user logs in to the cli runtime they will be prompted for which migrations to run.
 
-See the [github issue](https://github.com/ubiquits/ubiquits/issues/25) for more info
+See the [github issue](https://github.com/zerothstack/zeroth/issues/25) for more info

@@ -3,11 +3,11 @@
  * server implementations to use
  *
  * Any of the types (classes, functions etc) defined under this module can be imported from
- * `@ubiquits/core/server`
+ * `@zerothstack/core/server`
  *
  * Example:
  * ```typescript
- * import { AbstractController } from 'ubiquits/core/server';
+ * import { AbstractController } from 'zeroth/core/server';
  * ```
  *
  * @module server

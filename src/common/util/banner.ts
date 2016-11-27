@@ -6,7 +6,7 @@
 import * as chalk from 'chalk';
 
 /**
- * Ubiquits Banner for usage in cli welcome
+ * Zeroth Banner for usage in cli welcome
  * @type {string}
  */
 export const banner = `
@@ -23,7 +23,7 @@ export const banner = `
                                     | |
                                     |_|`;
 
-export function bannerBg(message: string = '$ Ubiquits Runtime CLI', bgString: string): string {
+export function bannerBg(message: string = '$ Zeroth Runtime CLI', bgString: string): string {
 
   let shortMessage: string = '';
   let longMessage: string  = '';

@@ -134,8 +134,8 @@ export abstract class Server {
   protected getDefaultResponse(): Response {
 
     return new Response()
-    // Outputs eg `X-Powered-By: Ubiquits<Angular,Express>`
-      .header('X-Powered-By', `Ubiquits<Angular,${this.constructor.name.replace('Server', '')}>`);
+    // Outputs eg `X-Powered-By: Zeroth<Angular,Express>`
+      .header('X-Powered-By', `Zeroth<Angular,${this.constructor.name.replace('Server', '')}>`);
 
   }
 

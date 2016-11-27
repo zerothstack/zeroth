@@ -1,6 +1,6 @@
 ---
 layout: home.hbs
-title: Ubiquits
+title: Zeroth
 description: Full stack isomorphic typescript framework.
 ---
 
