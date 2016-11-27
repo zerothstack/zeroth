@@ -5,7 +5,7 @@ date: 2016-06-09
 collection: guide
 collectionSort: 1
 layout: guide.hbs
-pendingTask: https://github.com/zeroth/zeroth/issues/25
+pendingTask: https://github.com/zerothstack/zeroth/issues/25
 ---
 
 ## Overview
@@ -70,4 +70,4 @@ rapid development, but won't work in production.
 The plan is to have the migrations register then have the `RemoteCli` pick up which migrations need to be run, and when
 the user logs in to the cli runtime they will be prompted for which migrations to run.
 
-See the [github issue](https://github.com/zeroth/zeroth/issues/25) for more info
+See the [github issue](https://github.com/zerothstack/zeroth/issues/25) for more info

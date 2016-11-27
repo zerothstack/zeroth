@@ -32,5 +32,5 @@ It is [currently planned][docker-deployment-issue] to implement integration with
 to cloud services.
 
 [forever]:https://github.com/foreverjs/forever
-[docker-deployment-issue]: https://github.com/zeroth/zeroth/issues/107
+[docker-deployment-issue]: https://github.com/zerothstack/zeroth/issues/107
 [docker-cloud]: https://cloud.docker.com

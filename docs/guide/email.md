@@ -5,5 +5,5 @@ date: 2016-06-09
 collection: guide
 collectionSort: 1
 layout: guide.hbs
-pendingTask: https://github.com/zeroth/zeroth/issues/74
+pendingTask: https://github.com/zerothstack/zeroth/issues/74
 ---

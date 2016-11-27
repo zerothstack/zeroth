@@ -83,7 +83,7 @@ Zeroth is designed primarily to interact with a relational database. Support for
 
 [migration]: /guide/migrations
 [seeder]: /guide/seeders
-[docker-issue]: https://github.com/zeroth/toolchain/issues/13
+[docker-issue]: https://github.com/zerothstack/toolchain/issues/13
 [dfm]: https://docs.docker.com/docker-for-mac/
 [dfw]: https://docs.docker.com/docker-for-windows/
 [dfl]: https://docs.docker.com/engine/installation/linux/

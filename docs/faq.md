@@ -90,12 +90,13 @@ goals - to stop writing code twice (or more!).
 
 
 ### Why the name `Zeroth` ?
-Zeroth is a play on the word *Ubiquitous* (*present, appearing, or found everywhere.*). The shortening is to make
-the word finish with `ts`, which is of course the file extension of a TypeScript file.
+Zeroth is the ordinal number before "first". The name was chosen as the Zeroth stack should come before
+ your first lines of business logic - it is all the work put in before your effort is spent.
 
-The pronunciation is the same as ubiquitous - **you-bick-wit-us**
+See also Isaac Asimov's Zeroth Law of Robotics:
+> A robot may not injure humanity, or, by inaction, allow humanity to come to harm.
 
-
+A law that should apply to software of all forms, not just robotics
 
 *Have another question? Feel free to [post an issue][new-issue] on Github*.
 
@@ -105,4 +106,4 @@ The pronunciation is the same as ubiquitous - **you-bick-wit-us**
 [meteor-methods]: http://guide.meteor.com/methods.html
 [angular-meteor]: https://www.angular-meteor.com/angular2
 [angular-cli]: https://cli.angular.io/
-[new-issue]: https://github.com/zeroth/zeroth/issues/new
+[new-issue]: https://github.com/zerothstack/zeroth/issues/new

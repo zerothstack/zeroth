@@ -148,12 +148,12 @@ At this time adding new plugins is not configurable. If you'd like this capabili
 [metalsmith]: http://metalsmith.io
 [dogfood]: https://en.wikipedia.org/wiki/Eating_your_own_dog_food
 [frontmatter]: https://jekyllrb.com/docs/frontmatter/
-[template-dir]: https://github.com/zeroth/toolchain/tree/master/docs/templates
+[template-dir]: https://github.com/zerothstack/toolchain/tree/master/docs/templates
 [typedoc]: http://typedoc.io
 [configure-deployment]: /guide/cli/#-configuredeployment-config-
 [configure-docs]: /guide/cli/#-configuredocs-config-
 [ga]:https://analytics.google.com
-[issues]:https://github.com/zeroth/toolchain/issues
+[issues]:https://github.com/zerothstack/toolchain/issues
 
 [metalsmith-markdown]:https://github.com/segmentio/metalsmith-markdown
 [metalsmith-layouts]:https://github.com/zakhenry/metalsmith-layouts
