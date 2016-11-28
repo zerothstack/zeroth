@@ -4,7 +4,7 @@ const project = new ZerothProject(__dirname)
   .configureDeployment({
     docs: {
       branch: 'master',
-      repo: 'git@github.com:zerothstack/zeroth.github.io.git'
+      repo: 'git@github.com:zerothstack/zerothstack.github.io.git'
     }
   })
   .configureDocs({
