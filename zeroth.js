@@ -1,4 +1,4 @@
-let {ZerothProject} = require('@zerothstack/toolchain');
+let { ZerothProject } = require('@zerothstack/toolchain');
 
 const project = new ZerothProject(__dirname)
   .configureDeployment({
