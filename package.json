@@ -1,6 +1,6 @@
 {
   "name": "@zerothstack/core",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Zeroth core",
   "main": "index.js",
   "typings": "index.d.ts",
