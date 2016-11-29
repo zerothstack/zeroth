@@ -1,4 +1,7 @@
-
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { entityRegistryFunction } from '../../common/registry/decorators';
 import { InjectableMiddlewareFactory } from '../middleware/index';
 
