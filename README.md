@@ -3,7 +3,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@zerothstack/core.svg?maxAge=2592000)](https://www.npmjs.com/package/@zerothstack/core)
 [![Join the chat at https://gitter.im/zerothstack/zeroth](https://badges.gitter.im/zerothstack/zeroth.svg)](https://gitter.im/zerothstack/zeroth?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-![zeroth](https://rawgithub.com/zeroth/assets/master/fulllogo.svg)
+![zeroth](https://rawgit.com/zerothstack/assets/master/logo/logotype.black.svg)
 
 # Core Module
 
