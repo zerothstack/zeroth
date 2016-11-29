@@ -7,7 +7,7 @@
  *
  * Example:
  * ```typescript
- * import { AbstractController } from 'zeroth/core/server';
+ * import { AbstractController } from '@zerothstack/core/server';
  * ```
  *
  * @module server

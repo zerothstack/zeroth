@@ -7,7 +7,7 @@
  *
  * Example:
  * ```typescript
- * import { HttpStore } from 'zeroth/core/browser';
+ * import { HttpStore } from '@zerothstack/core/browser';
  * ```
  *
  * @module browser

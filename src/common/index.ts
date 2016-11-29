@@ -7,7 +7,7 @@
  *
  * Example:
  * ```typescript
- * import { Logger } from 'zeroth/core/common';
+ * import { Logger } from '@zerothstack/core/common';
  * ```
  *
  * @module common

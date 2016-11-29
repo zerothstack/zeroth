@@ -1,3 +1,7 @@
+/**
+ * @module server
+ */
+/** End Typedoc Module Declaration */
 import { Server, RouteConfig } from './abstract.server';
 import { RemoteCli } from '../services/remoteCli.service';
 import { Logger } from '../../common/services/logger.service';
