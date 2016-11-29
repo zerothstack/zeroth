@@ -1,3 +1,24 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/zerothstack/zeroth/compare/v1.0.0...v1.0.4) (2016-11-29)
+
+
+### Bug Fixes
+
+* **cli:** Update banner to zeroth banner logo ([9b89814](https://github.com/zerothstack/zeroth/commit/9b89814))
+* **logo:** Fix the logo reference in the readme ([04de3a7](https://github.com/zerothstack/zeroth/commit/04de3a7))
+
+
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/zerothstack/zeroth/compare/v0.0.1-0...v1.0.0) (2016-11-28)
+
+
+### Bug Fixes
+
+* **docs:** Fix missed renaming and update toolchain ([9357c0d](https://github.com/zerothstack/zeroth/commit/9357c0d))
+
+
+
 <a name="0.0.1-0"></a>
 ## [0.0.1-0](https://github.com/zerothstack/zeroth/compare/8a97705...v0.0.1-0) (2016-11-27)
 
