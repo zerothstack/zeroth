@@ -32,12 +32,9 @@ export abstract class ResourceController<M extends AbstractModel> extends Abstra
    * @returns {any}
    */
   @Route('GET', '/:id')
-  public getOne(request: Request, response: Response): Promise<Response> {
-
-    return this.modelStore
-      .findOne(request.params()
-        .get('id'))
-      .then((model: M) => response.data(model));
+  public async getOne(request: Request, response: Response): Promise<Response> {
+    const model: M = await this.modelStore.findOne(request.params().get('id'));
+    return response.data(model);
   }
 
   /**
@@ -47,11 +44,9 @@ export abstract class ResourceController<M extends AbstractModel> extends Abstra
    * @returns {any}
    */
   @Route('GET', '/')
-  public getMany(request: Request, response: Response): Promise<Response> {
-
-    return this.modelStore
-      .findMany()
-      .then((collection: Collection<M>) => response.data(collection));
+  public async getMany(request: Request, response: Response): Promise<Response> {
+    const collection: Collection<M> = await this.modelStore.findMany();
+    return response.data(collection);
   }
 
   /**
@@ -85,12 +80,11 @@ export abstract class ResourceController<M extends AbstractModel> extends Abstra
    * @returns {Promise<Response>}
    */
   @Route('DELETE', '/:id')
-  public deleteOne(request: Request, response: Response): Promise<Response> {
+  public async deleteOne(request: Request, response: Response): Promise<Response> {
 
-    return request.getPayload()
-      .then((data: any) => this.modelStore.hydrate(data))
-      .then((model: M) => this.modelStore.deleteOne(model))
-      .then((model: M) => response.data(model));
+    const model: M = await this.modelStore.hydrate(await request.getPayload());
+    await this.modelStore.deleteOne(model);
+    return response.data(model);
   }
 
   /**
@@ -101,28 +95,25 @@ export abstract class ResourceController<M extends AbstractModel> extends Abstra
    * @param checkExists
    * @returns {Promise<Response>}
    */
-  protected savePayload(request: Request, response: Response, checkExists: boolean = false, validatorOptions: ValidatorOptions = {}): Promise<Response> {
-    let modelPayload = request.getPayload()
-      .then((data: any) => this.modelStore.hydrate(data));
+  protected async savePayload(
+    request: Request,
+    response: Response,
+    checkExists: boolean = false,
+    validatorOptions: ValidatorOptions = {},
+  ): Promise<Response> | never {
+
+    const model = await this.modelStore.hydrate(await request.getPayload());
 
     if (checkExists) {
-
-      modelPayload = modelPayload.then((payload: M) => {
-        return this.modelStore.hasOne(payload)
-          .then((exists: boolean) => {
-            if (!exists) {
-              throw new NotFoundException(`Model with id [${payload.getIdentifier()}] does not exist`);
-            }
-            return payload;
-          });
-      })
-
+      const exists = await this.modelStore.hasOne(model);
+      if (!exists) {
+        throw new NotFoundException(`Model with id [${model.getIdentifier()}] does not exist`);
+      }
     }
 
-    return modelPayload
-      .then((model: M) => this.modelStore.validate(model, validatorOptions))
-      .then((model: M) => this.modelStore.saveOne(model))
-      .then((model: M) => response.data(model));
+    await this.modelStore.validate(model, validatorOptions);
+    await this.modelStore.saveOne(model);
+    return response.data(model);
   }
 
 }

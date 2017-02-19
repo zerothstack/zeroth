@@ -59,11 +59,12 @@ export abstract class MockStore<T extends AbstractModel> extends AbstractStore<T
   /**
    * @inheritdoc
    */
-  public findOne(id?: identifier): Promise<T> {
+  public async findOne(id?: identifier): Promise<T> {
+
     try {
-      return Promise.resolve(this.modelCollection.findById(id));
-    } catch (e){
-      return this.saveOne(this.getMock(id))
+      return await this.modelCollection.findById(id);
+    } catch (e) {
+      return await this.saveOne(this.getMock(id));
     }
   }
 
