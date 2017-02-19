@@ -73,50 +73,54 @@ export abstract class DatabaseStore<T extends AbstractModel> extends AbstractSto
   /**
    * @inheritdoc
    */
-  public findMany(query?: Query): Promise<Collection<T>> {
-    return this.getRepository()
-      .then((repo) => repo.find({
-        //@todo define query and restrict count with pagination
-      }))
-      .then((entityArray: T[]): Collection<T> => {
+  public async findMany(query?: Query): Promise<Collection<T>> {
 
-        if (!entityArray.length) {
-          throw new NotFoundException(`No ${this.modelStatic.name} found with query params [${JSON.stringify(query)}]`);
-        }
+    try {
+      const repo = await this.getRepository();
 
-        return new Collection(entityArray);
-      })
-      .catch((e) => {
-        this.logger.error(e);
-        throw e;
+      const entityArray: T[] = await repo.find({
+        //@todo define query interface and restrict count with pagination
       });
+
+      if (!entityArray.length) {
+        throw new NotFoundException(`No ${this.modelStatic.name} found with query params [${JSON.stringify(query)}]`);
+      }
+
+      return new Collection(entityArray);
+
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
   }
 
   /**
    * @inheritdoc
    */
-  public saveOne(model: T): Promise<T> {
-    return this.getRepository()
-      .then((repo) => repo.persist(model));
+  public async saveOne(model: T): Promise<T> {
+    const repo = await this.getRepository();
+    return repo.persist(model);
   }
 
   /**
    * @inheritdoc
    */
-  public deleteOne(model: T): Promise<T> {
-    return this.getRepository()
-      .then((repo) => repo.remove(model));
+  public async deleteOne(model: T): Promise<T> {
+    const repo = await this.getRepository();
+    return repo.remove(model);
   }
 
   /**
    * @inheritdoc
    */
-  public hasOne(model: T): Promise<boolean> {
-    return this.getRepository()
-      .then((repo) => repo.findOneById(model))
-      .then(() => true)
-      .catch(() => false)
-      ;
+  public async hasOne(model: T): Promise<boolean> {
+    const repo = await this.getRepository();
+    try {
+      await repo.findOneById(model.getIdentifier());
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
 }

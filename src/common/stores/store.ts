@@ -81,15 +81,13 @@ export abstract class AbstractStore<T extends AbstractModel> {
    * @param validatorOptions
    * @returns {Promise<T>}
    */
-  public validate(model: T, validatorOptions?: ValidatorOptions): Promise<T> | never {
+  public async validate(model: T, validatorOptions?: ValidatorOptions): Promise<T> | never {
 
-    return this.validator.validate(model, validatorOptions)
-      .then((errors: ValidationError[]) => {
-        if (errors.length) {
-          throw new ValidationException(null, errors)
-        }
-        return model;
-      });
+    const errors: ValidationError[] = await this.validator.validate(model, validatorOptions);
+    if (errors.length) {
+      throw new ValidationException(null, errors)
+    }
+    return model;
   }
 
   /**

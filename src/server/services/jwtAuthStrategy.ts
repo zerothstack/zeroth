@@ -14,7 +14,7 @@ import {
 
 export const jwtAuthStrategyFactory:AuthenticationStrategyFactory = (remoteCliContext: RemoteCliContext): AuthenticationStrategy => {
   return function (vantage: any, options: any) {
-    return function (args: {client: {jwt: string, publicKeyPath: string, columns: number}}, cb: AuthenticationCallback) {
+    return async function (args: {client: {jwt: string, publicKeyPath: string, columns: number}}, cb: AuthenticationCallback) {
 
       try {
         remoteCliContext.logger.silly.debug('Passed client arguments: ', args);
@@ -32,23 +32,21 @@ export const jwtAuthStrategyFactory:AuthenticationStrategyFactory = (remoteCliCo
 
         remoteCliContext.logger.info(`Authenticating JSON web token against public key [${keyPath}]`);
 
-        remoteCliContext.authService.verify(token, keyPath)
-          .then((payload: any) => {
-            remoteCliContext.logger.info(`${payload.username} has been authenticated with token`)
-              .debug('Token:', token);
-            let displayBanner = `Hi ${payload.username}, Welcome to Zeroth runtime cli.`;
-            if (args.client.columns >= 80) {
-              displayBanner = bannerBg(undefined, token);
-            }
-            this.log(chalk.grey(`You were authenticated with a JSON Web token verified against the public key at ${keyPath}`));
-            this.log(displayBanner);
-            this.log(` Type 'help' for a list of available commands`);
+        const payload = await remoteCliContext.authService.verify(token, keyPath);
 
-            return cb(null, true);
-          })
-          .catch((e: Error) => {
-            return cb(e.message, false);
-          });
+        remoteCliContext.logger.info(`${payload.username} has been authenticated with token`)
+          .debug('Token:', token);
+
+        let displayBanner = `Hi ${payload.username}, Welcome to Zeroth runtime cli.`;
+        if (args.client.columns >= 80) {
+          displayBanner = bannerBg(undefined, token);
+        }
+
+        this.log(chalk.grey(`You were authenticated with a JSON Web token verified against the public key at ${keyPath}`));
+        this.log(displayBanner);
+        this.log(` Type 'help' for a list of available commands`);
+
+        return cb(null, true);
 
       } catch (e) {
         remoteCliContext.logger.error('Authentication error', e.message).debug(e.stack);

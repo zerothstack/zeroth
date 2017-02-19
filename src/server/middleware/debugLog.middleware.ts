@@ -64,8 +64,7 @@ export class DebugLogMiddleware implements InjectableMiddleware {
 export function debugLog(...messages: string[]): InjectableMiddlewareFactory {
 
   return (injector: ReflectiveInjector): Middleware => {
-    return injector.get(DebugLogMiddleware)
-      .middlewareFactory(messages);
+    return injector.get(DebugLogMiddleware).middlewareFactory(messages);
   }
 
 }

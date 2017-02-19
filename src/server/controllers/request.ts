@@ -70,7 +70,7 @@ export class Request {
    * Extract the passed body object from the raw request
    * @returns {Promise<T>}
    */
-  public getPayload(): Promise<any> {
+  public getPayload<T>(): Promise<T> {
     return new Promise((resolve, reject) => {
       this.raw.setEncoding('utf8');
 
