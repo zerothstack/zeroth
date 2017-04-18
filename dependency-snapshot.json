@@ -1,6 +1,6 @@
 {
   "name": "@zerothstack/core",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "dependencies": {
     "@angular/common": {
       "version": "2.1.2",
