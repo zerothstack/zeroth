@@ -8,7 +8,7 @@
 # Core Module
 
 ## Overview
-Zeroth is a full stack Angular 2 framework. It uses the Angular 2 dependency injection pattern to bring good design patterns
+Zeroth is a full stack Angular 2 based framework. It uses the Angular 2 dependency injector to bring good design patterns
  to the backend. Zeroth is an isomorphic framework, which means that components can be built to be shared between the frontend
  and the backend where appropriate. This significantly reduces code duplication and improves development speed. 
 
